@@ -636,7 +636,12 @@ function topbar(title, subtitle, extraRight){
       <div class="topbar-title">${title}</div>
       ${subtitle?`<div class="topbar-role">${subtitle}</div>`:''}
     </div>
-    <div class="search-field">${icon('search')}<span>Search shops, jewelry, or area</span></div>
+    <label class="search-field">
+      ${icon('search')}
+      ${STATE.role === 'customer'
+        ? `<input type="search" aria-label="Search shops, jewelry, or area" placeholder="Search shops, jewelry, or area" oninput="searchCustomer(this.value)" onkeydown="if(event.key==='Escape'){this.value='';searchCustomer('')}"/>`
+        : `<span>Search shops, jewelry, or area</span>`}
+    </label>
     <div class="topbar-spacer"></div>
     ${extraRight||''}
     <button class="icon-btn" aria-label="Notifications">${icon('bell')}<span class="dot-badge">3</span></button>
@@ -660,15 +665,7 @@ window.signOut = signOut;
 
 function renderCustomerLayout(view){
   view = view || 'dashboard';
-  let content = '';
-  if(view === 'dashboard') content = customerDashboard();
-  else if(view === 'shops') content = customerShops();
-  else if(view === 'marketplace') content = customerMarketplace();
-  else if(view === 'installments') content = customerInstallments();
-  else if(view === 'c2c') content = customerC2C();
-  else if(view === 'support') content = simplePane('Support', 'Guides, FAQ, and case history for your account.', 'help');
-  else if(view === 'settings') content = customerAccountSettings();
-  else content = customerDashboard();
+  const content = customerViewContent(view);
 
   return `
   <div class="shell">
@@ -682,7 +679,57 @@ function renderCustomerLayout(view){
   ${STATE.productModal ? renderProductModal(STATE.productModal) : ''}
   `;
 }
+function customerViewContent(view){
+  let content = '';
+  if(view === 'dashboard') content = customerDashboard();
+  else if(view === 'shops') content = customerShops();
+  else if(view === 'marketplace') content = customerMarketplace();
+  else if(view === 'installments') content = customerInstallments();
+  else if(view === 'c2c') content = customerC2C();
+  else if(view === 'support') content = simplePane('Support', 'Guides, FAQ, and case history for your account.', 'help');
+  else if(view === 'settings') content = customerAccountSettings();
+  else content = customerDashboard();
+  return content;
+}
 function navLabel(items, id){ const m = items.find(i=>i.id===id); return m? m.label : 'Dashboard'; }
+
+function searchCustomer(value){
+  const content = document.querySelector('.main > .content');
+  if(!content) return;
+  const query = value.trim().toLocaleLowerCase();
+  if(!query){
+    content.innerHTML = customerViewContent(parseHash().view || 'dashboard');
+    return;
+  }
+
+  const products = DATA.products.filter(product=>
+    [product.name, product.category, product.shop, product.purity, product.weight]
+      .some(field=>String(field || '').toLocaleLowerCase().includes(query))
+  );
+  const shops = DATA.shops.filter(shop=>
+    [shop.name, shop.area, shop.distance]
+      .some(field=>String(field || '').toLocaleLowerCase().includes(query))
+  );
+
+  content.innerHTML = `
+    <div class="section-h customer-search-heading">
+      <h2>Search results</h2>
+      <span>${products.length + shops.length} match${products.length + shops.length === 1 ? '' : 'es'}</span>
+    </div>
+    ${shops.length ? `
+      <div class="section-h"><h2>Partner Shops</h2></div>
+      <div class="grid g-3">${shops.map(shopCard).join('')}</div>
+    ` : ''}
+    ${products.length ? `
+      <div class="section-h"><h2>Jewelry</h2></div>
+      <div class="grid g-4">${products.map(productCard).join('')}</div>
+    ` : ''}
+    ${!products.length && !shops.length ? `
+      <div class="marketplace-empty">No shops or jewelry match your search.</div>
+    ` : ''}
+  `;
+}
+window.searchCustomer = searchCustomer;
 
 function simplePane(title, sub, ic){
   return `<div class="card" style="padding:70px 20px;text-align:center">
