@@ -1,7 +1,11 @@
 import { useState } from 'react'
 export function useLocalStorage(key, initialValue) {
   const [value, setValue] = useState(() => {
-    try { return JSON.parse(localStorage.getItem(key)) ?? initialValue } catch { return initialValue }
+    try {
+      return JSON.parse(localStorage.getItem(key)) ?? initialValue
+    } catch {
+      return initialValue
+    }
   })
   const update = (nextValue) => {
     const resolved = typeof nextValue === 'function' ? nextValue(value) : nextValue

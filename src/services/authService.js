@@ -10,7 +10,13 @@ export function login(email, password) {
   localStorage.setItem('midas-session', JSON.stringify(session))
   return session
 }
-export function logout() { localStorage.removeItem('midas-session') }
+export function logout() {
+  localStorage.removeItem('midas-session')
+}
 export function getSession() {
-  try { return JSON.parse(localStorage.getItem('midas-session') || 'null') } catch { return null }
+  try {
+    return JSON.parse(localStorage.getItem('midas-session') || 'null')
+  } catch {
+    return null
+  }
 }

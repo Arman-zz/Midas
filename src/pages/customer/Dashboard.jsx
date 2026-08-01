@@ -2,6 +2,130 @@ import { useState } from 'react'
 import ProductGrid from '../../components/marketplace/ProductGrid'
 import ProductModal from '../../components/marketplace/ProductModal'
 import ShopCard from '../../components/cards/ShopCard'
-import { activity,formatBDT,installment,installmentSummary,shops } from '../../data/appData'
+import { activity, formatBDT, installment, installmentSummary, shops } from '../../data/appData'
 import { getProducts } from '../../services/productService'
-export default function Dashboard({globalSearch=''}){const [selected,setSelected]=useState(null);const summary=installmentSummary();const products=getProducts().filter(p=>`${p.name} ${p.shop}`.toLowerCase().includes(globalSearch.toLowerCase()));const filteredShops=shops.filter(s=>`${s.name} ${s.area}`.toLowerCase().includes(globalSearch.toLowerCase()));if(globalSearch)return <><div className="section-h"><h2>Search results</h2><span>{products.length+filteredShops.length} matches</span></div>{filteredShops.length>0&&<div className="grid g-3">{filteredShops.map(s=><ShopCard key={s.id} shop={s}/>)}</div>}<div className="section-h"><h2>Jewelry</h2></div><ProductGrid products={products} onSelect={setSelected}/><ProductModal product={selected} onClose={()=>setSelected(null)}/></>;return <><div className="grid g-2-1"><article className="card active-installment-card"><div className="card-head"><div><div className="card-title">Active Installment</div><div className="card-sub">{installment.shop} · {installment.product}</div></div></div><div className="card-pad"><div className="u-flex progress-label"><b>Progress</b><span className="mono">{summary.progress.toFixed(1)}%</span></div><div className="progress"><span style={{width:`${summary.progress}%`}}/></div><div className="grid g-2 active-installment-metrics"><div><div className="stat-label">Target jewelry gold</div><b>{installment.targetGoldGrams} g {installment.purity}</b></div><div><div className="stat-label">Gold you own</div><b>{summary.goldOwned.toFixed(3)} g</b></div></div><a className="btn btn-gold" href="#/customer/installments">Record payment</a></div></article><article className="card"><div className="card-pad u-center"><h3>Transaction History Only</h3><div className="seal"><span>♢</span></div><p>MIDAS does not process or hold payments.</p><small>All payments are made directly between you and the partner shop.</small></div></article></div><div className="section-h"><h2>Partner Shops Near You</h2><a href="#/customer/shops">View all →</a></div><div className="grid g-3">{shops.slice(0,3).map(s=><ShopCard key={s.id} shop={s}/>)}</div><div className="section-h"><h2>Recommended Jewelry</h2><a href="#/customer/marketplace">View all →</a></div><ProductGrid products={products.slice(0,4)} onSelect={setSelected}/><div className="grid g-2 dashboard-bottom"><article className="card"><div className="card-head"><div className="card-title">Upcoming Due</div></div><div className="card-pad"><b>{installment.nextDue}</b><div className="tmeta">{installment.shop} · {formatBDT(installment.nextAmount)}</div></div></article><article className="card"><div className="card-head"><div className="card-title">Recent Activity</div></div><div className="card-pad activity-list">{activity.map(a=><div key={a.title}><span><b>{a.title}</b><small>{a.meta}</small></span><small>{a.when}</small></div>)}</div></article></div><ProductModal product={selected} onClose={()=>setSelected(null)}/></>}
+export default function Dashboard({ globalSearch = '' }) {
+  const [selected, setSelected] = useState(null)
+  const summary = installmentSummary()
+  const products = getProducts().filter((p) =>
+    `${p.name} ${p.shop}`.toLowerCase().includes(globalSearch.toLowerCase()),
+  )
+  const filteredShops = shops.filter((s) =>
+    `${s.name} ${s.area}`.toLowerCase().includes(globalSearch.toLowerCase()),
+  )
+  if (globalSearch)
+    return (
+      <>
+        <div className="section-h">
+          <h2>Search results</h2>
+          <span>{products.length + filteredShops.length} matches</span>
+        </div>
+        {filteredShops.length > 0 && (
+          <div className="grid g-3">
+            {filteredShops.map((s) => (
+              <ShopCard key={s.id} shop={s} />
+            ))}
+          </div>
+        )}
+        <div className="section-h">
+          <h2>Jewelry</h2>
+        </div>
+        <ProductGrid products={products} onSelect={setSelected} />
+        <ProductModal product={selected} onClose={() => setSelected(null)} />
+      </>
+    )
+  return (
+    <>
+      <div className="grid g-2-1">
+        <article className="card active-installment-card">
+          <div className="card-head">
+            <div>
+              <div className="card-title">Active Installment</div>
+              <div className="card-sub">
+                {installment.shop} · {installment.product}
+              </div>
+            </div>
+          </div>
+          <div className="card-pad">
+            <div className="u-flex progress-label">
+              <b>Progress</b>
+              <span className="mono">{summary.progress.toFixed(1)}%</span>
+            </div>
+            <div className="progress">
+              <span style={{ width: `${summary.progress}%` }} />
+            </div>
+            <div className="grid g-2 active-installment-metrics">
+              <div>
+                <div className="stat-label">Target jewelry gold</div>
+                <b>
+                  {installment.targetGoldGrams} g {installment.purity}
+                </b>
+              </div>
+              <div>
+                <div className="stat-label">Gold you own</div>
+                <b>{summary.goldOwned.toFixed(3)} g</b>
+              </div>
+            </div>
+            <a className="btn btn-gold" href="#/customer/installments">
+              Record payment
+            </a>
+          </div>
+        </article>
+        <article className="card">
+          <div className="card-pad u-center">
+            <h3>Transaction History Only</h3>
+            <div className="seal">
+              <span>♢</span>
+            </div>
+            <p>MIDAS does not process or hold payments.</p>
+            <small>All payments are made directly between you and the partner shop.</small>
+          </div>
+        </article>
+      </div>
+      <div className="section-h">
+        <h2>Partner Shops Near You</h2>
+        <a href="#/customer/shops">View all →</a>
+      </div>
+      <div className="grid g-3">
+        {shops.slice(0, 3).map((s) => (
+          <ShopCard key={s.id} shop={s} />
+        ))}
+      </div>
+      <div className="section-h">
+        <h2>Recommended Jewelry</h2>
+        <a href="#/customer/marketplace">View all →</a>
+      </div>
+      <ProductGrid products={products.slice(0, 4)} onSelect={setSelected} />
+      <div className="grid g-2 dashboard-bottom">
+        <article className="card">
+          <div className="card-head">
+            <div className="card-title">Upcoming Due</div>
+          </div>
+          <div className="card-pad">
+            <b>{installment.nextDue}</b>
+            <div className="tmeta">
+              {installment.shop} · {formatBDT(installment.nextAmount)}
+            </div>
+          </div>
+        </article>
+        <article className="card">
+          <div className="card-head">
+            <div className="card-title">Recent Activity</div>
+          </div>
+          <div className="card-pad activity-list">
+            {activity.map((a) => (
+              <div key={a.title}>
+                <span>
+                  <b>{a.title}</b>
+                  <small>{a.meta}</small>
+                </span>
+                <small>{a.when}</small>
+              </div>
+            ))}
+          </div>
+        </article>
+      </div>
+      <ProductModal product={selected} onClose={() => setSelected(null)} />
+    </>
+  )
+}

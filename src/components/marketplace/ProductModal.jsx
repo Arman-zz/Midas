@@ -1,4 +1,42 @@
 import Modal from '../common/Modal'
 import { formatCurrency } from '../../utils/format'
 import { useToast } from '../../context/ToastContext'
-export default function ProductModal({product,onClose}){const notify=useToast();return <Modal open={!!product} onClose={onClose}>{product&&<div className="modal-product"><img className="product-photo" src={product.image} alt={product.name}/><div className="modal-product-body"><span className="badge badge-gold">{product.purity}</span><h2>{product.name}</h2><p className="product-shop">{product.shop}</p><div className="grid g-2"><div><span className="stat-label">Weight</span><b>{product.weight}</b></div><div><span className="stat-label">Price</span><b>{formatCurrency(product.price)}</b></div></div><div className="notice">Payments are made directly to the shop. MIDAS only records the agreement.</div><button className="btn btn-gold btn-block" onClick={()=>{notify('Purchase request submitted to the shop');onClose()}}>Send Purchase Request</button></div></div>}</Modal>}
+export default function ProductModal({ product, onClose }) {
+  const notify = useToast()
+  return (
+    <Modal open={!!product} onClose={onClose}>
+      {product && (
+        <div className="modal-product">
+          <img className="product-photo" src={product.image} alt={product.name} />
+          <div className="modal-product-body">
+            <span className="badge badge-gold">{product.purity}</span>
+            <h2>{product.name}</h2>
+            <p className="product-shop">{product.shop}</p>
+            <div className="grid g-2">
+              <div>
+                <span className="stat-label">Weight</span>
+                <b>{product.weight}</b>
+              </div>
+              <div>
+                <span className="stat-label">Price</span>
+                <b>{formatCurrency(product.price)}</b>
+              </div>
+            </div>
+            <div className="notice">
+              Payments are made directly to the shop. MIDAS only records the agreement.
+            </div>
+            <button
+              className="btn btn-gold btn-block"
+              onClick={() => {
+                notify('Purchase request submitted to the shop')
+                onClose()
+              }}
+            >
+              Send Purchase Request
+            </button>
+          </div>
+        </div>
+      )}
+    </Modal>
+  )
+}

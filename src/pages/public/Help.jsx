@@ -1,2 +1,32 @@
 import PublicPage from '../../components/common/PublicPage'
-export default function Help(){return <PublicPage eyebrow="Help centre" title="Answers without ambiguity" intro="Understand payments, confirmations, gold progress, and marketplace safety."><div className="grid g-2"><article className="card card-pad"><h3>How are payments made?</h3><p>Customers pay partner shops directly. MIDAS does not receive or process payments.</p></article><article className="card card-pad"><h3>When does gold progress increase?</h3><p>Only after the shop confirms that it received the customer's submitted payment.</p></article><article className="card card-pad"><h3>What is commission due?</h3><p>The platform fee recorded against qualifying shop transactions. It is not automatically collected.</p></article><article className="card card-pad"><h3>Need more help?</h3><p>Contact the relevant partner shop for product or payment questions.</p></article></div></PublicPage>}
+export default function Help() {
+  return (
+    <PublicPage
+      eyebrow="Help centre"
+      title="Answers without ambiguity"
+      intro="Understand payments, confirmations, gold progress, and marketplace safety."
+    >
+      <div className="grid g-2">
+        <article className="card card-pad">
+          <h3>How are payments made?</h3>
+          <p>Customers pay partner shops directly. MIDAS does not receive or process payments.</p>
+        </article>
+        <article className="card card-pad">
+          <h3>When does gold progress increase?</h3>
+          <p>Only after the shop confirms that it received the customer's submitted payment.</p>
+        </article>
+        <article className="card card-pad">
+          <h3>What is commission due?</h3>
+          <p>
+            The platform fee recorded against qualifying shop transactions. It is not automatically
+            collected.
+          </p>
+        </article>
+        <article className="card card-pad">
+          <h3>Need more help?</h3>
+          <p>Contact the relevant partner shop for product or payment questions.</p>
+        </article>
+      </div>
+    </PublicPage>
+  )
+}

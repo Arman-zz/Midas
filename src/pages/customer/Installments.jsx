@@ -1,6 +1,71 @@
 import { useState } from 'react'
 import InstallmentTable from '../../components/installment/InstallmentTable'
 import Modal from '../../components/common/Modal'
-import { formatBDT,installment,installmentSummary } from '../../data/appData'
+import { formatBDT, installment, installmentSummary } from '../../data/appData'
 import { useToast } from '../../context/ToastContext'
-export default function Installments(){const [open,setOpen]=useState(false);const notify=useToast();const summary=installmentSummary();const submit=e=>{e.preventDefault();setOpen(false);notify('Payment record submitted for shop confirmation')};return <><article className="card active-installment-card"><div className="card-head"><div><div className="card-title">{installment.product}</div><div className="card-sub">{installment.shop}</div></div><span className="badge badge-green">Active Agreement</span></div><div className="card-pad"><div className="grid g-3"><div><span className="stat-label">Gold target</span><b>{installment.targetGoldGrams} g</b></div><div><span className="stat-label">Confirmed gold</span><b>{summary.goldOwned.toFixed(3)} g</b></div><div><span className="stat-label">Confirmed payments</span><b>{formatBDT(summary.spent)}</b></div></div><div className="progress"><span style={{width:`${summary.progress}%`}}/></div><button className="btn btn-gold" onClick={()=>setOpen(true)}>Record payment</button></div></article><div className="section-h"><h2>Installment schedule</h2></div><div className="card"><InstallmentTable rows={installment.schedule}/></div><Modal open={open} onClose={()=>setOpen(false)}><form className="modal-form" onSubmit={submit}><h2>Record a direct payment</h2><p>Submit a record after paying the shop directly.</p><div className="field-row"><label className="field-label">Amount paid</label><input className="field" type="number" min="1" required/></div><div className="field-row"><label className="field-label">Payment date</label><input className="field" type="date" required/></div><button className="btn btn-gold btn-block">Submit for confirmation</button></form></Modal></>}
+export default function Installments() {
+  const [open, setOpen] = useState(false)
+  const notify = useToast()
+  const summary = installmentSummary()
+  const submit = (e) => {
+    e.preventDefault()
+    setOpen(false)
+    notify('Payment record submitted for shop confirmation')
+  }
+  return (
+    <>
+      <article className="card active-installment-card">
+        <div className="card-head">
+          <div>
+            <div className="card-title">{installment.product}</div>
+            <div className="card-sub">{installment.shop}</div>
+          </div>
+          <span className="badge badge-green">Active Agreement</span>
+        </div>
+        <div className="card-pad">
+          <div className="grid g-3">
+            <div>
+              <span className="stat-label">Gold target</span>
+              <b>{installment.targetGoldGrams} g</b>
+            </div>
+            <div>
+              <span className="stat-label">Confirmed gold</span>
+              <b>{summary.goldOwned.toFixed(3)} g</b>
+            </div>
+            <div>
+              <span className="stat-label">Confirmed payments</span>
+              <b>{formatBDT(summary.spent)}</b>
+            </div>
+          </div>
+          <div className="progress">
+            <span style={{ width: `${summary.progress}%` }} />
+          </div>
+          <button className="btn btn-gold" onClick={() => setOpen(true)}>
+            Record payment
+          </button>
+        </div>
+      </article>
+      <div className="section-h">
+        <h2>Installment schedule</h2>
+      </div>
+      <div className="card">
+        <InstallmentTable rows={installment.schedule} />
+      </div>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <form className="modal-form" onSubmit={submit}>
+          <h2>Record a direct payment</h2>
+          <p>Submit a record after paying the shop directly.</p>
+          <div className="field-row">
+            <label className="field-label">Amount paid</label>
+            <input className="field" type="number" min="1" required />
+          </div>
+          <div className="field-row">
+            <label className="field-label">Payment date</label>
+            <input className="field" type="date" required />
+          </div>
+          <button className="btn btn-gold btn-block">Submit for confirmation</button>
+        </form>
+      </Modal>
+    </>
+  )
+}

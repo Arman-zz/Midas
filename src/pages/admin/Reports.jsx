@@ -1,3 +1,51 @@
 import { formatBDT } from '../../data/appData'
-const cards=[['Marketplace Performance','684 purchase requests','68.9% agreement conversion'],['Gold Accumulation','4,286 g target gold','2,148 g confirmed gold'],['Partner Shops','126 active shops','1,436 published products'],['Users and C2C','5,248 customers','214 active listings']]
-export default function Reports(){return <><div className="report-toolbar"><div><h2>Platform Reports</h2><p>Monitor marketplace growth, gold accumulation, partner activity, and commission records.</p></div><button className="btn btn-gold">Export All</button></div><div className="grid g-2">{cards.map(([title,a,b])=><article className="card card-pad" key={title}><h3>{title}</h3><div className="activity-list"><div><span>{a}</span></div><div><span>{b}</span></div></div></article>)}</div><div className="grid g-3 report-summary"><article className="stat-tile"><div className="stat-num">{formatBDT(8420000)}</div><div className="stat-label">Marketplace value</div></article><article className="stat-tile"><div className="stat-num">1,842</div><div className="stat-label">Active agreements</div></article><article className="stat-tile"><div className="stat-num">{formatBDT(485000)}</div><div className="stat-label">Commission due</div></article></div></>}
+const cards = [
+  ['Marketplace Performance', '684 purchase requests', '68.9% agreement conversion'],
+  ['Gold Accumulation', '4,286 g target gold', '2,148 g confirmed gold'],
+  ['Partner Shops', '126 active shops', '1,436 published products'],
+  ['Users and C2C', '5,248 customers', '214 active listings'],
+]
+export default function Reports() {
+  return (
+    <>
+      <div className="report-toolbar">
+        <div>
+          <h2>Platform Reports</h2>
+          <p>
+            Monitor marketplace growth, gold accumulation, partner activity, and commission records.
+          </p>
+        </div>
+        <button className="btn btn-gold">Export All</button>
+      </div>
+      <div className="grid g-2">
+        {cards.map(([title, a, b]) => (
+          <article className="card card-pad" key={title}>
+            <h3>{title}</h3>
+            <div className="activity-list">
+              <div>
+                <span>{a}</span>
+              </div>
+              <div>
+                <span>{b}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="grid g-3 report-summary">
+        <article className="stat-tile">
+          <div className="stat-num">{formatBDT(8420000)}</div>
+          <div className="stat-label">Marketplace value</div>
+        </article>
+        <article className="stat-tile">
+          <div className="stat-num">1,842</div>
+          <div className="stat-label">Active agreements</div>
+        </article>
+        <article className="stat-tile">
+          <div className="stat-num">{formatBDT(485000)}</div>
+          <div className="stat-label">Commission due</div>
+        </article>
+      </div>
+    </>
+  )
+}

@@ -7,6 +7,10 @@ import { ToastProvider } from './context/ToastContext'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider><ToastProvider><App /></ToastProvider></AuthProvider>
+    <AuthProvider>
+      <ToastProvider>
+        <App />
+      </ToastProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )

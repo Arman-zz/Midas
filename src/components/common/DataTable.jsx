@@ -1,1 +1,28 @@
-export default function DataTable({columns,rows,renderActions}){return <div className="card admin-table-card"><table className="dtable"><thead><tr>{columns.map(col=><th key={col.key}>{col.label}</th>)}{renderActions&&<th>Action</th>}</tr></thead><tbody>{rows.map((row,index)=><tr key={row.id||index}>{columns.map(col=><td key={col.key} className={col.className||''}>{col.render?col.render(row[col.key],row):row[col.key]}</td>)}{renderActions&&<td>{renderActions(row)}</td>}</tr>)}</tbody></table></div>}
+export default function DataTable({ columns, rows, renderActions }) {
+  return (
+    <div className="card admin-table-card">
+      <table className="dtable">
+        <thead>
+          <tr>
+            {columns.map((col) => (
+              <th key={col.key}>{col.label}</th>
+            ))}
+            {renderActions && <th>Action</th>}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={row.id || index}>
+              {columns.map((col) => (
+                <td key={col.key} className={col.className || ''}>
+                  {col.render ? col.render(row[col.key], row) : row[col.key]}
+                </td>
+              ))}
+              {renderActions && <td>{renderActions(row)}</td>}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}

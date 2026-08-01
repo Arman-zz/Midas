@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
@@ -17,5 +19,8 @@
   "optionalDependencies": {
     "@rolldown/binding-darwin-arm64": "^1.1.5",
     "lightningcss-darwin-arm64": "^1.33.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6"
   }
 }

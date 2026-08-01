@@ -47,16 +47,34 @@ const publicPages = {
   c2c: MarketplacePage,
 }
 const customerPages = {
-  dashboard: CustomerDashboard, marketplace: CustomerMarketplace, shops: Shops,
-  installments: Installments, c2c: C2C, settings: Settings,
+  dashboard: CustomerDashboard,
+  marketplace: CustomerMarketplace,
+  shops: Shops,
+  installments: Installments,
+  c2c: C2C,
+  settings: Settings,
 }
 const shopPages = {
-  dashboard: ShopDashboard, products: Products, customers: Customers, profile: ShopProfile,
-  requests: Requests, installments: Customers, confirmations: Confirmations, commissions: Commissions, reports: ShopReports,
+  dashboard: ShopDashboard,
+  products: Products,
+  customers: Customers,
+  profile: ShopProfile,
+  requests: Requests,
+  installments: Customers,
+  confirmations: Confirmations,
+  commissions: Commissions,
+  reports: ShopReports,
 }
 const adminPages = {
-  dashboard: AdminDashboard, users: Users, shops: AdminShops, products: AdminProducts,
-  agreements: Records, transactions: Records, commissions: Records, reports: Reports, settings: AdminSettings,
+  dashboard: AdminDashboard,
+  users: Users,
+  shops: AdminShops,
+  products: AdminProducts,
+  agreements: Records,
+  transactions: Records,
+  commissions: Records,
+  reports: Reports,
+  settings: AdminSettings,
 }
 
 export default function AppRouter() {
@@ -70,16 +88,28 @@ export default function AppRouter() {
 
   let Screen = LandingPage
   let Layout = PublicLayout
-  if (route.role === 'login') { Layout = Fragment; Screen = Login }
-  else if (route.role === 'register') { Layout = Fragment; Screen = Register }
-  else if (route.role === 'customer') { Layout = CustomerLayout; Screen = customerPages[route.view] || CustomerDashboard }
-  else if (route.role === 'shop') { Layout = ShopLayout; Screen = shopPages[route.view] || ShopDashboard }
-  else if (route.role === 'admin') { Layout = AdminLayout; Screen = adminPages[route.view] || AdminDashboard }
-  else Screen = publicPages[route.view] || LandingPage
+  if (route.role === 'login') {
+    Layout = Fragment
+    Screen = Login
+  } else if (route.role === 'register') {
+    Layout = Fragment
+    Screen = Register
+  } else if (route.role === 'customer') {
+    Layout = CustomerLayout
+    Screen = customerPages[route.view] || CustomerDashboard
+  } else if (route.role === 'shop') {
+    Layout = ShopLayout
+    Screen = shopPages[route.view] || ShopDashboard
+  } else if (route.role === 'admin') {
+    Layout = AdminLayout
+    Screen = adminPages[route.view] || AdminDashboard
+  } else Screen = publicPages[route.view] || LandingPage
 
   return (
     <ProtectedRoute role={['customer', 'shop', 'admin'].includes(route.role) ? route.role : null}>
-      <Layout><Screen /></Layout>
+      <Layout>
+        <Screen />
+      </Layout>
     </ProtectedRoute>
   )
 }

@@ -1,2 +1,30 @@
 import PublicPage from '../../components/common/PublicPage'
-export default function Partner(){return <PublicPage eyebrow="Partner with MIDAS" title="Bring your jewelry shop online" intro="Publish your catalog, accept customer requests, and manage agreements in one focused workspace."><div className="feature-grid"><article className="feature-card"><h3>Your own marketplace catalog</h3><p>Upload product photos, pricing, purity, weight, and stock availability.</p></article><article className="feature-card"><h3>Clear customer records</h3><p>Accept requests and confirm payments received directly at your shop.</p></article></div><div className="partner-cta card card-pad"><div><h2>Ready to become a partner?</h2><p>Start your shop registration and submit verification details.</p></div><a className="btn btn-gold" href="#/register">Create shop account</a></div></PublicPage>}
+export default function Partner() {
+  return (
+    <PublicPage
+      eyebrow="Partner with MIDAS"
+      title="Bring your jewelry shop online"
+      intro="Publish your catalog, accept customer requests, and manage agreements in one focused workspace."
+    >
+      <div className="feature-grid">
+        <article className="feature-card">
+          <h3>Your own marketplace catalog</h3>
+          <p>Upload product photos, pricing, purity, weight, and stock availability.</p>
+        </article>
+        <article className="feature-card">
+          <h3>Clear customer records</h3>
+          <p>Accept requests and confirm payments received directly at your shop.</p>
+        </article>
+      </div>
+      <div className="partner-cta card card-pad">
+        <div>
+          <h2>Ready to become a partner?</h2>
+          <p>Start your shop registration and submit verification details.</p>
+        </div>
+        <a className="btn btn-gold" href="#/register">
+          Create shop account
+        </a>
+      </div>
+    </PublicPage>
+  )
+}
