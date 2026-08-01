@@ -8,7 +8,13 @@ export default function RegisterForm() {
   const submit = (e) => {
     e.preventDefault()
     const data = Object.fromEntries(new FormData(e.currentTarget))
-    const session = { name: data.name, email: data.email, role }
+    const session = {
+      name: data.name,
+      email: data.email,
+      role,
+      hasActivePlan: false,
+      verified: false,
+    }
     localStorage.setItem('midas-profile', JSON.stringify(data))
     login(session)
     location.hash = `#/${role}/dashboard`

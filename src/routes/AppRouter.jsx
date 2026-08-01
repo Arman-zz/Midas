@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
+import { useAuth } from '../hooks/useAuth'
 import { readRoute } from './routes'
 import ProtectedRoute from './ProtectedRoute'
 import PublicLayout from '../layouts/PublicLayout'
@@ -27,7 +28,7 @@ import ShopProfile from '../pages/shop/Profile'
 import Requests from '../pages/shop/Requests'
 import Confirmations from '../pages/shop/Confirmations'
 import Commissions from '../pages/shop/Commissions'
-import ShopReports from '../pages/shop/Reports'
+import ShopInsights from '../pages/shop/Insights'
 import AdminDashboard from '../pages/admin/Dashboard'
 import Users from '../pages/admin/Users'
 import AdminShops from '../pages/admin/Shops'
@@ -63,7 +64,7 @@ const shopPages = {
   installments: Customers,
   confirmations: Confirmations,
   commissions: Commissions,
-  reports: ShopReports,
+  insights: ShopInsights,
 }
 const adminPages = {
   dashboard: AdminDashboard,
@@ -78,6 +79,7 @@ const adminPages = {
 }
 
 export default function AppRouter() {
+  const { user } = useAuth()
   const [route, setRoute] = useState(() => readRoute())
 
   useEffect(() => {
@@ -99,7 +101,9 @@ export default function AppRouter() {
     Screen = customerPages[route.view] || CustomerDashboard
   } else if (route.role === 'shop') {
     Layout = ShopLayout
-    Screen = shopPages[route.view] || ShopDashboard
+    const verified = user?.verified === true || user?.email?.toLowerCase() === 'shop@midas.bd'
+    Screen =
+      !verified && route.view !== 'profile' ? ShopProfile : shopPages[route.view] || ShopDashboard
   } else if (route.role === 'admin') {
     Layout = AdminLayout
     Screen = adminPages[route.view] || AdminDashboard
