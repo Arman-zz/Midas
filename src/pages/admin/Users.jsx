@@ -1,1 +1,3 @@
-export default function Users() { return null }
+import DataTable from '../../components/common/DataTable'
+const rows=[{id:'USR-1042',name:'Midas Customer',email:'customer@midas.bd',role:'Customer',status:'Active'},{id:'USR-1038',name:'Rahman Khan',email:'rahman@example.com',role:'Customer',status:'Active'},{id:'USR-1029',name:'Tahmina Akter',email:'tahmina@example.com',role:'Customer',status:'Active'}]
+export default function Users({globalSearch=''}){const shown=rows.filter(r=>Object.values(r).join(' ').toLowerCase().includes(globalSearch.toLowerCase()));return <DataTable rows={shown} columns={[{key:'name',label:'User',className:'tname'},{key:'email',label:'Email'},{key:'role',label:'Role'},{key:'status',label:'Status',render:v=><span className="badge badge-green">{v}</span>}]}/>}

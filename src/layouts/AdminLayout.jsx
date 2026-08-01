@@ -1,1 +1,4 @@
-export default function AdminLayout({ children }) { return children }
+import WorkspaceLayout from './WorkspaceLayout'
+import { readRoute } from '../routes/routes'
+const items=[{id:'dashboard',label:'Dashboard',icon:'home'},{id:'users',label:'Users',icon:'users'},{id:'shops',label:'Shops',icon:'store'},{id:'products',label:'Products',icon:'bag'},{id:'agreements',label:'Agreements',icon:'doc'},{id:'transactions',label:'Transactions',icon:'swap'},{id:'commissions',label:'Commissions',icon:'percent'},{id:'reports',label:'Reports',icon:'list'},{id:'settings',label:'Platform Settings',icon:'settings'}]
+export default function AdminLayout({children}){const active=readRoute().view||'dashboard';return <WorkspaceLayout role="admin" label="Administration" items={items} active={active} title={items.find(i=>i.id===active)?.label||'Dashboard'}>{children}</WorkspaceLayout>}

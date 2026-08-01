@@ -1,1 +1,4 @@
-export default function ShopLayout({ children }) { return children }
+import WorkspaceLayout from './WorkspaceLayout'
+import { readRoute } from '../routes/routes'
+const items=[{id:'dashboard',label:'Dashboard',icon:'home'},{id:'profile',label:'Shop Profile',icon:'store'},{id:'products',label:'Products',icon:'bag'},{id:'requests',label:'Purchase Requests',icon:'doc'},{id:'installments',label:'Installments',icon:'calendar'},{id:'confirmations',label:'Payment Confirmations',icon:'check',count:7},{id:'commissions',label:'Commission Statements',icon:'percent'},{id:'reports',label:'Reports',icon:'list'}]
+export default function ShopLayout({children}){const active=readRoute().view||'dashboard';return <WorkspaceLayout role="shop" label="Partner Workspace" items={items} active={active} title={items.find(i=>i.id===active)?.label||'Dashboard'} subtitle="Diamond Plaza — Dhanmondi">{children}</WorkspaceLayout>}

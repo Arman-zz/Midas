@@ -1,1 +1,2 @@
-export default function Customers() { return null }
+import { formatBDT,installment,requests } from '../../data/appData'
+export default function Customers(){return <div className="card"><table className="dtable"><thead><tr><th>Customer</th><th>Jewelry</th><th>Plan</th><th>Target</th><th>Status</th></tr></thead><tbody>{requests.map((row,index)=><tr key={row.customer}><td className="tname">{row.customer}</td><td>{row.product}</td><td>{formatBDT(row.amount)}</td><td>{index? '8.20 g':`${installment.targetGoldGrams} g`}</td><td><span className="badge badge-green">Active</span></td></tr>)}</tbody></table></div>}

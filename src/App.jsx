@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { initializeLegacy } from './data/mockData'
 import AppRouter from './routes/AppRouter'
 
 const translations = {
@@ -196,20 +195,11 @@ function translateNode(node, language) {
 export default function App() {
   const [language, setLanguage] = useState(() => localStorage.getItem('midas-language') || 'en')
   const [languageSlot, setLanguageSlot] = useState(null)
-  const initialized = useRef(false)
-
-  useEffect(() => {
-    if (!initialized.current) {
-      initialized.current = true
-      initializeLegacy()
-    }
-  }, [])
-
   useEffect(() => {
     const updateSlot = () => setLanguageSlot(document.getElementById('language-switch-slot'))
     updateSlot()
     const observer = new MutationObserver(updateSlot)
-    observer.observe(document.getElementById('app'), { childList: true, subtree: true })
+    observer.observe(document.getElementById('root'), { childList: true, subtree: true })
     return () => observer.disconnect()
   }, [])
 
@@ -244,7 +234,6 @@ export default function App() {
     <>
       {languageSlot ? createPortal(languageButton, languageSlot) : languageButton}
       <AppRouter />
-      <div id="toast" className="toast" role="status" aria-live="polite" />
     </>
   )
 }
