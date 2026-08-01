@@ -45,6 +45,9 @@ function icon(name, cls){ return `<span class="${cls||''}" style="display:inline
 function bdt(n){ return 'BDT ' + Number(n).toLocaleString('en-US'); }
 function pct(n){ return n + '%'; }
 function grams(n){ return Number(n).toFixed(3).replace(/\.?0+$/, '') + ' g'; }
+function escapeMarkup(value){
+  return String(value).replace(/[&<>"']/g, character=>({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[character]);
+}
 function goldCredited(payment){
   return payment.status === 'Confirmed' && payment.goldRate ? payment.amount / payment.goldRate : 0;
 }
@@ -75,12 +78,12 @@ window.toast = toast;
 /* ---------------- Mock data ---------------- */
 const DATA = {
   shops: [
-    { id:'sh-01', name:'Aurelia Jewellers', area:'Dhanmondi, Dhaka', distance:'0.5 km', rating:4.8, reviews:126, verified:true },
-    { id:'sh-02', name:'Raj Jewellers', area:'Mohammadpur, Dhaka', distance:'1.2 km', rating:4.6, reviews:98, verified:true },
-    { id:'sh-03', name:'Gold & Co.', area:'Jigatola, Dhaka', distance:'1.8 km', rating:4.5, reviews:72, verified:true },
-    { id:'sh-04', name:'Shahina Jewellers', area:'Elephant Road, Dhaka', distance:'2.4 km', rating:4.7, reviews:64, verified:true },
-    { id:'sh-05', name:'Heritage Jewels', area:'Rajshahi', distance:null, rating:4.4, reviews:31, verified:false },
-    { id:'sh-06', name:'Golden Trust', area:'Uttara, Dhaka', distance:'3.1 km', rating:4.9, reviews:210, verified:true },
+    { id:'sh-01', name:'Diamond Plaza — Dhanmondi', area:'Shimanto Shambhar, Level 3, Shop 3102, Jigatola, Dhanmondi, Dhaka', verified:true, rating:4.8, reviews:86, lat:23.7386, lng:90.3754, image:'https://www.diamondplazabd.com/public/images/logo-123236256640924.jpg' },
+    { id:'sh-02', name:'Diamond World — Gulshan', area:'Tower of Aakash, 54 Gulshan Avenue, Gulshan 1, Dhaka 1212', verified:true, rating:4.9, reviews:214, lat:23.7808, lng:90.4167, image:'https://diamondworldltd.s3.amazonaws.com/images/Diamond-World/dw_logo_500px_x_300px.png' },
+    { id:'sh-03', name:'Carat World', area:'Shops 7–8, Block B, Level 7, Bashundhara City, Panthapath, Dhaka', verified:true, rating:4.7, reviews:64, lat:23.7508, lng:90.3906, image:'https://www.caratworld.com.bd/meta2.jpg' },
+    { id:'sh-04', name:'Al-Amin Jewellers — Uttara', area:'Shops 26–27, 1st Floor, Amir Complex, Uttara Model Town, Dhaka', verified:true, rating:4.6, reviews:103, lat:23.8759, lng:90.3795, image:'https://www.alaminjewellers.com/wp-content/uploads/2025/03/ordinary-life-scene-from-mall-america-1400x785.jpg' },
+    { id:'sh-05', name:'Diamond Plaza — Mirpur', area:'Level 3, Shop 22, Mirpur DOHS Shopping Complex, Mirpur 12, Dhaka 1216', verified:true, rating:4.5, reviews:51, lat:23.8358, lng:90.3678, image:'https://www.diamondplazabd.com/public/images/logo-123236256640924.jpg' },
+    { id:'sh-06', name:'Diamond Plaza — Bashundhara', area:'Block B, Level 7, Shop 10, Bashundhara City Shopping Complex, Dhaka', verified:true, rating:4.7, reviews:129, lat:23.7508, lng:90.3906, image:'https://www.diamondplazabd.com/public/images/logo-123236256640924.jpg' },
   ],
   products: [
     { id:'p-01', name:'22K Gold Necklace', category:'Necklaces', shop:'Aurelia Jewellers', price:125000, weight:'12.45 g', purity:'22K', installment:true, minimumInstallment:5000 },
@@ -666,19 +669,60 @@ window.signOut = signOut;
 function renderCustomerLayout(view){
   view = view || 'dashboard';
   const content = customerViewContent(view);
+  const customerArea = escapeMarkup(localStorage.getItem('midas-customer-area') || 'Dhanmondi, Dhaka');
 
   return `
   <div class="shell">
     <button class="sidebar-backdrop" aria-label="Close navigation" onclick="toggleSidebar()"></button>
     ${sidebarShell(customerNavItems(), view, 'Customer Workspace')}
     <div class="main">
-      ${topbar(navLabel(customerNavItems(), view), 'Dhanmondi, Dhaka · <a href="#" style="color:var(--gold-dim);font-weight:700">Change area</a>')}
+      ${topbar(navLabel(customerNavItems(), view), `${customerArea} · <a href="#" onclick="changeCustomerArea(event)" style="color:var(--gold-dim);font-weight:700">Change area</a>`)}
       <div class="content">${content}</div>
     </div>
   </div>
   ${STATE.productModal ? renderProductModal(STATE.productModal) : ''}
   `;
 }
+const CUSTOMER_AREA_COORDS = {
+  dhanmondi:{ lat:23.7465, lng:90.3760 }, jigatola:{ lat:23.7389, lng:90.3733 },
+  mohammadpur:{ lat:23.7658, lng:90.3584 }, gulshan:{ lat:23.7925, lng:90.4078 },
+  panthapath:{ lat:23.7514, lng:90.3902 }, uttara:{ lat:23.8759, lng:90.3795 },
+  mirpur:{ lat:23.8223, lng:90.3654 }, bashundhara:{ lat:23.8190, lng:90.4526 },
+  badda:{ lat:23.7806, lng:90.4267 }, banani:{ lat:23.7937, lng:90.4066 },
+};
+async function resolveCustomerArea(area){
+  const normalizedArea = area.toLocaleLowerCase();
+  const knownArea = Object.entries(CUSTOMER_AREA_COORDS).find(([name])=>normalizedArea.includes(name));
+  if(knownArea) return knownArea[1];
+  const response = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=bd&q=${encodeURIComponent(area + ', Bangladesh')}`);
+  if(!response.ok) throw new Error('Area lookup failed');
+  const [result] = await response.json();
+  if(!result) throw new Error('Area not found');
+  return { lat:Number(result.lat), lng:Number(result.lon) };
+}
+async function changeCustomerArea(event){
+  event?.preventDefault();
+  const currentArea = localStorage.getItem('midas-customer-area') || 'Dhanmondi, Dhaka';
+  const nextArea = window.prompt('Enter your area or neighborhood', currentArea);
+  if(nextArea === null) return;
+  const normalizedArea = nextArea.trim();
+  if(!normalizedArea){
+    toast('Please enter a valid area');
+    return;
+  }
+  localStorage.setItem('midas-customer-area', normalizedArea);
+  localStorage.removeItem('midas-customer-area-coords');
+  try{
+    const coordinates = await resolveCustomerArea(normalizedArea);
+    localStorage.setItem('midas-customer-area-coords', JSON.stringify({ area:normalizedArea, ...coordinates }));
+  }catch(error){
+    toast('Area saved; distance lookup is temporarily unavailable');
+  }
+  router_rerenderOnly();
+  toast(`Area changed to ${normalizedArea}`);
+}
+window.changeCustomerArea = changeCustomerArea;
+
 function customerViewContent(view){
   let content = '';
   if(view === 'dashboard') content = customerDashboard();
@@ -848,16 +892,21 @@ function customerDashboard(){
 function shopCard(s){
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.name + ', ' + s.area)}`;
   return `
-  <div class="shop-card">
-    <div class="shop-thumb">${icon('store')}</div>
+  <div class="shop-card" data-customer-shop data-shop-id="${s.id}" data-rating="${s.rating || 0}">
+    <div class="shop-thumb">${s.image ? `<img src="${s.image}" alt="${s.name} shop" loading="lazy" referrerpolicy="no-referrer" onerror="this.hidden=true;this.nextElementSibling.hidden=false"/><span class="shop-thumb-fallback" hidden>${icon('store')}</span>` : icon('store')}</div>
     <div class="shop-name">${s.name} ${s.verified?`<span class="badge badge-gold" style="padding:1px 7px 1px 5px">${icon('check')}Verified</span>`:''}</div>
     <div class="shop-meta">
-      <span>${icon('pin')} ${s.distance ? s.distance+' away' : s.area}</span>
-      <span>${icon('star')} ${s.rating} (${s.reviews})</span>
+      <span>${icon('pin')} ${s.area}</span>
+      ${s.rating ? `<span>${icon('star')} ${s.rating}${s.reviews ? ` (${s.reviews})` : ''}</span>` : ''}
+      <span data-shop-distance hidden></span>
     </div>
-    <a class="btn btn-outline btn-block btn-sm" href="${mapUrl}" target="_blank" rel="noopener noreferrer" aria-label="View ${s.name} location in Google Maps">View Shop</a>
+    <button class="btn btn-outline btn-block btn-sm" type="button" onclick="openShopLocation('${mapUrl}')" aria-label="View ${s.name} location in Google Maps">View Shop</button>
   </div>`;
 }
+function openShopLocation(mapUrl){
+  window.location.assign(mapUrl);
+}
+window.openShopLocation = openShopLocation;
 
 function productCard(p, index=0){
   return `
@@ -912,18 +961,69 @@ window.sortMarketplace = sortMarketplace;
 function customerShops(){
   return `
   <div class="u-flex" style="justify-content:space-between;margin-bottom:18px">
-    <div class="u-flex u-gap-10">
-      <span class="filter-chip active">All Areas</span>
-      <span class="filter-chip">Highest rated</span>
-      <span class="filter-chip">Nearest first</span>
+    <div class="u-flex u-gap-10" id="customer-shop-filters">
+      <button class="filter-chip active" type="button" onclick="sortCustomerShops(this,'all')">All Areas</button>
+      <button class="filter-chip" type="button" onclick="sortCustomerShops(this,'rating')">Highest rated</button>
+      <button class="filter-chip" type="button" onclick="sortCustomerShops(this,'nearby')">Nearest first</button>
     </div>
   </div>
-  <div class="grid g-3">
+  <div class="grid g-3" id="customer-shop-grid">
     ${DATA.shops.map(shopCard).join('')}
   </div>
   <div class="notice" style="margin-top:20px">${icon('help','notice-icon')}<span>Can't share your location? Area-based results stay available. You can <a href="#" style="color:var(--gold-dim);font-weight:700">enter your area manually</a>.</span></div>
   `;
 }
+function distanceBetween(lat1, lng1, lat2, lng2){
+  const toRadians = degrees=>degrees * Math.PI / 180;
+  const earthRadiusKm = 6371;
+  const latitudeDistance = toRadians(lat2 - lat1);
+  const longitudeDistance = toRadians(lng2 - lng1);
+  const a = Math.sin(latitudeDistance / 2) ** 2
+    + Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(longitudeDistance / 2) ** 2;
+  return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+function applyCustomerShopSort(button, mode, position){
+  const grid = document.getElementById('customer-shop-grid');
+  if(!grid) return;
+  document.querySelectorAll('#customer-shop-filters .filter-chip').forEach(filter=>filter.classList.remove('active'));
+  button.classList.add('active');
+  const origin = position || { lat:23.7465, lng:90.3760 };
+  const cards = [...grid.querySelectorAll('[data-customer-shop]')];
+  cards.forEach(card=>{
+    const shop = DATA.shops.find(item=>item.id === card.dataset.shopId);
+    const distance = distanceBetween(origin.lat, origin.lng, shop.lat, shop.lng);
+    card.dataset.distance = distance;
+    const distanceLabel = card.querySelector('[data-shop-distance]');
+    distanceLabel.innerHTML = `${icon('pin')} ${distance.toFixed(1)} km away`;
+    distanceLabel.hidden = mode !== 'nearby';
+  });
+  cards.sort((first, second)=>{
+    if(mode === 'rating') return Number(second.dataset.rating) - Number(first.dataset.rating);
+    if(mode === 'nearby') return Number(first.dataset.distance) - Number(second.dataset.distance);
+    return DATA.shops.findIndex(shop=>shop.id === first.dataset.shopId) - DATA.shops.findIndex(shop=>shop.id === second.dataset.shopId);
+  }).forEach(card=>grid.appendChild(card));
+}
+async function sortCustomerShops(button, mode){
+  if(mode !== 'nearby'){
+    applyCustomerShopSort(button, mode);
+    return;
+  }
+  const selectedArea = localStorage.getItem('midas-customer-area') || 'Dhanmondi, Dhaka';
+  let cachedCoordinates = null;
+  try{ cachedCoordinates = JSON.parse(localStorage.getItem('midas-customer-area-coords') || 'null'); }catch(error){}
+  try{
+    const origin = cachedCoordinates?.area === selectedArea
+      ? { lat:cachedCoordinates.lat, lng:cachedCoordinates.lng }
+      : await resolveCustomerArea(selectedArea);
+    localStorage.setItem('midas-customer-area-coords', JSON.stringify({ area:selectedArea, ...origin }));
+    applyCustomerShopSort(button, mode, origin);
+    toast(`Showing shops nearest to ${selectedArea}`);
+  }catch(error){
+    applyCustomerShopSort(button, mode);
+    toast('Could not locate your selected area — using Dhanmondi');
+  }
+}
+window.sortCustomerShops = sortCustomerShops;
 
 /* ---------------- Customer: Marketplace ---------------- */
 function customerMarketplace(){
