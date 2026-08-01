@@ -86,17 +86,17 @@ const DATA = {
     { id:'sh-06', name:'Diamond Plaza — Bashundhara', area:'Block B, Level 7, Shop 10, Bashundhara City Shopping Complex, Dhaka', verified:true, rating:4.7, reviews:129, lat:23.7508, lng:90.3906, image:'https://www.diamondplazabd.com/public/images/logo-123236256640924.jpg' },
   ],
   products: [
-    { id:'p-01', name:'22K Gold Necklace', category:'Necklaces', shop:'Aurelia Jewellers', price:125000, weight:'12.45 g', purity:'22K', installment:true, minimumInstallment:5000 },
-    { id:'p-02', name:'Gold Bangle (22K)', category:'Bangles', shop:'Raj Jewellers', price:78000, weight:'8.20 g', purity:'22K', installment:true, minimumInstallment:3000, image:'/images/gold-bangle-set.png' },
-    { id:'p-03', name:'Gold Pendant (22K)', category:'Pendants', shop:'Gold & Co.', price:32000, weight:'4.10 g', purity:'22K', installment:true, minimumInstallment:1500 },
-    { id:'p-04', name:'22K Gold Earrings', category:'Earrings', shop:'Shahina Jewellers', price:24500, weight:'3.05 g', purity:'22K', installment:true, minimumInstallment:1000 },
-    { id:'p-05', name:'Gold Chain 22"', category:'Chains', shop:'Golden Trust', price:145000, weight:'15.60 g', purity:'22K', installment:true, minimumInstallment:5000, image:'/images/gold-chain.png' },
-    { id:'p-06', name:'Bridal Set (21K)', category:'Bridal Sets', shop:'Aurelia Jewellers', price:310000, weight:'34.2 g', purity:'21K', installment:true, minimumInstallment:10000 },
-    { id:'p-07', name:'Gold Ring, Solitaire Halo', category:'Rings', shop:'Raj Jewellers', price:56000, weight:'5.4 g', purity:'22K', installment:true, minimumInstallment:2500 },
-    { id:'p-08', name:'Antique Coin Pendant', category:'Pendants', shop:'Gold & Co.', price:41000, weight:'5.9 g', purity:'22K', installment:true, minimumInstallment:2000 },
+    { id:'p-01', name:'22K Gold Necklace', category:'Necklaces', shop:'Diamond Plaza — Dhanmondi', price:125000, weight:'12.45 g', purity:'22K', installment:true, minimumInstallment:5000, image:'/images/demo-gold-necklace.jpg' },
+    { id:'p-02', name:'Gold Bangle (22K)', category:'Bangles', shop:'Diamond World — Gulshan', price:78000, weight:'8.20 g', purity:'22K', installment:true, minimumInstallment:3000, image:'/images/gold-bangle-set.png' },
+    { id:'p-03', name:'Gold Pendant (22K)', category:'Pendants', shop:'Carat World', price:32000, weight:'4.10 g', purity:'22K', installment:true, minimumInstallment:1500 },
+    { id:'p-04', name:'22K Gold Earrings', category:'Earrings', shop:'Al-Amin Jewellers — Uttara', price:24500, weight:'3.05 g', purity:'22K', installment:true, minimumInstallment:1000 },
+    { id:'p-05', name:'Gold Chain 22"', category:'Chains', shop:'Diamond Plaza — Mirpur', price:145000, weight:'15.60 g', purity:'22K', installment:true, minimumInstallment:5000, image:'/images/gold-chain.png' },
+    { id:'p-06', name:'Bridal Set (21K)', category:'Bridal Sets', shop:'Diamond Plaza — Bashundhara', price:310000, weight:'34.2 g', purity:'21K', installment:true, minimumInstallment:10000 },
+    { id:'p-07', name:'Gold Ring, Solitaire Halo', category:'Rings', shop:'Diamond Plaza — Dhanmondi', price:56000, weight:'5.4 g', purity:'22K', installment:true, minimumInstallment:2500, image:'/images/demo-gold-ring.jpg' },
+    { id:'p-08', name:'Antique Coin Pendant', category:'Pendants', shop:'Carat World', price:41000, weight:'5.9 g', purity:'22K', installment:true, minimumInstallment:2000 },
   ],
   installment: {
-    shop:'Aurelia Jewellers', product:'Gold Necklace (22K)', verified:true,
+    shop:'Diamond Plaza — Dhanmondi', product:'Gold Necklace (22K)', verified:true,
     targetGoldGrams:12.45, purity:'22K', nextDue:'15 Aug 2025', nextAmount:10000,
     currentTrendlineRate:10150,
     schedule:[
@@ -110,9 +110,9 @@ const DATA = {
     ]
   },
   recentActivity: [
-    { icon:'doc', title:'Payment recorded', meta:'Aurelia Jewellers · BDT 10,000', when:'1 Aug' },
-    { icon:'store', title:'Shop visited', meta:'Raj Jewellers', when:'31 Jul' },
-    { icon:'chat', title:'Message received', meta:'Gold & Co.', when:'30 Jul' },
+    { icon:'doc', title:'Payment recorded', meta:'Diamond Plaza — Dhanmondi · BDT 10,000', when:'1 Aug' },
+    { icon:'store', title:'Shop visited', meta:'Diamond World — Gulshan', when:'31 Jul' },
+    { icon:'chat', title:'Message received', meta:'Carat World', when:'30 Jul' },
   ],
   c2c: [
     { id:'c2c-01', title:'18K Gold Ring, 22g', listingType:'jewelry', price:28000, seller:'User_7842', area:'Uttara, Dhaka', status:'Reported', reason:'Misleading info' },
@@ -123,7 +123,7 @@ const DATA = {
     { id:'c2c-06', title:'5 g 22K MIDAS Gold', listingType:'owned-gold', weight:5, purity:'22K', price:50750, seller:'Tahmina Akter', area:'Dhanmondi, Dhaka', status:'Active' },
     { id:'c2c-07', title:'1.75 g 21K MIDAS Gold', listingType:'owned-gold', weight:1.75, purity:'21K', price:16800, seller:'Mehedi Hasan', area:'Mirpur, Dhaka', status:'Active' },
   ],
-  shopStats: { activeAgreements:48, pendingConfirmations:7, ordersInPrep:12, commissionDue:18500 },
+  shopStats: { activeAgreements:48, pendingConfirmations:7, commissionDue:18500 },
   confirmQueue: [
     { customer:'User', agreement:'AG-2025-0481', amount:25000, date:'May 23, 2025 · 10:15 AM' },
     { customer:'Rahman Khan', agreement:'AG-2025-0476', amount:18500, date:'May 23, 2025 · 09:42 AM' },
@@ -142,7 +142,6 @@ const DATA = {
     { customer:'Rahman Khan', product:'Gold Bangles Set, 2pc (28g)', type:'Direct', amount:95000, date:'May 22, 2025' },
     { customer:'Tahmina Akter', product:'Gold Pendant, 4.10 g', type:'Installment', amount:42000, date:'May 22, 2025' },
   ],
-  fulfillment: { accepted:15, prep:12, ready:8, delivered:23 },
   commissionSummary: { qualifyingSales:925000, pct:2.0, commission:18500, settlement:'Pending Settlement', expected:'Jun 05, 2025' },
   adminStats: { customers:5248, shops:126, agreements:1842, disputes:23, commissionDue:485000 },
   approvalQueue: [
@@ -206,11 +205,58 @@ const DATA = {
   ],
 };
 
+function getProductCatalog(){
+  try{
+    const storedProducts = JSON.parse(localStorage.getItem('midas-shop-products') || 'null');
+    if(Array.isArray(storedProducts)){
+      const seededShopNames = Object.fromEntries(DATA.products.map(product=>[product.id, product.shop]));
+      const photoBackedDemoProducts = DATA.products.filter(product=>typeof product.image === 'string' && product.image.trim());
+      let changed = storedProducts.some(product=>typeof product.image !== 'string' || !product.image.trim());
+      const migratedProducts = storedProducts.filter(product=>typeof product.image === 'string' && product.image.trim()).map(product=>{
+        const normalizedProduct = { ...product, inStock:product.inStock !== false, uploadedByShop:true };
+        if(seededShopNames[product.id] && product.shop !== seededShopNames[product.id]){
+          changed = true;
+          return { ...normalizedProduct, shop:seededShopNames[product.id] };
+        }
+        if(product.inStock === undefined){ changed = true; }
+        return normalizedProduct;
+      });
+      photoBackedDemoProducts.forEach(product=>{
+        if(!migratedProducts.some(savedProduct=>savedProduct.id === product.id)){
+          migratedProducts.push({ ...product, inStock:true, uploadedByShop:true });
+          changed = true;
+        }
+      });
+      if(changed) localStorage.setItem('midas-shop-products', JSON.stringify(migratedProducts));
+      return migratedProducts;
+    }
+  }catch(error){}
+  const initialCatalog = DATA.products.filter(product=>typeof product.image === 'string' && product.image.trim()).map(product=>({ ...product, inStock:true, uploadedByShop:true }));
+  localStorage.setItem('midas-shop-products', JSON.stringify(initialCatalog));
+  return initialCatalog;
+}
+function saveProductCatalog(products){
+  const productsWithPhotos = products.filter(product=>typeof product.image === 'string' && product.image.trim());
+  localStorage.setItem('midas-shop-products', JSON.stringify(productsWithPhotos));
+}
+function getPublishedProducts(){
+  const partnerShopNames = new Set(DATA.shops.map(shop=>shop.name));
+  return getProductCatalog().filter(product=>product.uploadedByShop && partnerShopNames.has(product.shop) && typeof product.image === 'string' && product.image.trim());
+}
+function getCurrentShopName(){
+  let shopProfile = {};
+  let accountProfile = {};
+  try{ shopProfile = JSON.parse(localStorage.getItem('midas-shop-profile') || '{}'); }catch(error){}
+  try{ accountProfile = JSON.parse(localStorage.getItem('midas-profile') || '{}'); }catch(error){}
+  const requestedName = shopProfile.name || accountProfile.name;
+  return DATA.shops.some(shop=>shop.name === requestedName) ? requestedName : DATA.shops[0].name;
+}
+
 /* ---------------- App / router state ---------------- */
 const STATE = { role:'public', view:'', productModal:null, registrationRole:'customer' };
 const FRONTEND_ACCOUNTS = {
   'customer@midas.bd': { password:'Midas@123', role:'customer', name:'Midas Customer' },
-  'shop@midas.bd': { password:'Midas@123', role:'shop', name:'Aurelia Jewellers' },
+  'shop@midas.bd': { password:'Midas@123', role:'shop', name:'Diamond Plaza — Dhanmondi' },
   'admin@midas.bd': { password:'Midas@123', role:'admin', name:'Midas Admin' },
 };
 
@@ -280,8 +326,8 @@ function pubHeader(){
       <a href="#/public/landing">Home</a>
       <a href="#/public/marketplace">Marketplace</a>
       <a href="#/public/how-it-works">How it works</a>
-      <a href="#/public/c2c">C2C Gold</a>
       <a href="#/public/partner">Become a Partner</a>
+      <a href="#/public/about">About Us</a>
     </nav>
     <div class="pub-actions">
       ${session ? `<button class="btn btn-gold" onclick="go('${session.role}','dashboard')">My dashboard</button>` : `<button class="btn btn-ghost" style="color:var(--muted-2)" onclick="go('login','')">Log in</button><button class="btn btn-gold" onclick="go('register','')">Create account</button>`}
@@ -298,9 +344,9 @@ function pubFooter(){
         <p style="font-size:12.5px;line-height:1.7;color:var(--muted-2)">A location-aware marketplace connecting customers with approved partner jewelry shops. MIDAS records agreements and progress. It never receives, holds, or moves customer money.</p>
       </div>
       <div class="foot-cols">
-        <div class="foot-col"><h4>Platform</h4><a href="#/public/marketplace">Marketplace</a><a href="#/public/c2c">C2C Gold</a><a href="#/public/partner">Become a Partner</a><a href="#/public/how-it-works">How it works</a></div>
+        <div class="foot-col"><h4>Platform</h4><a href="#/public/marketplace">Marketplace</a><a href="#/public/partner">Become a Partner</a><a href="#/public/how-it-works">How it works</a></div>
         <div class="foot-col"><h4>Support</h4><a href="#/public/help">Non-custodial Payment Help</a><a href="#/public/help">C2C Safety Guide</a><a href="#/public/help">FAQ</a><a href="#/public/help">Contact support</a></div>
-        <div class="foot-col"><h4>Company</h4><a href="#/public/legal">Legal &amp; policies</a><a href="#/public/legal">Privacy</a><a href="#/public/legal">Terms</a></div>
+        <div class="foot-col"><h4>Company</h4><a href="#/public/about">About Us</a><a href="#/public/legal">Legal &amp; policies</a><a href="#/public/legal">Privacy</a><a href="#/public/legal">Terms</a></div>
       </div>
     </div>
     <div class="foot-bottom">
@@ -316,6 +362,7 @@ function renderPublic(view){
   if(view === 'how-it-works') return publicHowItWorks();
   if(view === 'c2c') return publicC2C();
   if(view === 'partner') return publicPartner();
+  if(view === 'about') return publicAbout();
   if(view === 'help') return publicHelp();
   if(view === 'legal') return publicLegal();
   return publicNotFound();
@@ -328,7 +375,7 @@ function pubLanding(){
     <div class="hero-inner">
       <div>
         <h1>Gold ownership,<br/><em>recorded</em>, not held.</h1>
-        <p>MIDAS connects you with verified partner jewelry shops nearby for direct or installment purchases. We track every agreement, payment record, and delivery, but your money always moves directly between you and the shop.</p>
+        <p>MIDAS connects you with verified partner jewelry shops nearby for direct or installment purchases. We track every agreement and payment record, but your money always moves directly between you and the shop.</p>
         <div class="hero-note">
           ${icon('help','')} <span>MIDAS does not process, hold, guarantee, or refund money. All payments are made directly between customers and partner shops, outside the platform.</span>
         </div>
@@ -354,30 +401,21 @@ function pubLanding(){
       <div class="feature-card">
         <div class="num">For Customers</div>
         <h3>Discover, compare, buy</h3>
-        <p>Find approved shops near you, compare products and installment terms, and track every payment record and delivery milestone in one place.</p>
+        <p>Find approved shops near you, compare products and installment terms, and track every payment record in one place.</p>
       </div>
       <div class="feature-card">
         <div class="num">For Shop Owners</div>
-        <h3>Confirm, fulfil, earn</h3>
+        <h3>Confirm, manage, grow</h3>
         <p>Manage your catalog, accept purchase requests, confirm externally received payments, and review commission statements on your terms.</p>
       </div>
     </div>
   </section>
 
-  <section class="pub-section pub-dark" style="max-width:none;padding:70px 42px">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="color:var(--ivory)">Customer to customer gold, safely framed.</h2>
-      <p class="lead" style="color:var(--muted-2)">List eligible gold for sale, or browse listings from other members. MIDAS provides discovery, messaging, and a transaction record. Inspection, payment, and handover stay between buyer and seller.</p>
+  <section class="pub-section landing-marketplace-dark">
+    <div class="landing-section-inner">
+      <div class="section-h"><div><h2>Explore the marketplace</h2><p class="lead" style="margin:8px 0 0">Discover jewelry uploaded by approved MIDAS partner shops.</p></div><a href="#/public/marketplace">View all jewelry →</a></div>
       <div class="grid g-4">
-        ${DATA.c2c.filter(c=>c.status==='Active').map(c=>`
-          <div class="card" style="background:var(--panel-black);border-color:rgba(185,144,63,.22)">
-            <div class="card-pad">
-              <div class="product-thumb" style="margin:-22px -22px 12px;border-radius:14px 14px 0 0;background:linear-gradient(135deg,#241d13,#1b160f)">${c.image ? `<img class="product-photo" src="${c.image}" alt="${c.title}"/>` : icon('diamond','')}</div>
-              <div style="color:var(--ivory);font-weight:700;font-size:13.5px">${c.title}</div>
-              <div style="color:var(--muted-2);font-size:11.5px;margin:4px 0 10px">${c.area}</div>
-              <div class="mono" style="color:var(--gold-bright);font-weight:600">${bdt(c.price)}</div>
-            </div>
-          </div>`).join('')}
+        ${getPublishedProducts().slice(0,4).map(productCard).join('')}
       </div>
     </div>
   </section>
@@ -392,6 +430,7 @@ function pubLanding(){
       <div class="card card-pad"><span class="badge badge-red">Disputed</span><p style="font-size:12.5px;color:var(--muted);margin-top:10px">Either party flagged a mismatch for review.</p></div>
     </div>
   </section>
+
   ${pubFooter()}
   `;
 }
@@ -406,21 +445,26 @@ function publicPage(eyebrow, title, intro, content){
 }
 
 function publicMarketplace(){
+  const publishedProducts = getPublishedProducts();
   return publicPage('Verified partner catalog', 'Explore gold jewelry', 'Browse pieces from approved partner shops. Product values are current references; installment progress is always measured in accumulated gold weight.', `
     ${marketplaceControls()}
-    <div class="grid g-4" id="marketplace-product-grid">${DATA.products.map(productCard).join('')}</div>
-    <div class="marketplace-empty" id="marketplace-empty" hidden>No accessories match this filter.</div>
+    <div class="grid g-4" id="marketplace-product-grid">${publishedProducts.map(productCard).join('')}</div>
+    <div class="marketplace-empty" id="marketplace-empty" ${publishedProducts.length ? 'hidden' : ''}>${publishedProducts.length ? 'No accessories match this filter.' : 'No shop products have been uploaded yet.'}</div>
   `);
 }
 
 function publicHowItWorks(){
-  return publicPage('A clearer way to accumulate gold', 'How MIDAS works', 'Choose a target gold weight, pay a verified shop directly, and see each confirmed payment converted using the payment-time Trendline rate.', `
+  return publicPage('A clearer way to accumulate gold', 'How MIDAS works', 'From choosing jewelry to recording commission, every step stays clear while payments remain directly between the customer and shop.', `
     <div class="process-grid">
       ${[
-        ['01','Choose your gold','Select a product and agree on its target weight and purity with a verified partner shop.'],
-        ['02','Pay the shop directly','Make deposits using the payment method agreed with the shop. MIDAS never holds your money.'],
-        ['03','Convert at the live rate','After confirmation, the payment is converted to gold using the recorded Trendline rate for that time.'],
-        ['04','Reach your target','Progress reaches 100% only when your accumulated gold equals the agreed target weight.']
+        ['01','Customer selects jewelry','The customer chooses a product uploaded by a verified MIDAS partner shop.'],
+        ['02','Shop accepts the request','The partner shop reviews and accepts the customer’s purchase or installment request.'],
+        ['03','Agreement starts','MIDAS records the jewelry, target gold weight, purity, plan, customer, and shop in an active agreement.'],
+        ['04','Customer pays the shop','The customer pays the partner shop directly using their agreed payment method. MIDAS never holds the money.'],
+        ['05','Customer submits a record','The customer records the payment amount and supporting information in MIDAS. This remains pending.'],
+        ['06','Shop confirms payment','The shop verifies that it received the submitted payment and confirms the record.'],
+        ['07','Gold progress increases','The confirmed amount is converted using the recorded payment-time gold rate and added to the customer’s gold progress.'],
+        ['08','Commission is recorded','MIDAS calculates and records the applicable platform commission for the qualifying transaction.']
       ].map(step=>`<article class="feature-card process-card"><div class="num">${step[0]}</div><h3>${step[1]}</h3><p>${step[2]}</p></article>`).join('')}
     </div>
     <div class="notice product-notice">${icon('shield','notice-icon')}<span><b>Transparent by design.</b> Every conversion keeps the paid amount, gold rate, credited weight, timestamp, and confirmation status in the same record.</span></div>
@@ -428,7 +472,7 @@ function publicHowItWorks(){
 }
 
 function publicC2C(){
-  return publicPage('Member marketplace', 'Buy and sell gold directly', 'Discover member listings with clear seller, location, and status information. Inspection, payment, and handover remain between buyer and seller.', `
+  return publicPage('Member marketplace', 'Buy and sell gold directly', 'Discover member listings with clear seller, location, and status information. Inspection and payment remain between buyer and seller.', `
     <div class="grid g-4">${DATA.c2c.filter(c=>c.status==='Active').map(c=>`
       <article class="product-card">
         <div class="product-thumb">${c.image ? `<img class="product-photo" src="${c.image}" alt="${c.title}" loading="lazy"/>` : icon('image')}</div>
@@ -439,13 +483,31 @@ function publicC2C(){
 }
 
 function publicPartner(){
-  return publicPage('For jewelry businesses', 'Grow with a trusted digital record', 'Join MIDAS to publish products, manage gold accumulation agreements, confirm customer deposits, and coordinate fulfillment.', `
+  return publicPage('For jewelry businesses', 'Grow with a trusted digital record', 'Join MIDAS to publish products, manage gold accumulation agreements, and confirm customer deposits.', `
     <div class="feature-grid partner-features">
       <article class="feature-card"><div class="num">Catalog</div><h3>Present your collection</h3><p>Publish product weight, purity, availability, and purchase options in a consistent professional catalog.</p></article>
       <article class="feature-card"><div class="num">Operations</div><h3>Manage every agreement</h3><p>Review requests, confirm payments received directly, and track gold credited against each target.</p></article>
-      <article class="feature-card"><div class="num">Trust</div><h3>Build a clear history</h3><p>Keep confirmation, fulfillment, commission, and dispute records organized in one place.</p></article>
+      <article class="feature-card"><div class="num">Trust</div><h3>Build a clear history</h3><p>Keep confirmation, commission, and dispute records organized in one place.</p></article>
     </div>
     <div class="partner-cta"><div><h2>Ready to become a partner?</h2><p>Start your business profile and prepare your verification information.</p></div><button class="btn btn-gold" onclick="go('register','')">Start partner application</button></div>
+  `);
+}
+
+function publicAbout(){
+  return publicPage('About MIDAS', 'Trustworthy jewelry discovery, without holding your money.', 'MIDAS is a Bangladesh-focused marketplace connecting customers with approved jewelry shops through transparent product and agreement records.', `
+    <div class="about-intro about-page-intro">
+      <div><div class="eyebrow">Our purpose</div><h2>A clearer relationship between customers and jewelry shops.</h2></div>
+      <p>We help people discover products, document agreements, and follow payment progress while transactions remain directly between the parties. MIDAS provides the marketplace and record—not custody of customer money or gold.</p>
+    </div>
+    <div class="about-values">
+      <article><span>${icon('shield')}</span><div><h3>Clear records</h3><p>Scheduled, submitted, confirmed, and disputed actions remain clearly distinguished.</p></div></article>
+      <article><span>${icon('store')}</span><div><h3>Approved partners</h3><p>Marketplace jewelry is uploaded by recognized partner shops and identifies the responsible seller.</p></div></article>
+      <article><span>${icon('users')}</span><div><h3>Direct relationships</h3><p>Customers and shops retain responsibility for payments, inspection, and warranties.</p></div></article>
+    </div>
+    <div class="about-legal-grid">
+      <article class="about-legal-card"><div class="num">Policies</div><h3>Privacy and marketplace policy</h3><p>We use account and transaction information to operate and secure the platform, maintain records, meet legal obligations, and resolve reported issues. We do not sell personal information.</p><a href="#/public/legal">Read our policies →</a></article>
+      <article class="about-legal-card"><div class="num">Terms</div><h3>Terms of marketplace use</h3><p>MIDAS provides discovery and recordkeeping—not payment processing, custody, guarantees, refunds, or independent certification. Users must verify products and counterparties before transacting.</p><a href="#/public/legal">Read the terms →</a></article>
+    </div>
   `);
 }
 
@@ -464,7 +526,14 @@ function publicHelp(){
 
 function publicLegal(){
   return publicPage('Policies', 'Legal and privacy', 'The principles that govern how MIDAS presents marketplace records and protects account information.', `
-    <div class="legal-copy"><h2>Non-custodial marketplace</h2><p>MIDAS does not receive, hold, transfer, guarantee, or refund customer payments. Parties remain responsible for payment, inspection, and handover.</p><h2>Record integrity</h2><p>Submitted records remain distinct from shop-confirmed payments. Gold credit is applied only after confirmation and retains its associated conversion rate.</p><h2>Privacy</h2><p>Account and transaction information should be collected only for operating the marketplace, securing accounts, meeting legal obligations, and resolving disputes.</p></div>
+    <div class="legal-copy">
+      <h2>Non-custodial marketplace policy</h2><p>MIDAS does not receive, hold, transfer, guarantee, or refund customer payments or gold. Payments, product inspection, and transaction decisions remain the responsibility of the customer, shop, or member involved.</p>
+      <h2>Partner and product policy</h2><p>Marketplace jewelry must be uploaded by a recognized partner shop. Shops are responsible for the accuracy of product names, images, weight, purity, price, availability, and purchase terms. MIDAS may hide content that is inaccurate, unlawful, unsafe, or misleading.</p>
+      <h2>Record integrity</h2><p>Scheduled, submitted, confirmed, rejected, and disputed records remain distinct. A customer's submission is not proof that a shop received payment. Gold credit is applied only after shop confirmation and retains its associated conversion rate.</p>
+      <h2>Privacy policy</h2><p>Account, location, product, and transaction information is used only to operate and secure the marketplace, provide requested features, maintain records, meet legal obligations, and resolve disputes. MIDAS does not sell personal information.</p>
+      <h2>Terms of use</h2><p>Users must provide accurate information, protect their account access, obey applicable law, respect other users, and independently verify products and counterparties. Misrepresentation, fraud, harassment, unauthorized access, and unlawful listings are prohibited.</p>
+      <h2>Disputes and limitation</h2><p>MIDAS may preserve records and support communication during a dispute but does not guarantee a transaction outcome. To the extent permitted by law, users remain responsible for decisions and transactions completed outside the platform.</p>
+    </div>
   `);
 }
 
@@ -477,26 +546,34 @@ function publicNotFound(){
    ============================================================ */
 function renderLogin(){
   return `
-  <div class="auth-wrap">
+  <div class="auth-wrap auth-login">
     <div class="auth-side">
-      <a class="u-flex u-gap-10 brand-home-link" href="#/public/landing" aria-label="Back to MIDAS home">${icon('diamond','',)}<span style="font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--ivory)">MIDAS</span></a>
-      <div>
-        <p class="auth-quote">"MIDAS doesn't hold your gold savings. It just makes sure no one forgets what was promised."</p>
-        <div class="auth-quote-attr">Non-custodial by design, since v1</div>
+      <a class="auth-brand brand-home-link" href="#/public/landing" aria-label="Back to MIDAS home">${icon('diamond','')}<span>MIDAS</span></a>
+      <div class="auth-side-content">
+        <span class="auth-eyebrow">The trusted gold marketplace</span>
+        <h1>Your gold journey,<br/><em>beautifully recorded.</em></h1>
+        <p>Discover jewelry from partner shops, manage installment agreements, and keep every confirmed payment in one clear record.</p>
+        <div class="auth-trust-grid">
+          <div>${icon('shield','')}<span><b>Partner shops</b><small>Recognized sellers</small></span></div>
+          <div>${icon('doc','')}<span><b>Clear records</b><small>Every step tracked</small></span></div>
+        </div>
       </div>
-      <div style="font-size:11.5px;color:var(--muted-2)">© 2026 MIDAS · Bangladesh</div>
+      <div class="auth-side-foot"><span>© 2026 MIDAS · Bangladesh</span><span>Non-custodial by design</span></div>
     </div>
     <div class="auth-form-wrap">
       <form class="auth-card" onsubmit="handleLogin(event)" novalidate>
-        <h2 style="font-family:var(--font-display);font-size:28px;margin:0 0 6px">Welcome back</h2>
-        <p style="font-size:13px;color:var(--muted);margin:0 0 26px">Log in to track your purchases and installments.</p>
+        <a class="auth-mobile-brand brand-home-link" href="#/public/landing" aria-label="Back to MIDAS home">${icon('diamond','')}<span>MIDAS</span></a>
+        <span class="auth-form-kicker">Secure account access</span>
+        <h2>Welcome back</h2>
+        <p class="auth-form-intro">Log in to explore jewelry and manage your gold agreements.</p>
         <div class="field-row"><label class="field-label" for="login-identity">Mobile number or email</label><input class="field" id="login-identity" name="identity" autocomplete="username" placeholder="e.g. 01XXXXXXXXX or name@email.com" required/><div class="field-error" data-error="identity"></div></div>
         <div class="field-row"><label class="field-label" for="login-password">Password</label><input class="field" id="login-password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" minlength="8" required/><div class="field-error" data-error="password"></div></div>
-        <button class="btn btn-gold btn-block" type="submit" style="margin-bottom:12px">Log in</button>
+        <div class="auth-form-options"><label><input type="checkbox"/> Remember me</label><button class="text-button" type="button" onclick="toast('Password recovery instructions will be sent to your registered contact')">Forgot password?</button></div>
+        <button class="btn btn-gold btn-block auth-submit" type="submit">Log in <span>→</span></button>
         <div class="login-hint">Use one of the provided customer, shop owner, or administrator accounts.</div>
-        <button class="text-button" type="button" onclick="toast('Password recovery instructions will be sent to your registered contact')">Forgot password?</button>
-        <div class="hairline" style="margin-bottom:18px"></div>
-        <div class="u-center" style="font-size:13px;color:var(--muted)">New to MIDAS? <a href="#" onclick="go('register','');return false" style="color:var(--gold-dim);font-weight:700">Create an account</a></div>
+        <div class="auth-divider"><span>New to MIDAS?</span></div>
+        <a class="auth-create" href="#" onclick="go('register','');return false">Create your account</a>
+        <p class="auth-legal">By continuing, you agree to MIDAS's <a href="#/public/legal">Terms</a> and <a href="#/public/legal">Privacy Policy</a>.</p>
       </form>
     </div>
   </div>`;
@@ -601,7 +678,6 @@ function customerNavItems(){
     { id:'marketplace', label:'Marketplace', icon:'bag' },
     { id:'installments', label:'My Installments', icon:'calendar' },
     { id:'c2c', label:'C2C Listings', icon:'swap' },
-    { id:'support', label:'Support', icon:'help' },
     { id:'settings', label:'Account Settings', icon:'settings' },
   ];
 }
@@ -630,7 +706,7 @@ function sidebarShell(items, activeView, roleTag){
 function topbar(title, subtitle, extraRight){
   let profile = {};
   try { profile = JSON.parse(localStorage.getItem('midas-profile') || '{}'); } catch(e) {}
-  const profileName = profile.name || (STATE.role === 'shop' ? 'Shop Owner' : STATE.role === 'admin' ? 'Administrator' : 'User');
+  const profileName = STATE.role === 'shop' ? getCurrentShopName() : profile.name || (STATE.role === 'admin' ? 'Administrator' : 'User');
   const initials = profileName.split(/\s+/).slice(0,2).map(part=>part[0]).join('').toUpperCase();
   return `
   <div class="topbar">
@@ -730,7 +806,6 @@ function customerViewContent(view){
   else if(view === 'marketplace') content = customerMarketplace();
   else if(view === 'installments') content = customerInstallments();
   else if(view === 'c2c') content = customerC2C();
-  else if(view === 'support') content = simplePane('Support', 'Guides, FAQ, and case history for your account.', 'help');
   else if(view === 'settings') content = customerAccountSettings();
   else content = customerDashboard();
   return content;
@@ -746,7 +821,7 @@ function searchCustomer(value){
     return;
   }
 
-  const products = DATA.products.filter(product=>
+  const products = getPublishedProducts().filter(product=>
     [product.name, product.category, product.shop, product.purity, product.weight]
       .some(field=>String(field || '').toLocaleLowerCase().includes(query))
   );
@@ -793,6 +868,7 @@ function customerAccountSettings(){
         <div><label class="field-label" for="settings-name">Full name</label><input class="field" id="settings-name" name="name" value="${profile.name || 'Midas Customer'}" required/></div>
         <div><label class="field-label" for="settings-mobile">Mobile number</label><input class="field" id="settings-mobile" name="mobile" inputmode="tel" value="${profile.mobile || ''}" placeholder="01XXXXXXXXX"/></div>
       </div>
+      <div class="field-row"><label class="field-label" for="settings-nid">National ID (NID)</label><input class="field" id="settings-nid" name="nid" inputmode="numeric" pattern="(?:[0-9]{10}|[0-9]{13}|[0-9]{17})" value="${profile.nid || ''}" placeholder="10, 13, or 17-digit NID number" aria-describedby="settings-nid-help"/><div class="tmeta" id="settings-nid-help">Enter a valid 10, 13, or 17-digit Bangladesh National ID number.</div></div>
       <div class="field-row"><label class="field-label" for="settings-email">Email address</label><input class="field" id="settings-email" name="email" type="email" value="${profile.email || ''}" placeholder="name@email.com"/></div>
       <div class="u-flex settings-actions"><button class="btn btn-gold" type="submit">Save changes</button></div>
     </form>
@@ -803,7 +879,7 @@ function saveAccountSettings(event){
   const values = Object.fromEntries(new FormData(event.currentTarget));
   let profile = {};
   try { profile = JSON.parse(localStorage.getItem('midas-profile') || '{}'); } catch(e) {}
-  localStorage.setItem('midas-profile', JSON.stringify({ ...profile, name:values.name.trim(), mobile:values.mobile.trim(), email:values.email.trim() }));
+  localStorage.setItem('midas-profile', JSON.stringify({ ...profile, name:values.name.trim(), mobile:values.mobile.trim(), nid:values.nid.trim(), email:values.email.trim() }));
   toast('Account settings saved');
   router_rerenderOnly();
 }
@@ -815,7 +891,7 @@ function customerDashboard(){
   const summary = installmentSummary(inst);
   return `
   <div class="grid g-2-1">
-    <div class="card">
+    <div class="card active-installment-card">
       <div class="card-head">
         <div><div class="card-title">Active Installment</div><div class="card-sub">${inst.shop} · ${inst.product}</div></div>
       </div>
@@ -825,7 +901,7 @@ function customerDashboard(){
           <span style="font-family:var(--font-mono);font-weight:700">${summary.progressPct.toFixed(1)}%</span>
         </div>
         <div class="progress" style="margin-bottom:20px"><span style="width:${summary.progressPct}%"></span></div>
-        <div class="grid g-2" style="margin-bottom:20px">
+        <div class="grid g-2 active-installment-metrics" style="margin-bottom:20px">
           <div><div class="stat-label">Target jewelry gold</div><div class="mono" style="font-weight:700;font-size:15px">${grams(inst.targetGoldGrams)} ${inst.purity}</div></div>
           <div><div class="stat-label">Gold you own</div><div class="mono" style="font-weight:700;font-size:15px;color:var(--success)">${grams(summary.goldOwned)}</div></div>
         </div>
@@ -851,7 +927,7 @@ function customerDashboard(){
 
   <div class="section-h"><h2>Recommended Jewelry</h2><a href="#" onclick="go('customer','marketplace');return false">View all →</a></div>
   <div class="grid g-4">
-    ${DATA.products.slice(0,4).map(productCard).join('')}
+    ${getPublishedProducts().slice(0,4).map(productCard).join('')}
   </div>
 
   <div class="grid g-2" style="margin-top:34px">
@@ -915,15 +991,16 @@ function productCard(p, index=0){
     <div class="product-body">
       <div class="product-name">${p.name}</div>
       <div class="product-shop">${p.shop}</div>
+      <div class="product-stock ${p.inStock === false ? 'out-of-stock' : 'in-stock'}">${p.inStock === false ? 'Out of Stock' : 'In Stock'}</div>
       <div class="product-price mono">${bdt(p.price)}</div>
       <div class="product-actions">
-        <button class="btn btn-gold" onclick='openProductModal("${p.id}")'>Installment</button>
+        <button class="btn btn-gold" ${p.inStock === false ? 'disabled' : ''} onclick='openProductModal("${p.id}")'>${p.inStock === false ? 'Unavailable' : 'Installment'}</button>
       </div>
     </div>
   </div>`;
 }
 function marketplaceControls(){
-  const categories = [...new Set(DATA.products.map(product=>product.category))];
+  const categories = [...new Set(getPublishedProducts().map(product=>product.category))];
   return `<div class="toolbar-row marketplace-toolbar">
     <div class="u-flex u-gap-10 filter-scroll" role="group" aria-label="Filter accessories">
       <button class="filter-chip active" type="button" onclick="filterMarketplace(this,'all')">All accessories</button>
@@ -1027,12 +1104,13 @@ window.sortCustomerShops = sortCustomerShops;
 
 /* ---------------- Customer: Marketplace ---------------- */
 function customerMarketplace(){
+  const publishedProducts = getPublishedProducts();
   return `
   ${marketplaceControls()}
   <div class="grid g-4" id="marketplace-product-grid">
-    ${DATA.products.map(productCard).join('')}
+    ${publishedProducts.map(productCard).join('')}
   </div>
-  <div class="marketplace-empty" id="marketplace-empty" hidden>No accessories match this filter.</div>
+  <div class="marketplace-empty" id="marketplace-empty" ${publishedProducts.length ? 'hidden' : ''}>${publishedProducts.length ? 'No accessories match this filter.' : 'No shop products have been uploaded yet.'}</div>
   `;
 }
 
@@ -1057,7 +1135,7 @@ window.openProductModal = openProductModal;
 window.closeProductModal = closeProductModal;
 
 function renderProductModal(modalState){
-  const p = DATA.products.find(x=>x.id===modalState.id);
+  const p = getPublishedProducts().find(x=>x.id===modalState.id);
   if(!p) return '';
   return `
   <div class="modal-backdrop" onclick="if(event.target===this) closeProductModal()">
@@ -1276,7 +1354,6 @@ function shopNavItems(){
     { id:'requests', label:'Purchase Requests', icon:'doc', count:3 },
     { id:'installments', label:'Installments', icon:'calendar' },
     { id:'confirmations', label:'Payment Confirmations', icon:'check', count:5 },
-    { id:'orders', label:'Orders', icon:'box' },
     { id:'commissions', label:'Commission Statements', icon:'coins' },
     { id:'insights', label:'AI Insights', icon:'gauge' },
     { id:'reports', label:'Reports', icon:'download' },
@@ -1292,7 +1369,6 @@ function renderShopLayout(view){
   else if(view === 'commissions') content = shopCommissions();
   else if(view === 'confirmations') content = shopConfirmations();
   else if(view === 'requests') content = shopRequests();
-  else if(view === 'orders') content = shopOrders();
   else if(view === 'insights') content = shopAIInsights();
   else if(view === 'reports') content = shopReports();
   else if(view === 'installments') content = shopUpcomingFull();
@@ -1304,7 +1380,7 @@ function renderShopLayout(view){
     <button class="sidebar-backdrop" aria-label="Close navigation" onclick="toggleSidebar()"></button>
     ${sidebarShell(shopNavItems(), view, 'Aurelia Jewellers · Shop Owner Portal')}
     <div class="main">
-      ${topbar(navLabel(shopNavItems(), view), '<span class="badge badge-green" style="margin-left:0">'+icon('check')+' Verified Partner</span>')}
+      ${topbar(navLabel(shopNavItems(), view), '')}
       <div class="content">${content}</div>
     </div>
   </div>`;
@@ -1312,7 +1388,7 @@ function renderShopLayout(view){
 
 function shopAIInsights(){
   return `<div class="ai-insights-header">
-    <div><div class="eyebrow">${icon('gauge')} AI assisted analysis</div><h2>Business insights for Aurelia Jewellers</h2><p>Patterns derived from catalog activity, purchase requests, installment records, and fulfillment history.</p></div>
+    <div><div class="eyebrow">${icon('gauge')} AI assisted analysis</div><h2>Business insights for Aurelia Jewellers</h2><p>Patterns derived from catalog activity, purchase requests, and installment records.</p></div>
     <button class="btn btn-outline" onclick="toast('Insights refreshed with the latest available records')">Refresh insights</button>
   </div>
   <div class="grid g-3 ai-insight-grid">
@@ -1342,7 +1418,7 @@ function shopProfile(){
           <div class="field-grid field-row"><div><label class="field-label" for="shop-mobile">Business mobile</label><input class="field" id="shop-mobile" name="mobile" inputmode="tel" value="${profile.mobile || '01712345678'}" required/></div><div><label class="field-label" for="shop-email">Business email</label><input class="field" id="shop-email" name="email" type="email" value="${profile.email || 'contact@aurelia.bd'}" required/></div></div>
           <div class="field-row"><label class="field-label" for="shop-address">Shop address</label><input class="field" id="shop-address" name="address" value="${profile.address || 'Road 27, Dhanmondi, Dhaka'}" required/></div>
           <div class="field-grid field-row"><div><label class="field-label" for="shop-area">Service area</label><input class="field" id="shop-area" name="area" value="${profile.area || 'Dhanmondi, Dhaka'}" required/></div><div><label class="field-label" for="shop-hours">Opening hours</label><input class="field" id="shop-hours" name="hours" value="${profile.hours || '10:00 AM to 8:00 PM'}" required/></div></div>
-          <div class="field-row"><label class="field-label" for="shop-description">About the shop</label><textarea class="field" id="shop-description" name="description" rows="4" placeholder="Describe your products and services">${profile.description || 'Gold jewelry retailer specializing in 21K and 22K pieces, installment agreements, and custom orders.'}</textarea></div>
+          <div class="field-row"><label class="field-label" for="shop-description">About the shop</label><textarea class="field" id="shop-description" name="description" rows="4" placeholder="Describe your products and services">${profile.description || 'Gold jewelry retailer specializing in 21K and 22K pieces, installment agreements, and custom jewelry requests.'}</textarea></div>
           <div class="settings-actions"><button class="btn btn-gold" type="submit">Save Profile</button></div>
         </form>
       </div>
@@ -1375,29 +1451,28 @@ window.submitShopVerification = submitShopVerification;
 
 function shopReports(){
   return `<div class="report-toolbar">
-    <div><h2>Business Reports</h2><p>Review sales activity, installment performance, gold obligations, and fulfillment results.</p></div>
+    <div><h2>Business Reports</h2><p>Review sales activity, installment performance, and gold obligations.</p></div>
     <div class="u-flex u-gap-10"><select class="field report-period" aria-label="Report period" onchange="toast('Report period updated to '+this.options[this.selectedIndex].text)"><option>Last 30 days</option><option>Last 90 days</option><option>This year</option><option>Custom period</option></select><button class="btn btn-gold" onclick="toast('Preparing report export')">${icon('download')} Export Report</button></div>
   </div>
-  <div class="grid g-4 report-summary">
+  <div class="grid g-3 report-summary">
     ${shopStatTile('coins', bdt(925000), 'Qualifying Sales', '+12%')}
     ${shopStatTile('doc', '48', 'Active Agreements', '+6')}
     ${shopStatTile('gauge', '186.4 g', 'Gold Committed', '+14.2 g')}
-    ${shopStatTile('box', '23', 'Orders Fulfilled', '+5')}
   </div>
   <div class="grid g-2 report-grid">
     <article class="card report-card"><div class="card-head"><div><div class="card-title">Sales and Agreements</div><div class="card-sub">Revenue and customer agreement activity</div></div><button class="btn btn-outline btn-sm" onclick="toast('Sales report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>Accepted purchase requests</span><b>31</b></div><div><span>New installment agreements</span><b>18</b></div><div><span>Average jewelry value</span><b>${bdt(78500)}</b></div><div><span>Agreement conversion rate</span><b>68%</b></div></div></article>
     <article class="card report-card"><div class="card-head"><div><div class="card-title">Gold Accumulation</div><div class="card-sub">Confirmed gold credited to customers</div></div><button class="btn btn-outline btn-sm" onclick="toast('Gold report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>Gold credited this period</span><b>74.8 g</b></div><div><span>Customer target gold</span><b>186.4 g</b></div><div><span>Average completion</span><b>46.2%</b></div><div><span>Awaiting confirmation</span><b>5 records</b></div></div></article>
     <article class="card report-card"><div class="card-head"><div><div class="card-title">Product Performance</div><div class="card-sub">Demand by jewelry category</div></div><button class="btn btn-outline btn-sm" onclick="toast('Product report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>Gold Chains</span><b>18 requests</b></div><div><span>Necklaces</span><b>12 requests</b></div><div><span>Bangles</span><b>9 requests</b></div><div><span>Rings</span><b>7 requests</b></div></div></article>
-    <article class="card report-card"><div class="card-head"><div><div class="card-title">Fulfillment</div><div class="card-sub">Order preparation and delivery status</div></div><button class="btn btn-outline btn-sm" onclick="toast('Fulfillment report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>In preparation</span><b>12</b></div><div><span>Ready for handover</span><b>8</b></div><div><span>Delivered</span><b>23</b></div><div><span>Average fulfillment time</span><b>4.2 days</b></div></div></article>
   </div>
   <div class="notice report-notice">${icon('help','notice-icon')}<span>Report figures reflect records currently available in MIDAS. Reconcile exported reports with shop receipts and accounting records.</span></div>`;
 }
 
-function shopStatTile(iconName, num, label, delta){
+function shopStatTile(iconName, num, label, delta, description){
   return `<div class="card card-pad stat-tile">
     <div class="icon">${icon(iconName)}</div>
     <div class="stat-num">${num}</div>
     <div class="stat-label">${label}</div>
+    ${description?`<div class="stat-description">${description}</div>`:''}
     ${delta?`<div class="stat-delta ${delta.startsWith('-')?'down':'up'}">${delta} vs last 7 days</div>`:''}
   </div>`;
 }
@@ -1405,11 +1480,10 @@ function shopStatTile(iconName, num, label, delta){
 function shopDashboard(){
   const s = DATA.shopStats;
   return `
-  <div class="grid g-4" style="margin-bottom:8px">
-    ${shopStatTile('doc', s.activeAgreements, 'Active Agreements')}
-    ${shopStatTile('clock', s.pendingConfirmations, 'Pending Confirmations')}
-    ${shopStatTile('box', s.ordersInPrep, 'Orders in Preparation')}
-    ${shopStatTile('coins', bdt(s.commissionDue), 'Commission Due')}
+  <div class="grid g-3" style="margin-bottom:8px">
+    ${shopStatTile('doc', s.activeAgreements, 'Active Agreements', null, 'Ongoing customer installment agreements tracking jewelry, target gold, and confirmed progress.')}
+    ${shopStatTile('clock', s.pendingConfirmations, 'Pending Confirmations', null, 'Customer payment records waiting for your verification. Gold progress updates only after confirmation.')}
+    ${shopStatTile('coins', bdt(s.commissionDue), 'Commission Due', null, 'MIDAS platform fees recorded from qualifying transactions. This amount is not automatically deducted.')}
   </div>
 
   <div class="section-h"><h2>Payment Confirmation Queue</h2><a href="#" onclick="go('shop','confirmations');return false">View all payment confirmations →</a></div>
@@ -1454,16 +1528,7 @@ function shopDashboard(){
     </table>
   </div>
 
-  <div class="grid g-2-1" style="margin-top:34px">
-    <div class="card">
-      <div class="card-head"><div class="card-title" style="font-size:16px">Order Fulfillment</div></div>
-      <div class="card-pad grid g-4">
-        <div class="u-center"><div style="color:var(--gold-dim);margin-bottom:6px">${icon('doc')}</div><div class="stat-num" style="font-size:22px">${DATA.fulfillment.accepted}</div><div class="stat-label">Accepted</div></div>
-        <div class="u-center"><div style="color:var(--gold-dim);margin-bottom:6px">${icon('settings')}</div><div class="stat-num" style="font-size:22px">${DATA.fulfillment.prep}</div><div class="stat-label">In Preparation</div></div>
-        <div class="u-center"><div style="color:var(--gold-dim);margin-bottom:6px">${icon('box')}</div><div class="stat-num" style="font-size:22px">${DATA.fulfillment.ready}</div><div class="stat-label">Ready</div></div>
-        <div class="u-center"><div style="color:var(--gold-dim);margin-bottom:6px">${icon('bag')}</div><div class="stat-num" style="font-size:22px">${DATA.fulfillment.delivered}</div><div class="stat-label">Delivered</div></div>
-      </div>
-    </div>
+  <div class="grid g-2" style="margin-top:34px">
     <div class="card">
       <div class="card-head"><div class="card-title" style="font-size:16px">Upcoming Installments</div></div>
       <div class="card-pad" style="display:flex;flex-direction:column;gap:12px">
@@ -1490,34 +1555,88 @@ function shopDashboard(){
 }
 
 function shopProducts(){
+  const shopName = getCurrentShopName();
+  const products = getProductCatalog().filter(product=>product.shop === shopName);
   return `
   <div class="u-flex" style="justify-content:space-between;margin-bottom:18px">
-    <div class="u-flex u-gap-10">
-      <span class="filter-chip active">All (${DATA.products.length})</span>
-      <span class="filter-chip">Published</span>
-      <span class="filter-chip">Draft</span>
-      <span class="filter-chip">Archived</span>
-    </div>
-    <button class="btn btn-gold" onclick="toast('Opening new product form')">+ Add Product</button>
+    <div><h2 style="font-family:var(--font-display);margin:0 0 4px">Your Marketplace Products</h2><p class="tmeta" style="margin:0">Products uploaded here appear directly in the customer marketplace.</p></div>
+    <button class="btn btn-gold" onclick="openShopProductForm()">+ Add Product</button>
   </div>
   <div class="card">
     <table class="dtable">
-      <thead><tr><th>Product</th><th>Weight</th><th>Purity</th><th>Price</th><th>Purchase modes</th><th>Status</th><th></th></tr></thead>
+      <thead><tr><th>Photo</th><th>Product</th><th>Weight</th><th>Purity</th><th>Price</th><th>Stock</th><th></th></tr></thead>
       <tbody>
-      ${DATA.products.filter(p=>p.shop==='Aurelia Jewellers').concat(DATA.products.slice(0,3)).map(p=>`
-        <tr>
+      ${products.map(p=>`
+        <tr data-shop-product-row>
+          <td><div class="shop-product-photo">${p.image ? `<img src="${p.image}" alt="${p.name}"/>` : icon('image')}</div></td>
           <td class="tname">${p.name}</td>
           <td>${p.weight}</td>
           <td>${p.purity}</td>
           <td class="mono">${bdt(p.price)}</td>
-          <td>${p.direct?'<span class="badge badge-muted">Direct</span> ':''}${p.installment?'<span class="badge badge-gold">Installment</span>':''}</td>
-          <td><span class="badge badge-green">Published</span></td>
-          <td><span class="link-view" onclick="toast('Editing ${p.name}')">Edit</span></td>
+          <td><span class="badge ${p.inStock === false ? 'badge-red' : 'badge-green'}">${p.inStock === false ? 'Out of Stock' : 'In Stock'}</span></td>
+          <td><button class="btn btn-outline btn-sm" onclick="toggleShopProductStock('${p.id}')">Mark ${p.inStock === false ? 'in stock' : 'out of stock'}</button></td>
         </tr>`).join('')}
+      ${products.length ? '' : '<tr><td colspan="7" class="u-center" style="padding:32px;color:var(--muted)">No products uploaded by this shop.</td></tr>'}
       </tbody>
     </table>
   </div>`;
 }
+function openShopProductForm(){
+  const wrapper = document.createElement('div');
+  wrapper.id = 'shop-product-form-wrapper';
+  wrapper.innerHTML = `<div class="modal-backdrop" onclick="if(event.target===this)this.parentElement.remove()"><div class="modal">
+    <div class="modal-head"><h3>Upload Product</h3><button class="modal-close" onclick="document.getElementById('shop-product-form-wrapper').remove()">✕</button></div>
+    <form onsubmit="submitShopProduct(event)"><div class="modal-body">
+      <div class="field-row"><label class="field-label">Product name</label><input class="field" name="name" required placeholder="e.g. 22K Gold Necklace"/></div>
+      <div class="field-grid field-row"><div><label class="field-label">Category</label><select class="field" name="category"><option>Necklaces</option><option>Bangles</option><option>Rings</option><option>Earrings</option><option>Chains</option><option>Pendants</option><option>Bridal Sets</option></select></div><div><label class="field-label">Purity</label><select class="field" name="purity"><option>22K</option><option>21K</option><option>18K</option></select></div></div>
+      <div class="field-grid field-row"><div><label class="field-label">Weight (g)</label><input class="field" name="weight" type="number" min="0.001" step="0.001" required/></div><div><label class="field-label">Price (BDT)</label><input class="field" name="price" type="number" min="1" step="1" required/></div></div>
+      <div class="field-grid field-row"><div><label class="field-label">Minimum installment</label><input class="field" name="minimumInstallment" type="number" min="0" step="1" value="1000"/></div><div><label class="field-label">Stock availability</label><select class="field" name="stock"><option value="in">In Stock</option><option value="out">Out of Stock</option></select></div></div>
+      <div class="field-row"><label class="field-label">Product photo</label><input class="field" name="image" type="file" accept="image/png,image/jpeg,image/webp" required/><div class="tmeta" style="margin-top:5px">Upload a JPG, PNG, or WebP photo. The image will be visible to customers.</div></div>
+      <label class="setting-toggle"><input type="checkbox" name="installment" checked/><span><b>Installment available</b><small>Customers can request an installment agreement.</small></span></label>
+    </div><div class="modal-foot"><button class="btn btn-outline" type="button" onclick="document.getElementById('shop-product-form-wrapper').remove()">Cancel</button><button class="btn btn-gold" type="submit">Save Product</button></div></form>
+  </div></div>`;
+  document.body.appendChild(wrapper);
+}
+function readProductImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = ()=>resolve(reader.result);
+    reader.onerror = ()=>reject(new Error('Could not read image'));
+    reader.readAsDataURL(file);
+  });
+}
+async function submitShopProduct(event){
+  event.preventDefault();
+  const form = event.currentTarget;
+  const imageFile = form.elements.image.files[0];
+  if(!imageFile){ toast('Choose a product photo'); return; }
+  if(imageFile.size > 2 * 1024 * 1024){ toast('Product photo must be smaller than 2 MB'); return; }
+  const values = Object.fromEntries(new FormData(event.currentTarget));
+  let image = '';
+  try{ image = await readProductImage(imageFile); }catch(error){ toast('Could not upload the product photo'); return; }
+  const product = {
+    id:`shop-${Date.now()}`, name:escapeMarkup(values.name.trim()), category:values.category,
+    shop:getCurrentShopName(), price:Number(values.price), weight:`${Number(values.weight)} g`, purity:values.purity,
+    installment:values.installment === 'on', minimumInstallment:Number(values.minimumInstallment || 0),
+    image, inStock:values.stock === 'in', uploadedByShop:true,
+  };
+  saveProductCatalog([product, ...getProductCatalog()]);
+  document.getElementById('shop-product-form-wrapper')?.remove();
+  router();
+  toast('Product added to the customer marketplace');
+}
+function toggleShopProductStock(productId){
+  const products = getProductCatalog();
+  const product = products.find(item=>item.id === productId);
+  if(!product) return;
+  product.inStock = product.inStock === false;
+  saveProductCatalog(products);
+  router();
+  toast(`${product.name} marked ${product.inStock ? 'in stock' : 'out of stock'}`);
+}
+window.openShopProductForm = openShopProductForm;
+window.submitShopProduct = submitShopProduct;
+window.toggleShopProductStock = toggleShopProductStock;
 
 function shopRequests(){
   return `
@@ -1539,22 +1658,35 @@ function shopRequests(){
 
 function shopConfirmations(){
   return `
+  <div class="admin-list-toolbar payment-confirmation-toolbar">
+    <div><h2>Payment Confirmations</h2><p>Find a customer or agreement before reviewing a submitted payment record.</p></div>
+    <div class="payment-confirmation-search">${icon('search')}<input class="field" id="confirmation-search" type="search" placeholder="Search customer, agreement, amount, or date" aria-label="Search payment confirmations" oninput="filterPaymentConfirmations(this.value)"/></div>
+  </div>
   <div class="card">
-    <table class="dtable">
+    <table class="dtable" id="payment-confirmations-table">
       <thead><tr><th>Customer</th><th>Agreement</th><th>Submitted amount</th><th>Date</th><th>Evidence</th><th>Action</th></tr></thead>
       <tbody>
       ${DATA.confirmQueue.map(c=>`
-        <tr>
+        <tr data-payment-confirmation>
           <td class="tname">${c.customer}</td><td class="mono">${c.agreement}</td><td class="mono">${bdt(c.amount)}</td><td class="tmeta">${c.date}</td>
           <td><span class="link-view">${icon('image')} Review</span></td>
           <td><button class="btn btn-gold btn-sm" onclick="toast('Confirmed')">Confirm</button> <button class="btn btn-outline btn-sm" onclick="toast('Partially confirmed')">Partial</button> <button class="btn btn-danger-outline btn-sm" onclick="toast('Rejected')">Reject</button></td>
         </tr>`).join('')}
       </tbody>
     </table>
+    <div class="marketplace-empty" id="payment-confirmations-empty" hidden>No payment confirmations match your search.</div>
   </div>
   <div class="notice" style="margin-top:16px">${icon('help','notice-icon')}<span>Confirming marks a record <b>Confirmed</b> and increases paid progress. A customer's submission alone is never presented as proven receipt.</span></div>
   `;
 }
+function filterPaymentConfirmations(value){
+  const query = value.trim().toLocaleLowerCase();
+  const rows = [...document.querySelectorAll('#payment-confirmations-table [data-payment-confirmation]')];
+  rows.forEach(row=>row.hidden = Boolean(query) && !row.textContent.toLocaleLowerCase().includes(query));
+  const empty = document.getElementById('payment-confirmations-empty');
+  if(empty) empty.hidden = rows.some(row=>!row.hidden);
+}
+window.filterPaymentConfirmations = filterPaymentConfirmations;
 
 function shopUpcomingFull(){
   return `
@@ -1564,24 +1696,6 @@ function shopUpcomingFull(){
       <tbody>
       ${DATA.upcomingInstallments.map(u=>`
         <tr><td class="tname">${u.customer}</td><td class="mono">${u.agreement}</td><td class="tmeta">${u.due}</td><td>${u.progress}</td><td class="mono">${bdt(u.amount)}</td></tr>`).join('')}
-      </tbody>
-    </table>
-  </div>`;
-}
-
-function shopOrders(){
-  const f = DATA.fulfillment;
-  const cols = [ ['Accepted', f.accepted, 'doc'], ['In Preparation', f.prep, 'settings'], ['Ready', f.ready, 'box'], ['Delivered', f.delivered, 'bag'] ];
-  return `<div class="grid g-4">
-    ${cols.map(c=>`<div class="card card-pad u-center"><div style="color:var(--gold-dim);margin-bottom:8px">${icon(c[2])}</div><div class="stat-num">${c[1]}</div><div class="stat-label">${c[0]}</div></div>`).join('')}
-  </div>
-  <div class="section-h"><h2>Orders</h2></div>
-  <div class="card">
-    <table class="dtable">
-      <thead><tr><th>Customer</th><th>Product</th><th>Status</th><th>Updated</th><th></th></tr></thead>
-      <tbody>
-      ${DATA.purchaseRequests.map((r,i)=>`
-        <tr><td class="tname">${r.customer}</td><td>${r.product}</td><td>${statusBadge(['Recorded','Confirmed','Not Settled'][i%3])}</td><td class="tmeta">${r.date}</td><td><span class="link-view">Update status</span></td></tr>`).join('')}
       </tbody>
     </table>
   </div>`;
@@ -1920,20 +2034,20 @@ function adminReports(){
   <div class="grid g-2 admin-report-grid">
     <article class="card report-card"><div class="card-head"><div><div class="card-title">Marketplace Performance</div><div class="card-sub">Platform purchase and agreement activity</div></div><button class="btn btn-outline btn-sm" onclick="toast('Marketplace report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>Purchase requests submitted</span><b>684</b></div><div><span>Requests accepted</span><b>471</b></div><div><span>Agreement conversion rate</span><b>68.9%</b></div><div><span>Average jewelry value</span><b>${bdt(78500)}</b></div><div><span>Completed agreements</span><b>126</b></div></div></article>
     <article class="card report-card"><div class="card-head"><div><div class="card-title">Gold Accumulation</div><div class="card-sub">Target and confirmed customer gold records</div></div><button class="btn btn-outline btn-sm" onclick="toast('Gold accumulation report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>Target gold recorded</span><b>4,286 g</b></div><div><span>Gold credited to customers</span><b>2,148 g</b></div><div><span>Average agreement completion</span><b>50.1%</b></div><div><span>Confirmed payment records</span><b>3,926</b></div><div><span>Awaiting shop confirmation</span><b>42</b></div></div></article>
-    <article class="card report-card"><div class="card-head"><div><div class="card-title">Partner Shops</div><div class="card-sub">Verification, catalogs, and fulfillment</div></div><button class="btn btn-outline btn-sm" onclick="toast('Partner report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>Active partner shops</span><b>126</b></div><div><span>Verification applications</span><b>5 pending</b></div><div><span>Published products</span><b>1,436</b></div><div><span>Orders fulfilled</span><b>892</b></div><div><span>Average fulfillment time</span><b>4.6 days</b></div></div></article>
+    <article class="card report-card"><div class="card-head"><div><div class="card-title">Partner Shops</div><div class="card-sub">Verification and published catalogs</div></div><button class="btn btn-outline btn-sm" onclick="toast('Partner report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>Active partner shops</span><b>126</b></div><div><span>Verification applications</span><b>5 pending</b></div><div><span>Published products</span><b>1,436</b></div><div><span>Active agreements</span><b>1,842</b></div></div></article>
     <article class="card report-card"><div class="card-head"><div><div class="card-title">Users and C2C</div><div class="card-sub">Customer growth and member marketplace activity</div></div><button class="btn btn-outline btn-sm" onclick="toast('User and C2C report downloaded')">Download</button></div><div class="card-pad ai-signal-list"><div><span>Total customers</span><b>5,248</b></div><div><span>New customers</span><b>128</b></div><div><span>Active C2C listings</span><b>214</b></div><div><span>Owned-gold listings</span><b>86</b></div><div><span>Jewelry listings</span><b>128</b></div></div></article>
   </div>
 
-  <div class="card admin-report-table"><div class="card-head"><div><div class="card-title">Partner Performance</div><div class="card-sub">Highest marketplace activity during the selected period</div></div><button class="btn btn-outline btn-sm" onclick="toast('Partner performance exported')">${icon('download')} Export</button></div><table class="dtable"><thead><tr><th>Partner Shop</th><th>Qualifying Sales</th><th>Agreements</th><th>Gold Credited</th><th>Fulfilled Orders</th><th>Commission</th><th>Status</th></tr></thead><tbody>
-    <tr><td class="tname">Golden Trust</td><td class="mono">${bdt(2450000)}</td><td>184</td><td class="mono">486.2 g</td><td>146</td><td class="mono">${bdt(49000)}</td><td>${statusBadge('Active')}</td></tr>
-    <tr><td class="tname">Aurelia Jewellers</td><td class="mono">${bdt(2180000)}</td><td>162</td><td class="mono">421.8 g</td><td>128</td><td class="mono">${bdt(43600)}</td><td>${statusBadge('Active')}</td></tr>
-    <tr><td class="tname">Pearl Jewels</td><td class="mono">${bdt(1920000)}</td><td>143</td><td class="mono">374.5 g</td><td>112</td><td class="mono">${bdt(38400)}</td><td>${statusBadge('Active')}</td></tr>
-    <tr><td class="tname">Raj Jewellers</td><td class="mono">${bdt(1460000)}</td><td>109</td><td class="mono">286.1 g</td><td>91</td><td class="mono">${bdt(29200)}</td><td>${statusBadge('Active')}</td></tr>
+  <div class="card admin-report-table"><div class="card-head"><div><div class="card-title">Partner Performance</div><div class="card-sub">Highest marketplace activity during the selected period</div></div><button class="btn btn-outline btn-sm" onclick="toast('Partner performance exported')">${icon('download')} Export</button></div><table class="dtable"><thead><tr><th>Partner Shop</th><th>Qualifying Sales</th><th>Agreements</th><th>Gold Credited</th><th>Commission</th><th>Status</th></tr></thead><tbody>
+    <tr><td class="tname">Golden Trust</td><td class="mono">${bdt(2450000)}</td><td>184</td><td class="mono">486.2 g</td><td class="mono">${bdt(49000)}</td><td>${statusBadge('Active')}</td></tr>
+    <tr><td class="tname">Aurelia Jewellers</td><td class="mono">${bdt(2180000)}</td><td>162</td><td class="mono">421.8 g</td><td class="mono">${bdt(43600)}</td><td>${statusBadge('Active')}</td></tr>
+    <tr><td class="tname">Pearl Jewels</td><td class="mono">${bdt(1920000)}</td><td>143</td><td class="mono">374.5 g</td><td class="mono">${bdt(38400)}</td><td>${statusBadge('Active')}</td></tr>
+    <tr><td class="tname">Raj Jewellers</td><td class="mono">${bdt(1460000)}</td><td>109</td><td class="mono">286.1 g</td><td class="mono">${bdt(29200)}</td><td>${statusBadge('Active')}</td></tr>
   </tbody></table></div>
 
   <div class="grid g-3 report-export-grid">
     <button class="card card-pad report-export-card" onclick="toast('Financial report downloaded')">${icon('coins')}<span><b>Financial Report</b><small>Marketplace value, commissions, and settlement status</small></span>${icon('download')}</button>
-    <button class="card card-pad report-export-card" onclick="toast('Operational report downloaded')">${icon('settings')}<span><b>Operational Report</b><small>Agreements, confirmations, orders, and fulfillment</small></span>${icon('download')}</button>
+    <button class="card card-pad report-export-card" onclick="toast('Records report downloaded')">${icon('settings')}<span><b>Records Report</b><small>Agreements, payment submissions, and confirmations</small></span>${icon('download')}</button>
     <button class="card card-pad report-export-card" onclick="toast('Gold ledger report downloaded')">${icon('book')}<span><b>Gold Ledger Report</b><small>Target gold, credited weight, rates, and progress</small></span>${icon('download')}</button>
   </div>
   <div class="notice report-notice">${icon('help','notice-icon')}<span>Reports represent MIDAS marketplace records. Payments occur outside the platform and should be reconciled against partner-shop evidence before financial use.</span></div>`;

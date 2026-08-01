@@ -11,6 +11,7 @@ import HowItWorks from '../pages/public/HowItWorks'
 import Partner from '../pages/public/Partner'
 import Help from '../pages/public/Help'
 import Legal from '../pages/public/Legal'
+import About from '../pages/public/About'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
 import CustomerDashboard from '../pages/customer/Dashboard'
@@ -21,7 +22,6 @@ import C2C from '../pages/customer/C2C'
 import Settings from '../pages/customer/Settings'
 import ShopDashboard from '../pages/shop/Dashboard'
 import Products from '../pages/shop/Products'
-import Orders from '../pages/shop/Orders'
 import Customers from '../pages/shop/Customers'
 import AdminDashboard from '../pages/admin/Dashboard'
 import Users from '../pages/admin/Users'
@@ -35,6 +35,7 @@ const publicPages = {
   partner: Partner,
   help: Help,
   legal: Legal,
+  about: About,
   c2c: MarketplacePage,
 }
 const customerPages = {
@@ -42,7 +43,7 @@ const customerPages = {
   installments: Installments, c2c: C2C, settings: Settings,
 }
 const shopPages = {
-  dashboard: ShopDashboard, products: Products, orders: Orders, customers: Customers,
+  dashboard: ShopDashboard, products: Products, customers: Customers,
 }
 const adminPages = {
   dashboard: AdminDashboard, users: Users, shops: AdminShops, reports: Reports,

@@ -4,6 +4,7 @@ export const ROUTES = {
     marketplace: '#/public/marketplace',
     howItWorks: '#/public/how-it-works',
     partner: '#/public/partner',
+    about: '#/public/about',
     help: '#/public/help',
     legal: '#/public/legal',
   },
@@ -19,7 +20,6 @@ export const ROUTES = {
   shop: {
     dashboard: '#/shop/dashboard',
     products: '#/shop/products',
-    orders: '#/shop/orders',
     customers: '#/shop/customers',
   },
   admin: {
