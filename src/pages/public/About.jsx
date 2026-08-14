@@ -31,7 +31,7 @@ export default function About() {
           <p>Only partner shops upload marketplace products and confirm receipts.</p>
         </article>
         <article className="feature-card">
-          <h3>Non-custodial</h3>
+          <h3>Noncustodial</h3>
           <p>Payments move directly between customers and shops.</p>
         </article>
       </div>

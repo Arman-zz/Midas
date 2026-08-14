@@ -33,7 +33,7 @@ export default function Sidebar({ role, label, items, active, onClose }) {
         <div className="notice">
           <Icon name="help" className="notice-icon" />
           <span>
-            <b>Non-custodial.</b> MIDAS records transactions; it never holds or moves your money.
+            <b>Noncustodial.</b> MIDAS records transactions; it never holds or moves your money.
           </span>
         </div>
       </div>

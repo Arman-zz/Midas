@@ -9,7 +9,7 @@ export default function Footer() {
             <span>MIDAS</span>
           </a>
           <p>
-            A location-aware marketplace connecting customers with approved partner jewelry shops.
+            A location aware marketplace connecting customers with approved partner jewelry shops.
             MIDAS records agreements and progress. It never receives, holds, or moves customer
             money.
           </p>
@@ -37,7 +37,7 @@ export default function Footer() {
       <div className="foot-bottom">
         <span>© 2026 MIDAS. Bangladesh · v3.1</span>
         <span>
-          MIDAS is non-custodial. Payments are completed directly between customers and partner
+          MIDAS is noncustodial. Payments are completed directly between customers and partner
           shops.
         </span>
       </div>

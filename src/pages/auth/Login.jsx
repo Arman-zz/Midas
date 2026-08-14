@@ -38,7 +38,7 @@ export default function Login() {
         </div>
         <div className="auth-side-foot">
           <span>© 2026 MIDAS · Bangladesh</span>
-          <span>Non-custodial by design</span>
+          <span>Noncustodial by design</span>
         </div>
       </section>
       <div className="auth-form-wrap">

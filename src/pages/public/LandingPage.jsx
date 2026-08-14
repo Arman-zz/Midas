@@ -48,7 +48,7 @@ export default function LandingPage() {
         <h2>One platform, two roles, one ledger.</h2>
         <p className="lead">
           Customers discover and buy. Shop owners accept and confirm. Every action lands in the same
-          non-custodial record.
+          noncustodial record.
         </p>
         <div className="feature-grid">
           <article className="feature-card">

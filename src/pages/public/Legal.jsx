@@ -7,7 +7,7 @@ export default function Legal() {
       intro="These principles explain how MIDAS records marketplace activity."
     >
       <div className="legal-copy">
-        <h2>Non-custodial marketplace policy</h2>
+        <h2>Noncustodial marketplace policy</h2>
         <p>
           MIDAS does not receive, hold, transfer, guarantee, or refund customer payments or gold.
         </p>
