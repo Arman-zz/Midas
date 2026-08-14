@@ -103,3 +103,13 @@ export async function getBangladeshGoldTrend({ days = 30, signal } = {}) {
   }
   return getCoinGeckoTrend(signal)
 }
+
+export async function getCurrentBangladeshGoldPrice({ signal } = {}) {
+  const trend = await getBangladeshGoldTrend({ days: 2, signal })
+  return {
+    goldRate: trend.currentValue,
+    source: trend.source,
+    updatedAt: trend.updatedAt,
+    isMarketProxy: trend.isMarketProxy,
+  }
+}

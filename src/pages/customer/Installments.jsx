@@ -1,38 +1,110 @@
 import InstallmentTable from '../../components/installment/InstallmentTable'
-import { formatBDT, installment, installmentSummary } from '../../data/appData'
+import { formatBDT, installment } from '../../data/appData'
 import { useAuth } from '../../hooks/useAuth'
+import { getCustomerPlanSummary } from '../../services/paymentService'
+import {
+  getActiveCustomerPlan,
+  getCompletedPlanCount,
+  getCustomerPlans,
+  getPendingCustomerPlan,
+} from '../../services/planService'
+import { usePlans } from '../../hooks/usePlans'
 
 export default function Installments() {
   const { user } = useAuth()
-  const hasActivePlan =
-    user?.hasActivePlan === true || user?.email?.toLowerCase() === 'customer@midas.bd'
-  const summary = installmentSummary()
-  const confirmedCount = installment.schedule.filter((row) => row.status === 'Confirmed').length
-  const nextInstallment = installment.schedule.find((row) => row.status === 'Scheduled')
+  usePlans()
+  const activePlan = getActiveCustomerPlan(user?.email)
+  const pendingPlan = getPendingCustomerPlan(user?.email)
+  const completedCount = getCompletedPlanCount(user?.email)
+  const latestCompleted = getCustomerPlans(user?.email).find((plan) => plan.status === 'Completed')
+  const summary = activePlan
+    ? getCustomerPlanSummary(
+        user?.name,
+        activePlan.targetGoldGrams,
+        activePlan.agreement,
+        activePlan,
+      )
+    : null
+  const confirmedCount = summary?.payments.length || 0
+  const schedule = activePlan?.legacySchedule
+    ? installment.schedule
+    : (summary?.payments || []).map((payment, index) => ({
+        ...payment,
+        n: index + 1,
+        due: payment.date,
+        status: 'Confirmed',
+      }))
+  const nextInstallment = activePlan?.legacySchedule
+    ? installment.schedule.find((row) => row.status === 'Scheduled')
+    : null
 
-  if (!hasActivePlan)
+  if (!activePlan)
     return (
-      <article className="card no-plan-card">
-        <div className="card-pad">
-          <span className="badge badge-gold">No active plan</span>
-          <h2>You haven't started an installment plan yet</h2>
-          <p>Explore jewelry and send a plan request to one of our partner shops.</p>
-          <a className="btn btn-gold" href="#/customer/marketplace">
-            Explore jewelry
-          </a>
-        </div>
-      </article>
+      <>
+        {latestCompleted && (
+          <article className="card installment-congratulations" role="status">
+            <span className="seal" aria-hidden="true">
+              ✓
+            </span>
+            <div>
+              <span className="installment-kicker">100% complete</span>
+              <h2>Congratulations, {user?.name}!</h2>
+              <p>You completed your gold goal for {latestCompleted.product}.</p>
+            </div>
+          </article>
+        )}
+        <article className="card no-plan-card">
+          <div className="card-pad">
+            <span className={`badge ${pendingPlan ? 'badge-warn' : 'badge-gold'}`}>
+              {pendingPlan ? 'Awaiting shop approval' : 'No active plan'}
+            </span>
+            <h2>
+              {pendingPlan
+                ? pendingPlan.product
+                : completedCount
+                  ? 'Start another plan'
+                  : "You haven't started an installment plan yet"}
+            </h2>
+            <p>
+              {pendingPlan
+                ? `${pendingPlan.shop} will approve or reject your request.`
+                : 'Explore jewelry and send a plan request to one of our partner shops.'}
+            </p>
+            <p className="u-muted">Plans completed: {completedCount}</p>
+            {!pendingPlan && (
+              <a className="btn btn-gold" href="#/customer/marketplace">
+                Explore jewelry
+              </a>
+            )}
+          </div>
+        </article>
+      </>
     )
 
   return (
     <>
+      {summary.isComplete && (
+        <article className="card installment-congratulations" role="status">
+          <span className="seal" aria-hidden="true">
+            ✓
+          </span>
+          <div>
+            <span className="installment-kicker">Target achieved</span>
+            <h2>Congratulations, {user?.name}!</h2>
+            <p>
+              You now own {summary.goldOwned.toFixed(3)} g of gold and have completed your goal for
+              {` ${activePlan.product}`}.
+            </p>
+          </div>
+        </article>
+      )}
       <article className="card active-installment-card installment-overview-card">
         <div className="card-head installment-overview-head">
           <div className="installment-title-group">
             <span className="installment-kicker">Your active plan</span>
-            <div className="card-title">{installment.product}</div>
+            <div className="card-title">{activePlan.product}</div>
             <div className="card-sub">
-              {installment.shop} · {installment.purity} gold
+              {activePlan.shop} · {activePlan.purity} gold
             </div>
           </div>
           <span className="badge badge-green">Active Agreement</span>
@@ -41,8 +113,8 @@ export default function Installments() {
           <div className="installment-metrics">
             <div className="installment-metric">
               <span className="stat-label">Gold target</span>
-              <strong>{installment.targetGoldGrams.toFixed(2)} g</strong>
-              <small>{installment.purity} jewelry goal</small>
+              <strong>{activePlan.targetGoldGrams.toFixed(2)} g</strong>
+              <small>{activePlan.purity} jewelry goal</small>
             </div>
             <div className="installment-metric">
               <span className="stat-label">Confirmed gold</span>
@@ -75,7 +147,7 @@ export default function Installments() {
             </div>
             <div className="installment-progress-foot">
               <span>0 g</span>
-              <span>{installment.targetGoldGrams.toFixed(2)} g target</span>
+              <span>{activePlan.targetGoldGrams.toFixed(2)} g target</span>
             </div>
           </div>
 
@@ -102,10 +174,14 @@ export default function Installments() {
             A complete record of confirmed and upcoming payments.
           </p>
         </div>
-        <span className="badge badge-muted">{installment.schedule.length} installments</span>
+        <span className="badge badge-muted">{schedule.length} recorded / scheduled</span>
       </div>
       <div className="card installment-schedule-card">
-        <InstallmentTable rows={installment.schedule} />
+        {schedule.length ? (
+          <InstallmentTable rows={schedule} />
+        ) : (
+          <div className="shop-filter-empty">No payments yet. Your plan starts at 0%.</div>
+        )}
       </div>
     </>
   )

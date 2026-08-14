@@ -1,7 +1,6 @@
 export const shops = [
   {
     id: 'sh-01',
-    verified: true,
     name: 'Diamond Plaza — Dhanmondi',
     area: 'Shimanto Shambhar, Level 3, Shop 3102, Jigatola, Dhanmondi, Dhaka',
     rating: 4.8,
@@ -12,7 +11,6 @@ export const shops = [
   },
   {
     id: 'sh-02',
-    verified: true,
     name: 'Diamond World — Gulshan',
     area: 'Tower of Aakash, 54 Gulshan Avenue, Gulshan 1, Dhaka 1212',
     rating: 4.9,
@@ -24,7 +22,6 @@ export const shops = [
   },
   {
     id: 'sh-03',
-    verified: true,
     name: 'Carat World',
     area: 'Shops 7–8, Block B, Level 7, Bashundhara City, Panthapath, Dhaka',
     rating: 4.7,
@@ -35,7 +32,6 @@ export const shops = [
   },
   {
     id: 'sh-04',
-    verified: true,
     name: 'Al-Amin Jewellers — Uttara',
     area: 'Shops 26–27, 1st Floor, Amir Complex, Uttara Model Town, Dhaka',
     rating: 4.6,
@@ -47,7 +43,6 @@ export const shops = [
   },
   {
     id: 'sh-05',
-    verified: true,
     name: 'Diamond Plaza — Mirpur',
     area: 'Level 3, Shop 22, Mirpur DOHS Shopping Complex, Mirpur 12, Dhaka 1216',
     rating: 4.5,
@@ -58,7 +53,6 @@ export const shops = [
   },
   {
     id: 'sh-06',
-    verified: true,
     name: 'Diamond Plaza — Bashundhara',
     area: 'Block B, Level 7, Shop 10, Bashundhara City Shopping Complex, Dhaka',
     rating: 4.7,
@@ -133,8 +127,8 @@ export const installment = {
     { n: 2, due: '15 May 2025', amount: 10000, goldRate: 9680, status: 'Confirmed' },
     { n: 3, due: '15 Jun 2025', amount: 10000, goldRate: 9810, status: 'Confirmed' },
     { n: 4, due: '15 Jul 2025', amount: 20000, goldRate: 10020, status: 'Confirmed' },
-    { n: 5, due: '15 Aug 2025', amount: 10000, status: 'Scheduled' },
-    { n: 6, due: '15 Sep 2025', amount: 20000, status: 'Scheduled' },
+    { n: 5, due: '15 Aug 2025', amount: 10000, goldRate: 10020, status: 'Scheduled' },
+    { n: 6, due: '15 Sep 2025', amount: 20000, goldRate: 10150, status: 'Scheduled' },
   ],
 }
 
@@ -206,36 +200,6 @@ export const c2cListings = [
     seller: 'User_2210',
     area: 'Dhanmondi, Dhaka',
     image: '/images/gold-bangle-set.png',
-  },
-  {
-    id: 'c3',
-    title: '2.5 g Confirmed Gold',
-    listingType: 'gold-weight',
-    weight: 2.5,
-    purity: '22K',
-    price: 25500,
-    seller: 'Rahman Khan',
-    area: 'Mohammadpur, Dhaka',
-  },
-  {
-    id: 'c4',
-    title: '5 g Confirmed Gold',
-    listingType: 'gold-weight',
-    weight: 5,
-    purity: '22K',
-    price: 50750,
-    seller: 'Tahmina Akter',
-    area: 'Dhanmondi, Dhaka',
-  },
-  {
-    id: 'c5',
-    title: '1.75 g Confirmed Gold',
-    listingType: 'gold-weight',
-    weight: 1.75,
-    purity: '21K',
-    price: 16800,
-    seller: 'Mehedi Hasan',
-    area: 'Mirpur, Dhaka',
   },
 ]
 

@@ -1,11 +1,16 @@
-import { formatBDT, installment, requests, shops } from '../../data/appData'
+import { formatBDT, installment, shops } from '../../data/appData'
 import { getProducts } from '../../services/productService'
 import { getPaymentRecords } from '../../services/paymentService'
+import { getPlans } from '../../services/planService'
+import { usePlans } from '../../hooks/usePlans'
 
 export default function Dashboard() {
+  usePlans()
   const paymentRecords = getPaymentRecords()
   const paymentTotal = paymentRecords.reduce((sum, row) => sum + row.amount, 0)
-  const installmentRequests = requests.filter((row) => row.type === 'Installment')
+  const plans = getPlans()
+  const pendingRequests = plans.filter((row) => row.status === 'Pending')
+  const installmentRequests = plans.filter((row) => row.status === 'Active')
   const shopProducts = getProducts().filter((product) => product.shop === shops[0].name)
   const outOfStock = shopProducts.filter((product) => !product.inStock).length
 
@@ -30,7 +35,7 @@ export default function Dashboard() {
       <section className="shop-metric-grid" aria-label="Shop overview">
         <article className="card shop-metric-card attention">
           <span className="stat-label">Requests to review</span>
-          <strong>{requests.length}</strong>
+          <strong>{pendingRequests.length}</strong>
           <a href="#/shop/requests">Review requests →</a>
         </article>
         <article className="card shop-metric-card">
@@ -57,17 +62,15 @@ export default function Dashboard() {
               <div className="card-title">Needs your attention</div>
               <div className="card-sub">Tasks that keep customer plans moving</div>
             </div>
-            <span className="badge badge-warn">{requests.length} open</span>
+            <span className="badge badge-warn">{pendingRequests.length} open</span>
           </div>
           <div className="card-pad shop-task-list">
-            {requests.slice(0, 3).map((row) => (
+            {pendingRequests.slice(0, 3).map((row) => (
               <div className="shop-task" key={`${row.customer}-${row.product}`}>
                 <span className="shop-task-marker" aria-hidden="true" />
                 <span>
                   <b>{row.customer}</b>
-                  <small>
-                    {row.type} request · {row.product}
-                  </small>
+                  <small>Installment request · {row.product}</small>
                 </span>
                 <div>
                   <b>{formatBDT(row.amount)}</b>
@@ -128,7 +131,7 @@ export default function Dashboard() {
                 {installmentRequests.map((row) => (
                   <tr key={row.customer}>
                     <td className="tname">{row.customer}</td>
-                    <td>{installment.targetGoldGrams} g</td>
+                    <td>{row.targetGoldGrams} g</td>
                     <td>{formatBDT(installment.nextAmount)}</td>
                     <td>
                       <span className="badge badge-green">Active</span>

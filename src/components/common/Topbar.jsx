@@ -1,5 +1,15 @@
 import { Icon } from '../../utils/icons'
-export default function Topbar({ title, subtitle, name, onMenu, onLogout, onSearch }) {
+import NotificationCenter from './NotificationCenter'
+export default function Topbar({
+  title,
+  subtitle,
+  name,
+  role,
+  accountKey,
+  onMenu,
+  onLogout,
+  onSearch,
+}) {
   const initials = name
     .split(/\s+/)
     .slice(0, 2)
@@ -25,10 +35,7 @@ export default function Topbar({ title, subtitle, name, onMenu, onLogout, onSear
         />
       </label>
       <div className="topbar-spacer" />
-      <button className="icon-btn">
-        <Icon name="bell" />
-        <span className="dot-badge">3</span>
-      </button>
+      <NotificationCenter role={role} accountKey={accountKey} />
       <div className="profile-chip">
         <div className="avatar">{initials}</div>
         <div className="profile-name">{name}</div>

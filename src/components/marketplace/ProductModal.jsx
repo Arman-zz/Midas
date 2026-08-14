@@ -1,8 +1,17 @@
 import Modal from '../common/Modal'
 import { formatCurrency } from '../../utils/format'
 import { useToast } from '../../context/ToastContext'
+import { useAuth } from '../../hooks/useAuth'
+import {
+  getActiveCustomerPlan,
+  getPendingCustomerPlan,
+  requestInstallmentPlan,
+} from '../../services/planService'
 export default function ProductModal({ product, onClose }) {
   const notify = useToast()
+  const { user } = useAuth()
+  const activePlan = getActiveCustomerPlan(user?.email)
+  const pendingPlan = getPendingCustomerPlan(user?.email)
   return (
     <Modal open={!!product} onClose={onClose}>
       {product && (
@@ -27,12 +36,22 @@ export default function ProductModal({ product, onClose }) {
             </div>
             <button
               className="btn btn-gold btn-block"
+              disabled={Boolean(activePlan || pendingPlan)}
               onClick={() => {
-                notify('Purchase request submitted to the shop')
-                onClose()
+                try {
+                  requestInstallmentPlan(product, user)
+                  notify('Installment request sent to the shop for approval')
+                  onClose()
+                } catch (error) {
+                  notify(error.message)
+                }
               }}
             >
-              Send Purchase Request
+              {activePlan
+                ? 'Active plan already in progress'
+                : pendingPlan
+                  ? 'Request awaiting shop approval'
+                  : 'Request Installment Plan'}
             </button>
           </div>
         </div>

@@ -18,15 +18,15 @@ export default function Reports() {
   const inventoryValue = products.reduce((sum, product) => sum + Number(product.price), 0)
   const inStockProducts = products.filter((product) => product.inStock).length
 
-  const customerValues = Object.entries(
+  const customerGoldTotals = Object.entries(
     records.reduce((totals, record) => {
-      totals[record.customer] = (totals[record.customer] || 0) + Number(record.amount)
+      totals[record.customer] = (totals[record.customer] || 0) + Number(record.goldAmount)
       return totals
     }, {}),
   )
-    .map(([customer, value]) => ({ customer, value }))
-    .sort((a, b) => b.value - a.value)
-  const highestCustomerValue = customerValues[0]?.value || 1
+    .map(([customer, goldGrams]) => ({ customer, goldGrams }))
+    .sort((a, b) => b.goldGrams - a.goldGrams)
+  const highestCustomerGold = customerGoldTotals[0]?.goldGrams || 1
 
   const partnerRows = verifiedShops.map((shop) => {
     const shopProducts = products.filter((product) => product.shop === shop.name)
@@ -119,22 +119,25 @@ export default function Reports() {
         <article className="card">
           <div className="card-head">
             <div>
-              <div className="card-title">Payment value by customer</div>
-              <div className="card-sub">Concentration of recorded platform value</div>
+              <div className="card-title">Gold credited by customer</div>
+              <div className="card-sub">Confirmed gold weight from shop-recorded payments</div>
             </div>
           </div>
           <div className="card-pad admin-customer-value-bars">
-            {customerValues.map((row) => (
+            {customerGoldTotals.map((row) => (
               <div key={row.customer}>
                 <span>
                   <b>{row.customer}</b>
-                  <strong>{formatBDT(row.value)}</strong>
+                  <strong>{row.goldGrams.toFixed(3)} g</strong>
                 </span>
                 <div className="admin-value-track">
-                  <span style={{ width: `${(row.value / highestCustomerValue) * 100}%` }} />
+                  <span style={{ width: `${(row.goldGrams / highestCustomerGold) * 100}%` }} />
                 </div>
               </div>
             ))}
+            {!customerGoldTotals.length && (
+              <div className="shop-filter-empty">No confirmed gold records yet.</div>
+            )}
           </div>
         </article>
 
@@ -164,10 +167,7 @@ export default function Reports() {
             <div>
               <span>Active C2C listings</span>
               <strong>{c2cListings.length}</strong>
-              <small>
-                {c2cListings.filter((listing) => listing.listingType === 'gold-weight').length}{' '}
-                gold-by-weight listings
-              </small>
+              <small>Jewelry resale listings</small>
             </div>
           </div>
         </article>

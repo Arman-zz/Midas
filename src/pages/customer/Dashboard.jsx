@@ -3,16 +3,34 @@ import ProductGrid from '../../components/marketplace/ProductGrid'
 import ProductModal from '../../components/marketplace/ProductModal'
 import ShopCard from '../../components/cards/ShopCard'
 import GoldPriceTrend from '../../components/customer/GoldPriceTrend'
-import { activity, formatBDT, installment, installmentSummary, shops } from '../../data/appData'
+import { activity, formatBDT, shops } from '../../data/appData'
+import { getCustomerPlanSummary } from '../../services/paymentService'
+import {
+  getActiveCustomerPlan,
+  getCompletedPlanCount,
+  getCustomerPlans,
+  getPendingCustomerPlan,
+} from '../../services/planService'
+import { usePlans } from '../../hooks/usePlans'
 import { getProducts } from '../../services/productService'
 import { useAuth } from '../../hooks/useAuth'
 export default function Dashboard({ globalSearch = '' }) {
   const [selected, setSelected] = useState(null)
   const { user } = useAuth()
-  const hasActivePlan =
-    user?.hasActivePlan === true || user?.email?.toLowerCase() === 'customer@midas.bd'
-  const summary = installmentSummary()
-  const transactions = installment.schedule.filter((row) => row.status === 'Confirmed')
+  usePlans()
+  const activePlan = getActiveCustomerPlan(user?.email)
+  const pendingPlan = getPendingCustomerPlan(user?.email)
+  const completedCount = getCompletedPlanCount(user?.email)
+  const latestCompleted = getCustomerPlans(user?.email).find((plan) => plan.status === 'Completed')
+  const summary = activePlan
+    ? getCustomerPlanSummary(
+        user?.name,
+        activePlan.targetGoldGrams,
+        activePlan.agreement,
+        activePlan,
+      )
+    : { payments: [], goldOwned: 0, spent: 0, progress: 0, isComplete: false }
+  const transactions = summary.payments
   const products = getProducts().filter((p) =>
     `${p.name} ${p.shop}`.toLowerCase().includes(globalSearch.toLowerCase()),
   )
@@ -42,14 +60,32 @@ export default function Dashboard({ globalSearch = '' }) {
     )
   return (
     <>
+      {!activePlan && latestCompleted && (
+        <article
+          className="card installment-congratulations dashboard-congratulations"
+          role="status"
+        >
+          <span className="seal" aria-hidden="true">
+            ✓
+          </span>
+          <div>
+            <span className="installment-kicker">100% complete</span>
+            <h2>Congratulations, {user?.name}!</h2>
+            <p>
+              You own your {latestCompleted.targetGoldGrams.toFixed(2)} g target for{' '}
+              {latestCompleted.product}. You can now start another plan.
+            </p>
+          </div>
+        </article>
+      )}
       <div className="grid g-2-1">
-        {hasActivePlan ? (
+        {activePlan ? (
           <article className="card active-installment-card">
             <div className="card-head">
               <div>
                 <div className="card-title">Active Installment</div>
                 <div className="card-sub">
-                  {installment.shop} · {installment.product}
+                  {activePlan.shop} · {activePlan.product}
                 </div>
               </div>
             </div>
@@ -65,7 +101,7 @@ export default function Dashboard({ globalSearch = '' }) {
                 <div>
                   <div className="stat-label">Target jewelry gold</div>
                   <b>
-                    {installment.targetGoldGrams} g {installment.purity}
+                    {activePlan.targetGoldGrams.toFixed(2)} g {activePlan.purity}
                   </b>
                 </div>
                 <div>
@@ -76,12 +112,21 @@ export default function Dashboard({ globalSearch = '' }) {
               <small className="u-muted">Payments are recorded by the partner shop.</small>
             </div>
           </article>
+        ) : pendingPlan ? (
+          <article className="card no-plan-card">
+            <div className="card-pad">
+              <span className="badge badge-warn">Waiting for shop approval</span>
+              <h2>{pendingPlan.product}</h2>
+              <p>{pendingPlan.shop} is reviewing your installment request.</p>
+            </div>
+          </article>
         ) : (
           <article className="card no-plan-card">
             <div className="card-pad">
               <span className="badge badge-gold">No active plan</span>
-              <h2>Start your first gold plan</h2>
+              <h2>{completedCount ? 'Start another gold plan' : 'Start your first gold plan'}</h2>
               <p>Choose jewelry from a partner shop and request an installment agreement.</p>
+              <small className="u-muted">Plans completed: {completedCount}</small>
               <a className="btn btn-gold" href="#/customer/marketplace">
                 Explore jewelry
               </a>
@@ -96,15 +141,15 @@ export default function Dashboard({ globalSearch = '' }) {
             </div>
           </div>
           <div className="card-pad transaction-history-list">
-            {hasActivePlan && transactions.length ? (
+            {activePlan && transactions.length ? (
               transactions.map((row, index) => (
                 <div key={row.n || index}>
                   <span>
                     <b>{formatBDT(row.amount)}</b>
-                    <small>{row.due}</small>
+                    <small>{row.due || row.date}</small>
                   </span>
                   <span>
-                    <b>{(row.amount / row.goldRate).toFixed(3)} g</b>
+                    <b>{Number(row.goldAmount).toFixed(3)} g</b>
                     <small>at {formatBDT(row.goldRate)}/g</small>
                   </span>
                 </div>
@@ -134,17 +179,15 @@ export default function Dashboard({ globalSearch = '' }) {
         <a href="#/customer/marketplace">View all →</a>
       </div>
       <ProductGrid products={products.slice(0, 4)} onSelect={setSelected} />
-      <div className={`grid ${hasActivePlan ? 'g-2' : ''} dashboard-bottom`}>
-        {hasActivePlan && (
+      <div className={`grid ${activePlan ? 'g-2' : ''} dashboard-bottom`}>
+        {activePlan && (
           <article className="card">
             <div className="card-head">
               <div className="card-title">Upcoming Due</div>
             </div>
             <div className="card-pad">
-              <b>{installment.nextDue}</b>
-              <div className="tmeta">
-                {installment.shop} · {formatBDT(installment.nextAmount)}
-              </div>
+              <b>Arrange directly with your shop</b>
+              <div className="tmeta">{activePlan.shop} · no online transaction</div>
             </div>
           </article>
         )}

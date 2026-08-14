@@ -1,24 +1,17 @@
 import { useMemo, useState } from 'react'
-import { formatBDT, installment, requests } from '../../data/appData'
+import { formatBDT, installment } from '../../data/appData'
 import PaymentModal from '../../components/installment/PaymentModal'
 import { useToast } from '../../context/ToastContext'
 import { addPaymentRecord } from '../../services/paymentService'
+import { getPlans } from '../../services/planService'
+import { usePlans } from '../../hooks/usePlans'
 export default function Customers() {
+  usePlans()
   const [selected, setSelected] = useState(null)
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState('all')
   const notify = useToast()
-  const plans = useMemo(
-    () =>
-      requests
-        .filter((row) => row.type === 'Installment')
-        .map((row, index) => ({
-          ...row,
-          agreement: row.agreement || `AG-2025-${String(481 - index).padStart(4, '0')}`,
-          status: 'Active',
-        })),
-    [],
-  )
+  const plans = getPlans().filter((row) => ['Active', 'Completed'].includes(row.status))
   const shown = useMemo(() => {
     const needle = query.trim().toLowerCase()
     return plans.filter(
@@ -69,12 +62,12 @@ export default function Customers() {
             </tr>
           </thead>
           <tbody>
-            {shown.map((row, index) => (
+            {shown.map((row) => (
               <tr key={row.customer}>
                 <td className="tname">{row.customer}</td>
                 <td>{row.product}</td>
                 <td>{formatBDT(row.amount)}</td>
-                <td>{index ? '8.20 g' : `${installment.targetGoldGrams} g`}</td>
+                <td>{row.targetGoldGrams.toFixed(2)} g</td>
                 <td>
                   <span
                     className={`badge ${row.status === 'Active' ? 'badge-green' : 'badge-muted'}`}
@@ -83,7 +76,11 @@ export default function Customers() {
                   </span>
                 </td>
                 <td>
-                  <button className="btn btn-gold btn-sm" onClick={() => setSelected(row)}>
+                  <button
+                    className="btn btn-gold btn-sm"
+                    disabled={row.status !== 'Active'}
+                    onClick={() => setSelected(row)}
+                  >
                     Record payment
                   </button>
                 </td>
@@ -107,6 +104,7 @@ export default function Customers() {
             addPaymentRecord({
               ...payment,
               agreement: selected.agreement,
+              planId: selected.id,
               date: new Date(`${payment.date}T00:00:00`).toLocaleDateString('en-BD', {
                 day: 'numeric',
                 month: 'short',

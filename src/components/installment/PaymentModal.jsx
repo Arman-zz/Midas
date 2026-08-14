@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react'
 import Modal from '../common/Modal'
+import { getCurrentBangladeshGoldPrice } from '../../services/goldPriceService'
 
 function localDate() {
   const now = new Date()
@@ -14,16 +16,38 @@ export default function PaymentModal({
   defaultGoldRate,
   onSubmit,
 }) {
+  const [rate, setRate] = useState(null)
+  const [rateMeta, setRateMeta] = useState(null)
+  const [rateError, setRateError] = useState('')
+
+  useEffect(() => {
+    if (!open) return undefined
+    const controller = new AbortController()
+    setRate(null)
+    setRateError('')
+    getCurrentBangladeshGoldPrice({ signal: controller.signal })
+      .then((result) => {
+        setRate(result.goldRate)
+        setRateMeta(result)
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError') setRateError(error.message)
+      })
+    return () => controller.abort()
+  }, [open])
+
   const submit = (event) => {
     event.preventDefault()
+    if (!rate) return
     const form = new FormData(event.currentTarget)
     const amount = Number(form.get('amount'))
-    const goldRate = Number(form.get('goldRate'))
     onSubmit({
       invoiceId: form.get('invoiceId').trim(),
       amount,
-      goldRate,
-      goldAmount: amount / goldRate,
+      goldRate: rate,
+      goldAmount: amount / rate,
+      goldRateSource: rateMeta.source,
+      goldRateUpdatedAt: rateMeta.updatedAt.toISOString(),
       date: form.get('date'),
       customer,
       product,
@@ -62,11 +86,14 @@ export default function PaymentModal({
             type="number"
             min="1"
             step="0.01"
-            defaultValue={defaultGoldRate}
-            required
+            value={rate ? rate.toFixed(2) : ''}
+            placeholder="Loading live rate…"
+            readOnly
           />
           <small className="field-help">
-            The converted gold amount is calculated from payment ÷ gold rate.
+            {rateMeta
+              ? `Live 22K market rate from ${rateMeta.source}. It will be stored with this approval.`
+              : rateError || `Fetching live rate (fallback reference: ${defaultGoldRate})…`}
           </small>
         </div>
         <div className="field-row">
@@ -97,7 +124,9 @@ export default function PaymentModal({
             required
           />
         </div>
-        <button className="btn btn-gold btn-block">Save payment record</button>
+        <button className="btn btn-gold btn-block" disabled={!rate}>
+          {rate ? 'Approve payment & convert to gold' : 'Waiting for live gold rate…'}
+        </button>
       </form>
     </Modal>
   )

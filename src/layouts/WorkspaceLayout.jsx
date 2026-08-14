@@ -24,6 +24,8 @@ export default function WorkspaceLayout({ children, role, label, items, active, 
           title={title}
           subtitle={subtitle}
           name={user?.name || label}
+          role={role}
+          accountKey={user?.email || user?.name || role}
           onMenu={() => document.body.classList.toggle('sidebar-open')}
           onLogout={signOut}
           onSearch={setSearch}

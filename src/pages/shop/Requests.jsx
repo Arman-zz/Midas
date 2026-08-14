@@ -1,35 +1,40 @@
 import { useMemo, useState } from 'react'
-import { formatBDT, requests } from '../../data/appData'
+import { formatBDT } from '../../data/appData'
 import { useToast } from '../../context/ToastContext'
+import { decidePlanRequest, getPlans } from '../../services/planService'
+import { usePlans } from '../../hooks/usePlans'
 
 export default function Requests() {
-  const [rows, setRows] = useState(() => requests.map((row) => ({ ...row, status: 'Pending' })))
+  usePlans()
   const [query, setQuery] = useState('')
-  const [type, setType] = useState('all')
   const [status, setStatus] = useState('all')
   const notify = useToast()
+  const rows = getPlans().filter((plan) => plan.requestedAt && !plan.legacySchedule)
   const shown = useMemo(() => {
     const needle = query.trim().toLowerCase()
     return rows.filter(
       (row) =>
-        (!needle || `${row.customer} ${row.product}`.toLowerCase().includes(needle)) &&
-        (type === 'all' || row.type === type) &&
+        (!needle || `${row.customer} ${row.product} ${row.shop}`.toLowerCase().includes(needle)) &&
         (status === 'all' || row.status === status),
     )
-  }, [rows, query, type, status])
+  }, [rows, query, status])
 
-  const accept = (product) => {
-    setRows((current) =>
-      current.map((row) => (row.product === product ? { ...row, status: 'Accepted' } : row)),
-    )
-    notify('Request accepted; agreement created')
+  const decide = (id, decision) => {
+    try {
+      decidePlanRequest(id, decision)
+      notify(
+        decision === 'Approved' ? 'Plan approved; it is now active at 0%' : 'Plan request rejected',
+      )
+    } catch (error) {
+      notify(error.message)
+    }
   }
 
   return (
     <>
       <div className="shop-filter-bar">
         <div>
-          <h2>Purchase requests</h2>
+          <h2>Installment requests</h2>
           <p>{shown.length} requests shown</p>
         </div>
         <div className="shop-filter-controls">
@@ -39,18 +44,8 @@ export default function Requests() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search customer or jewelry"
-            aria-label="Search purchase requests"
+            aria-label="Search installment requests"
           />
-          <select
-            className="field"
-            value={type}
-            onChange={(event) => setType(event.target.value)}
-            aria-label="Filter by purchase type"
-          >
-            <option value="all">All types</option>
-            <option value="Installment">Installment</option>
-            <option value="Direct">Direct</option>
-          </select>
           <select
             className="field"
             value={status}
@@ -59,7 +54,9 @@ export default function Requests() {
           >
             <option value="all">All statuses</option>
             <option value="Pending">Pending</option>
-            <option value="Accepted">Accepted</option>
+            <option value="Active">Approved</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Completed">Completed</option>
           </select>
         </div>
       </div>
@@ -69,43 +66,57 @@ export default function Requests() {
             <tr>
               <th>Customer</th>
               <th>Jewelry</th>
-              <th>Type</th>
+              <th>Target</th>
               <th>Value</th>
-              <th>Date</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Decision</th>
             </tr>
           </thead>
           <tbody>
             {shown.map((row) => (
-              <tr key={row.product}>
+              <tr key={row.id}>
                 <td className="tname">{row.customer}</td>
-                <td>{row.product}</td>
-                <td>{row.type}</td>
+                <td>
+                  {row.product}
+                  <small className="payment-gold-rate">{row.shop}</small>
+                </td>
+                <td>
+                  {row.targetGoldGrams.toFixed(2)} g {row.purity}
+                </td>
                 <td className="mono">{formatBDT(row.amount)}</td>
-                <td>{row.date}</td>
                 <td>
                   <span
-                    className={`badge ${row.status === 'Accepted' ? 'badge-green' : 'badge-warn'}`}
+                    className={`badge ${row.status === 'Active' || row.status === 'Completed' ? 'badge-green' : row.status === 'Pending' ? 'badge-warn' : 'badge-muted'}`}
                   >
-                    {row.status}
+                    {row.status === 'Active' ? 'Approved' : row.status}
                   </span>
                 </td>
                 <td>
-                  <button
-                    className="btn btn-gold btn-sm"
-                    disabled={row.status === 'Accepted'}
-                    onClick={() => accept(row.product)}
-                  >
-                    {row.status === 'Accepted' ? 'Accepted' : 'Accept'}
-                  </button>
+                  {row.status === 'Pending' ? (
+                    <div className="u-flex">
+                      <button
+                        className="btn btn-gold btn-sm"
+                        onClick={() => decide(row.id, 'Approved')}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        className="btn btn-outline btn-sm"
+                        onClick={() => decide(row.id, 'Rejected')}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="u-muted">Decision recorded</span>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
         {!shown.length && (
-          <div className="shop-filter-empty">No purchase requests match these filters.</div>
+          <div className="shop-filter-empty">No installment requests match these filters.</div>
         )}
       </div>
     </>

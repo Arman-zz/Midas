@@ -1,4 +1,5 @@
 import { confirmations, installment } from '../data/appData'
+import { completePlan, getPlans } from './planService'
 
 const KEY = 'midas-payment-records'
 
@@ -53,6 +54,7 @@ function groupFlatRecords(records) {
 
 function saveGroups(groups) {
   localStorage.setItem(KEY, JSON.stringify(groups))
+  window.dispatchEvent(new CustomEvent('midas:payments-updated'))
 }
 
 export function getPaymentGroups() {
@@ -71,7 +73,6 @@ export function getPaymentGroups() {
             }
           }),
         }))
-        saveGroups(normalized)
         return normalized
       }
       const migrated = groupFlatRecords(saved)
@@ -121,9 +122,40 @@ export function addPaymentRecord(record) {
     amount: Number(record.amount),
     goldRate: Number(record.goldRate),
     goldAmount: Number(record.goldAmount),
+    goldRateSource: record.goldRateSource || 'Live market API',
+    goldRateUpdatedAt: record.goldRateUpdatedAt || new Date().toISOString(),
     date: record.date,
     recordedBy: record.recordedBy || 'Shop',
   })
   saveGroups(groups)
+  const plan = getPlans().find((item) => item.agreement === record.agreement)
+  if (plan) {
+    const summary = getCustomerPlanSummary(
+      plan.customer,
+      plan.targetGoldGrams,
+      plan.agreement,
+      plan,
+    )
+    if (summary.isComplete) completePlan(plan.id)
+  }
   return group
+}
+
+export function getCustomerPlanSummary(customer, targetGoldGrams, agreement, plan) {
+  const basePayments = (plan?.legacySchedule ? installment.schedule : [])
+    .filter((row) => row.status === 'Confirmed' && row.goldRate)
+    .map((row) => ({ ...row, goldAmount: row.amount / row.goldRate, source: 'schedule' }))
+  const approvedPayments = getPaymentRecords()
+    .filter(
+      (row) =>
+        !String(row.id).startsWith('seed-payment-') &&
+        row.customer?.toLowerCase() === customer?.toLowerCase() &&
+        (!agreement || row.agreement === agreement),
+    )
+    .map((row) => ({ ...row, source: 'shop-approval' }))
+  const payments = [...basePayments, ...approvedPayments]
+  const goldOwned = payments.reduce((sum, row) => sum + Number(row.goldAmount), 0)
+  const spent = payments.reduce((sum, row) => sum + Number(row.amount), 0)
+  const progress = targetGoldGrams > 0 ? Math.min(100, (goldOwned / targetGoldGrams) * 100) : 0
+  return { payments, goldOwned, spent, progress, isComplete: progress >= 100 }
 }

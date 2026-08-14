@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import AppRouter from './routes/AppRouter'
+import Chatbot from './components/common/Chatbot'
 
 const translations = {
   'Prototype Navigator': 'প্রোটোটাইপ নেভিগেটর',
@@ -248,6 +249,7 @@ export default function App() {
     <>
       {languageSlot ? createPortal(languageButton, languageSlot) : languageButton}
       <AppRouter />
+      <Chatbot />
     </>
   )
 }
