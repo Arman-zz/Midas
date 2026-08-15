@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useToast } from '../../context/ToastContext'
 
 export default function LoginForm() {
+  const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState({})
   const { login } = useAuth()
   const notify = useToast()
@@ -50,14 +51,25 @@ export default function LoginForm() {
         <label className="field-label" htmlFor="login-password">
           Password
         </label>
-        <input
-          className="field"
-          id="login-password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          placeholder="••••••••"
-        />
+        <div className="password-field-control">
+          <input
+            className="field"
+            id="login-password"
+            name="password"
+            type={showPassword ? 'text' : 'password'}
+            autoComplete="current-password"
+            placeholder="••••••••"
+          />
+          <button
+            className="password-visibility-toggle"
+            type="button"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            aria-pressed={showPassword}
+            onClick={() => setShowPassword((visible) => !visible)}
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
         <div className="field-error">{errors.password}</div>
       </div>
       <div className="auth-form-options">

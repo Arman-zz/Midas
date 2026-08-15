@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useToast } from '../../context/ToastContext'
 export default function RegisterForm() {
   const [role, setRole] = useState('customer')
+  const [showPassword, setShowPassword] = useState(false)
   const { login } = useAuth()
   const notify = useToast()
   const submit = (e) => {
@@ -54,7 +55,24 @@ export default function RegisterForm() {
       </div>
       <div className="field-row">
         <label className="field-label">Password</label>
-        <input className="field" name="password" type="password" minLength="8" required />
+        <div className="password-field-control">
+          <input
+            className="field"
+            name="password"
+            type={showPassword ? 'text' : 'password'}
+            minLength="8"
+            required
+          />
+          <button
+            className="password-visibility-toggle"
+            type="button"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            aria-pressed={showPassword}
+            onClick={() => setShowPassword((visible) => !visible)}
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
       </div>
       <button className="btn btn-gold btn-block auth-submit">
         Create account <span>→</span>
