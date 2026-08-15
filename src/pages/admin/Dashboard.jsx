@@ -1,47 +1,20 @@
-import { c2cListings, formatBDT, requests, shops } from '../../data/appData'
-import { getPaymentGroups, getPaymentRecords } from '../../services/paymentService'
-import { getProducts } from '../../services/productService'
-
-function pendingShopApplication() {
-  try {
-    const profile = JSON.parse(localStorage.getItem('midas-shop-profile') || 'null')
-    return profile?.verificationStatus === 'pending' ? profile : null
-  } catch {
-    return null
-  }
-}
+import { formatBDT } from '../../data/appData'
+import { useApiResource } from '../../hooks/useApiResource'
+import { midasApi } from '../../services/midasApi'
 
 export default function Dashboard() {
-  const products = getProducts()
-  const paymentRecords = getPaymentRecords()
-  const paymentGroups = getPaymentGroups()
-  const pendingShop = pendingShopApplication()
-  const verifiedShops = shops.filter((shop) => shop.verified)
-  const paymentValue = paymentRecords.reduce((sum, record) => sum + Number(record.amount), 0)
+  const { data: report, loading, error } = useApiResource(midasApi.report, [])
+  const { data: shops } = useApiResource(midasApi.adminShops, [])
+  if (loading) return <div className="route-loading">Loading administration overview…</div>
+  if (error)
+    return (
+      <div className="notice" role="alert">
+        {error}
+      </div>
+    )
+  const pendingShops = (shops || []).filter((shop) => shop.verificationStatus === 'pending')
+  const paymentValue = Number(report.paymentValue)
   const commissionDue = paymentValue * 0.02
-  const dataIssues = [
-    {
-      label: 'Payments missing invoice IDs',
-      count: paymentRecords.filter((record) => !record.invoiceId).length,
-      href: '#/admin/transactions',
-    },
-    {
-      label: 'Payments missing gold conversion',
-      count: paymentRecords.filter((record) => !record.goldAmount || !record.goldRate).length,
-      href: '#/admin/transactions',
-    },
-    {
-      label: 'Products missing images',
-      count: products.filter((product) => !product.image).length,
-      href: '#/admin/products',
-    },
-    {
-      label: 'Unverified shops in partner directory',
-      count: shops.filter((shop) => !shop.verified).length,
-      href: '#/admin/shops',
-    },
-  ]
-  const issueTotal = dataIssues.reduce((sum, issue) => sum + issue.count, 0)
 
   return (
     <div className="admin-dashboard">
@@ -49,7 +22,7 @@ export default function Dashboard() {
         <div>
           <span className="shop-dashboard-kicker">Platform operations</span>
           <h2>Administration overview</h2>
-          <p>Monitor partner eligibility, marketplace records, payment data, and platform fees.</p>
+          <p>Live marketplace, agreement, payment, and partner-verification records.</p>
         </div>
         <div className="admin-hero-actions">
           <a className="btn btn-gold" href="#/admin/shops">
@@ -62,21 +35,21 @@ export default function Dashboard() {
       </section>
 
       <section className="admin-ops-metrics" aria-label="Platform overview">
-        <article className={`card admin-ops-metric ${pendingShop ? 'attention' : ''}`}>
+        <article className={`card admin-ops-metric ${pendingShops.length ? 'attention' : ''}`}>
           <span className="stat-label">Verification queue</span>
-          <strong>{pendingShop ? 1 : 0}</strong>
-          <small>{pendingShop ? 'Shop application needs review' : 'No applications waiting'}</small>
+          <strong>{pendingShops.length}</strong>
+          <small>Applications waiting for a decision</small>
         </article>
         <article className="card admin-ops-metric">
           <span className="stat-label">Verified partners</span>
-          <strong>{verifiedShops.length}</strong>
-          <small>{products.length} marketplace products</small>
+          <strong>{report.verifiedShops}</strong>
+          <small>{report.products} marketplace products</small>
         </article>
         <article className="card admin-ops-metric">
           <span className="stat-label">Recorded payment value</span>
           <strong className="admin-ops-money">{formatBDT(paymentValue)}</strong>
           <small>
-            {paymentRecords.length} invoices across {paymentGroups.length} agreements
+            {report.invoices} invoices across {report.agreements} agreements
           </small>
         </article>
         <article className="card admin-ops-metric">
@@ -86,86 +59,23 @@ export default function Dashboard() {
         </article>
       </section>
 
-      <section className="admin-priority-layout">
-        <article className="card">
-          <div className="card-head">
-            <div>
-              <div className="card-title">Needs administrator attention</div>
-              <div className="card-sub">Items requiring review or follow-up</div>
-            </div>
-            <span
-              className={`badge ${pendingShop || requests.length ? 'badge-warn' : 'badge-green'}`}
-            >
-              {(pendingShop ? 1 : 0) + requests.length} open
-            </span>
-          </div>
-          <div className="card-pad admin-attention-list">
-            {pendingShop && (
-              <div>
-                <span className="admin-attention-marker urgent" />
-                <span>
-                  <b>{pendingShop.name || 'New shop'} verification application</b>
-                  <small>Review business identity and uploaded documents before approval.</small>
-                </span>
-                <a href="#/admin/shops">Review</a>
-              </div>
-            )}
-            <div>
-              <span className="admin-attention-marker" />
-              <span>
-                <b>{requests.length} purchase requests are open</b>
-                <small>Monitor request handling and agreement creation across partner shops.</small>
-              </span>
-              <a href="#/admin/agreements">View</a>
-            </div>
-            <div>
-              <span className="admin-attention-marker" />
-              <span>
-                <b>{formatBDT(commissionDue)} commission is recorded</b>
-                <small>Review partner commission statements and outstanding platform fees.</small>
-              </span>
-              <a href="#/admin/commissions">Review</a>
-            </div>
-          </div>
-        </article>
-
-        <article className="card">
-          <div className="card-head">
-            <div>
-              <div className="card-title">Record integrity</div>
-              <div className="card-sub">Automated checks across platform data</div>
-            </div>
-            <span className={`badge ${issueTotal ? 'badge-warn' : 'badge-green'}`}>
-              {issueTotal ? `${issueTotal} issues` : 'Healthy'}
-            </span>
-          </div>
-          <div className="card-pad admin-integrity-list">
-            {dataIssues.map((issue) => (
-              <a href={issue.href} key={issue.label}>
-                <span className={issue.count ? 'has-issue' : ''}>{issue.count ? '!' : '✓'}</span>
-                <b>{issue.label}</b>
-                <strong>{issue.count}</strong>
-              </a>
-            ))}
-          </div>
-        </article>
-      </section>
-
       <section className="admin-platform-snapshot">
         <article className="card card-pad">
-          <span className="stat-label">Active customer agreements</span>
-          <strong>{paymentGroups.length}</strong>
+          <span className="stat-label">Open plan requests</span>
+          <strong>{report.openRequests}</strong>
           <a href="#/admin/agreements">Manage agreements →</a>
         </article>
         <article className="card card-pad">
-          <span className="stat-label">C2C marketplace listings</span>
-          <strong>{c2cListings.length}</strong>
+          <span className="stat-label">Active C2C listings</span>
+          <strong>{report.activeC2c}</strong>
           <a href="#/admin/products">Review marketplace →</a>
         </article>
         <article className="card card-pad">
-          <span className="stat-label">Open purchase requests</span>
-          <strong>{requests.length}</strong>
-          <a href="#/admin/agreements">View activity →</a>
+          <span className="stat-label">Products in stock</span>
+          <strong>
+            {report.inStockProducts}/{report.products}
+          </strong>
+          <a href="#/admin/products">View catalog →</a>
         </article>
       </section>
 
@@ -173,7 +83,7 @@ export default function Dashboard() {
         <div className="card-head">
           <div>
             <div className="card-title">Recent payment records</div>
-            <div className="card-sub">Latest invoices recorded by partner shops</div>
+            <div className="card-sub">Latest partner shop invoices</div>
           </div>
           <a href="#/admin/transactions">View all</a>
         </div>
@@ -185,18 +95,18 @@ export default function Dashboard() {
                 <th>Customer</th>
                 <th>Agreement</th>
                 <th>Payment</th>
-                <th>Gold converted</th>
+                <th>Gold</th>
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
-              {paymentRecords.slice(0, 5).map((record) => (
-                <tr key={record.id || record.invoiceId}>
+              {(report.payments || []).slice(0, 5).map((record) => (
+                <tr key={record.invoiceId}>
                   <td className="mono">{record.invoiceId}</td>
                   <td className="tname">{record.customer}</td>
                   <td className="mono">{record.agreement}</td>
-                  <td className="mono">{formatBDT(record.amount)}</td>
-                  <td className="mono">{record.goldAmount.toFixed(3)} g</td>
+                  <td>{formatBDT(record.amount)}</td>
+                  <td>{Number(record.goldAmount).toFixed(3)} g</td>
                   <td>{record.date}</td>
                 </tr>
               ))}
@@ -204,11 +114,6 @@ export default function Dashboard() {
           </table>
         </div>
       </section>
-
-      <p className="admin-dashboard-note">
-        MIDAS records platform activity and gold conversions but does not receive or hold customer
-        payments.
-      </p>
     </div>
   )
 }

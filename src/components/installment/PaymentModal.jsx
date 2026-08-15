@@ -14,6 +14,8 @@ export default function PaymentModal({
   product,
   defaultAmount,
   defaultGoldRate,
+  defaultInvoiceId = '',
+  invoiceReadOnly = false,
   onSubmit,
 }) {
   const [rate, setRate] = useState(null)
@@ -69,6 +71,8 @@ export default function PaymentModal({
             className="field mono"
             id="payment-invoice-id"
             name="invoiceId"
+            defaultValue={defaultInvoiceId}
+            readOnly={invoiceReadOnly}
             placeholder="e.g. INV-2026-0042"
             autoComplete="off"
             required

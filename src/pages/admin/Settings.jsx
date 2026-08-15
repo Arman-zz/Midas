@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useToast } from '../../context/ToastContext'
+import { midasApi } from '../../services/midasApi'
 
 const defaults = {
   commissionRate: '2.0',
@@ -20,28 +21,41 @@ const defaults = {
   commissionAlerts: true,
 }
 
-function savedSettings() {
-  try {
-    return JSON.parse(localStorage.getItem('midas-platform-settings') || '{}')
-  } catch {
-    return {}
-  }
-}
-
 export default function Settings() {
-  const [data, setData] = useState(() => ({ ...defaults, ...savedSettings() }))
+  const [data, setData] = useState(defaults)
   const [savedAt, setSavedAt] = useState('')
   const notify = useToast()
+  useEffect(() => {
+    midasApi
+      .settings()
+      .then((settings) =>
+        setData((current) => ({
+          ...current,
+          commissionRate: settings.commission_rate ?? current.commissionRate,
+          minimumInstallment: settings.minimum_installment_bdt ?? current.minimumInstallment,
+          paymentEditWindow: settings.payment_edit_window_hours ?? current.paymentEditWindow,
+        })),
+      )
+      .catch((error) => notify(error.message))
+  }, [notify])
   const update = (field) => (event) =>
     setData((current) => ({
       ...current,
       [field]: event.target.type === 'checkbox' ? event.target.checked : event.target.value,
     }))
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault()
-    localStorage.setItem('midas-platform-settings', JSON.stringify(data))
-    setSavedAt(new Date().toLocaleTimeString('en-BD', { hour: 'numeric', minute: '2-digit' }))
-    notify('Platform settings saved')
+    try {
+      await midasApi.saveSettings({
+        commission_rate: data.commissionRate,
+        minimum_installment_bdt: data.minimumInstallment,
+        payment_edit_window_hours: data.paymentEditWindow,
+      })
+      setSavedAt(new Date().toLocaleTimeString('en-BD', { hour: 'numeric', minute: '2-digit' }))
+      notify('Platform settings saved')
+    } catch (error) {
+      notify(error.message)
+    }
   }
 
   return (
@@ -99,7 +113,7 @@ export default function Settings() {
                 />
                 <span>%</span>
               </div>
-              <small>Applied to qualifying shop-recorded payment value.</small>
+              <small>Applied to qualifying shop recorded payment value.</small>
             </div>
             <div className="settings-control">
               <label className="field-label" htmlFor="minimum-installment">

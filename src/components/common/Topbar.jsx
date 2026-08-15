@@ -4,6 +4,7 @@ export default function Topbar({
   title,
   subtitle,
   name,
+  email,
   role,
   accountKey,
   onMenu,
@@ -38,7 +39,10 @@ export default function Topbar({
       <NotificationCenter role={role} accountKey={accountKey} />
       <div className="profile-chip">
         <div className="avatar">{initials}</div>
-        <div className="profile-name">{name}</div>
+        <div>
+          <div className="profile-name">{name}</div>
+          {email && <small className="profile-email">{email}</small>}
+        </div>
       </div>
       <button className="btn btn-outline btn-sm logout-button" onClick={onLogout}>
         Log out

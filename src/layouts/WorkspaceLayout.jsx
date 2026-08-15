@@ -21,9 +21,11 @@ export default function WorkspaceLayout({ children, role, label, items, active, 
       <Sidebar role={role} label={label} items={items} active={active} onClose={close} />
       <div className="main">
         <Topbar
+          key={user?.id || user?.email || role}
           title={title}
           subtitle={subtitle}
           name={user?.name || label}
+          email={user?.email || ''}
           role={role}
           accountKey={user?.email || user?.name || role}
           onMenu={() => document.body.classList.toggle('sidebar-open')}

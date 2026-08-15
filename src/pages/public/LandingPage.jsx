@@ -1,6 +1,7 @@
 import ProductGrid from '../../components/marketplace/ProductGrid'
-import { getProducts } from '../../services/productService'
+import { useProducts } from '../../hooks/useProducts'
 export default function LandingPage() {
+  const { products } = useProducts()
   return (
     <>
       <section className="hero">
@@ -78,7 +79,7 @@ export default function LandingPage() {
             </div>
             <a href="#/public/marketplace">View all jewelry →</a>
           </div>
-          <ProductGrid products={getProducts().slice(0, 4)} />
+          <ProductGrid products={products.slice(0, 4)} />
         </div>
       </section>
       <section className="pub-section">

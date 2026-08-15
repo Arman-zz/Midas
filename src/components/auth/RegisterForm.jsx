@@ -4,22 +4,24 @@ import { useToast } from '../../context/ToastContext'
 export default function RegisterForm() {
   const [role, setRole] = useState('customer')
   const [showPassword, setShowPassword] = useState(false)
-  const { login } = useAuth()
+  const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const { register } = useAuth()
   const notify = useToast()
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
     const data = Object.fromEntries(new FormData(e.currentTarget))
-    const session = {
-      name: data.name,
-      email: data.email,
-      role,
-      hasActivePlan: false,
-      verified: false,
+    setError('')
+    setSubmitting(true)
+    try {
+      await register({ ...data, role })
+      location.hash = role === 'customer' ? '#/customer/settings' : `#/${role}/dashboard`
+      notify('Your MIDAS account is ready')
+    } catch (submitError) {
+      setError(submitError.message)
+    } finally {
+      setSubmitting(false)
     }
-    localStorage.setItem('midas-profile', JSON.stringify(data))
-    login(session)
-    location.hash = `#/${role}/dashboard`
-    notify('Your MIDAS account is ready')
   }
   return (
     <form className="auth-card" onSubmit={submit}>
@@ -60,7 +62,11 @@ export default function RegisterForm() {
             className="field"
             name="password"
             type={showPassword ? 'text' : 'password'}
-            minLength="8"
+            minLength="10"
+            maxLength="128"
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{10,128}"
+            title="Use at least 10 characters with uppercase, lowercase, and a number"
+            autoComplete="new-password"
             required
           />
           <button
@@ -74,8 +80,13 @@ export default function RegisterForm() {
           </button>
         </div>
       </div>
-      <button className="btn btn-gold btn-block auth-submit">
-        Create account <span>→</span>
+      {error && (
+        <div className="field-error" role="alert">
+          {error}
+        </div>
+      )}
+      <button className="btn btn-gold btn-block auth-submit" disabled={submitting}>
+        {submitting ? 'Creating account…' : 'Create account'} <span>→</span>
       </button>
       <div className="auth-divider">
         <span>Already registered?</span>

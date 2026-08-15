@@ -1,17 +1,28 @@
 import { useState } from 'react'
 import { useToast } from '../../context/ToastContext'
+import { useAuth } from '../../hooks/useAuth'
+import { midasApi } from '../../services/midasApi'
 export default function Settings() {
-  let initial = {}
-  try {
-    initial = JSON.parse(localStorage.getItem('midas-profile') || '{}')
-  } catch {}
-  const [profile, setProfile] = useState(initial)
+  const { user, refreshSession } = useAuth()
+  const onboarding = !user?.profileComplete
+  const [profile, setProfile] = useState(() => ({
+    name: user?.name || '',
+    mobile: user?.mobile || '',
+    area: user?.area || '',
+    nid: user?.nid || '',
+  }))
   const notify = useToast()
   const change = (e) => setProfile((v) => ({ ...v, [e.target.name]: e.target.value }))
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
-    localStorage.setItem('midas-profile', JSON.stringify(profile))
-    notify('Account settings saved')
+    try {
+      await midasApi.updateProfile(profile)
+      await refreshSession()
+      notify('Account settings saved')
+      if (onboarding) location.hash = '#/customer/dashboard'
+    } catch (error) {
+      notify(error.message)
+    }
   }
   return (
     <article className="card settings-card">
@@ -22,16 +33,16 @@ export default function Settings() {
         </div>
       </div>
       <form className="card-pad" onSubmit={submit}>
+        {onboarding && (
+          <div className="notice" role="status">
+            Complete your profile to continue. Your area and valid NID are required before using the
+            customer dashboard.
+          </div>
+        )}
         <div className="field-grid field-row">
           <div>
             <label className="field-label">Full name</label>
-            <input
-              className="field"
-              name="name"
-              value={profile.name || 'Midas Customer'}
-              onChange={change}
-              required
-            />
+            <input className="field" name="name" value={profile.name} onChange={change} required />
           </div>
           <div>
             <label className="field-label">Mobile number</label>
@@ -41,6 +52,7 @@ export default function Settings() {
               value={profile.mobile || ''}
               onChange={change}
               placeholder="01XXXXXXXXX"
+              required
             />
           </div>
         </div>
@@ -54,17 +66,18 @@ export default function Settings() {
             value={profile.nid || ''}
             onChange={change}
             placeholder="10, 13, or 17-digit NID number"
+            required
           />
           <div className="tmeta">Enter a valid Bangladesh National ID number.</div>
         </div>
         <div className="field-row">
-          <label className="field-label">Email address</label>
+          <label className="field-label">Area</label>
           <input
             className="field"
-            name="email"
-            type="email"
-            value={profile.email || ''}
+            name="area"
+            value={profile.area || ''}
             onChange={change}
+            required
           />
         </div>
         <button className="btn btn-gold">Save changes</button>

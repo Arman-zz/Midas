@@ -1,29 +1,42 @@
-import { useState } from 'react'
-import { login as authenticate } from '../../services/authService'
+import { useRef, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { useToast } from '../../context/ToastContext'
 
 export default function LoginForm() {
+  const rememberedIdentity = localStorage.getItem('midas-remembered-identity') || ''
+  const [identity, setIdentity] = useState(rememberedIdentity)
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [remember, setRemember] = useState(Boolean(rememberedIdentity))
   const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
+  const passwordRef = useRef(null)
   const { login } = useAuth()
   const notify = useToast()
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
     const form = new FormData(e.currentTarget)
-    const identity = form.get('identity').trim()
-    const password = form.get('password')
+    const normalizedIdentity = form.get('identity').trim()
     const next = {}
-    if (!identity) next.identity = 'Enter your email or mobile number.'
+    if (!normalizedIdentity) next.identity = 'Enter your email or mobile number.'
     if (password.length < 8) next.password = 'Password must be at least 8 characters.'
     if (Object.keys(next).length) return setErrors(next)
     try {
-      const session = authenticate(identity, password)
-      login(session)
-      location.hash = `#/${session.role}/dashboard`
+      setSubmitting(true)
+      const session = await login(normalizedIdentity, password)
+      if (remember) localStorage.setItem('midas-remembered-identity', normalizedIdentity)
+      else localStorage.removeItem('midas-remembered-identity')
+      location.hash =
+        session.role === 'customer' && !session.profileComplete
+          ? '#/customer/settings'
+          : `#/${session.role}/dashboard`
       notify(`Welcome back, ${session.name}`)
     } catch (err) {
       setErrors({ identity: err.message })
+      setPassword('')
+      requestAnimationFrame(() => passwordRef.current?.focus())
+    } finally {
+      setSubmitting(false)
     }
   }
   return (
@@ -42,6 +55,12 @@ export default function LoginForm() {
           className="field"
           id="login-identity"
           name="identity"
+          value={identity}
+          onChange={(event) => {
+            setIdentity(event.target.value)
+            if (errors.identity) setErrors((current) => ({ ...current, identity: '' }))
+          }}
+          onFocus={(event) => event.target.select()}
           autoComplete="username"
           placeholder="e.g. customer@midas.bd"
         />
@@ -56,7 +75,14 @@ export default function LoginForm() {
             className="field"
             id="login-password"
             name="password"
+            ref={passwordRef}
             type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value)
+              if (errors.password) setErrors((current) => ({ ...current, password: '' }))
+            }}
+            onFocus={(event) => event.target.select()}
             autoComplete="current-password"
             placeholder="••••••••"
           />
@@ -74,7 +100,12 @@ export default function LoginForm() {
       </div>
       <div className="auth-form-options">
         <label>
-          <input type="checkbox" /> Remember me
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(event) => setRemember(event.target.checked)}
+          />{' '}
+          Remember me
         </label>
         <button
           className="text-button"
@@ -86,12 +117,14 @@ export default function LoginForm() {
           Forgot password?
         </button>
       </div>
-      <button className="btn btn-gold btn-block auth-submit" type="submit">
-        Log in <span>→</span>
+      <button className="btn btn-gold btn-block auth-submit" type="submit" disabled={submitting}>
+        {submitting ? 'Logging in…' : 'Log in'} <span>→</span>
       </button>
-      <div className="login-hint">
-        Demo: customer@midas.bd, shop@midas.bd, or admin@midas.bd · Password: Midas@123
-      </div>
+      {import.meta.env.DEV && (
+        <div className="login-hint">
+          Demo: customer@midas.bd, shop@midas.bd, or admin@midas.bd · Password: Midas@123
+        </div>
+      )}
       <div className="auth-divider">
         <span>New to MIDAS?</span>
       </div>

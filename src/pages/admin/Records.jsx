@@ -1,18 +1,10 @@
 import DataTable from '../../components/common/DataTable'
-import { formatBDT, shops } from '../../data/appData'
+import { formatBDT } from '../../data/appData'
 import { readRoute } from '../../routes/routes'
-import { getPaymentGroups, getPaymentRecords } from '../../services/paymentService'
+import { useApiResource } from '../../hooks/useApiResource'
+import { midasApi } from '../../services/midasApi'
 
-function Agreements() {
-  const rows = getPaymentGroups().map((group) => ({
-    id: group.agreement,
-    customer: group.customer,
-    product: group.product,
-    payments: group.payments.length,
-    totalPaid: group.payments.reduce((sum, payment) => sum + payment.amount, 0),
-    gold: group.payments.reduce((sum, payment) => sum + payment.goldAmount, 0),
-    status: 'Active',
-  }))
+function Agreements({ rows }) {
   return (
     <RecordPage
       title="Agreements"
@@ -35,11 +27,7 @@ function Agreements() {
   )
 }
 
-function Transactions() {
-  const rows = getPaymentRecords().map((record) => ({
-    ...record,
-    id: record.id || record.invoiceId,
-  }))
+function Transactions({ rows }) {
   return (
     <RecordPage
       title="Transactions"
@@ -58,22 +46,19 @@ function Transactions() {
   )
 }
 
-function Commissions() {
-  const paymentValue = getPaymentRecords().reduce((sum, record) => sum + record.amount, 0)
-  const rows = [
-    {
-      id: 'COM-SH-01',
-      shop: shops[0].name,
-      qualifyingValue: paymentValue,
-      rate: 2,
-      due: paymentValue * 0.02,
-      status: 'Due',
-    },
-  ]
+function Commissions({ report }) {
+  const rows = (report.partners || []).map((shop) => ({
+    id: `COM-${shop.id}`,
+    shop: shop.name,
+    qualifyingValue: Number(shop.qualifyingValue),
+    rate: 2,
+    due: Number(shop.qualifyingValue) * 0.02,
+    status: 'Due',
+  }))
   return (
     <RecordPage
       title="Commissions"
-      description="Platform fees calculated from qualifying shop-recorded payment value."
+      description="Platform fees calculated from qualifying shop recorded payment value."
       rows={rows}
       columns={[
         { key: 'id', label: 'Statement ID', className: 'mono' },
@@ -108,7 +93,32 @@ function RecordPage({ title, description, rows, columns }) {
 
 export default function Records() {
   const view = readRoute().view
-  if (view === 'transactions') return <Transactions />
-  if (view === 'commissions') return <Commissions />
-  return <Agreements />
+  const { data: report, loading, error } = useApiResource(midasApi.report, [])
+  const { data: plans } = useApiResource(midasApi.plans, [])
+  if (loading) return <div className="route-loading">Loading records…</div>
+  if (error)
+    return (
+      <div className="notice" role="alert">
+        {error}
+      </div>
+    )
+  const payments = (report.payments || []).map((record) => ({
+    ...record,
+    id: record.invoiceId,
+    amount: Number(record.amount),
+    goldAmount: Number(record.goldAmount),
+    goldRate: Number(record.goldRate),
+  }))
+  const agreements = (plans || []).map((plan) => ({
+    id: plan.agreement || `Pending #${plan.id}`,
+    customer: plan.customer,
+    product: plan.product,
+    payments: payments.filter((item) => item.agreement === plan.agreement).length,
+    totalPaid: Number(plan.spent),
+    gold: Number(plan.goldOwned),
+    status: plan.status,
+  }))
+  if (view === 'transactions') return <Transactions rows={payments} />
+  if (view === 'commissions') return <Commissions report={report} />
+  return <Agreements rows={agreements} />
 }

@@ -24,7 +24,7 @@ const topics = [
   {
     match: ['c2c', 'resale', 'sell'],
     answer:
-      'C2C is for member-to-member jewelry resale only. MIDAS does not process or guarantee those transactions, so inspect the item and meet safely.',
+      'C2C is for member to member jewelry resale only. MIDAS does not process or guarantee those transactions, so inspect the item and meet safely.',
   },
   {
     match: ['shop', 'near', 'location', 'দোকান'],
@@ -43,7 +43,7 @@ function localAnswer(message, role) {
   const topic = topics.find((item) => item.match.some((keyword) => text.includes(keyword)))
   if (topic) return topic.answer
   if (role === 'shop') {
-    return 'I can help you review installment requests, record shop-received payments, manage products, and understand customer gold progress. Try asking about one of those topics.'
+    return 'I can help you review installment requests, record shop received payments, manage products, and understand customer gold progress. Try asking about one of those topics.'
   }
   return 'I can help you find jewelry, request an installment plan, understand confirmed gold progress, or use C2C safely. Please ask about one of those topics.'
 }

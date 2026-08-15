@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react'
-import { planEventName } from '../services/planService'
+import { useApiResource } from './useApiResource'
+import { midasApi } from '../services/midasApi'
+
+function normalize(plan) {
+  return {
+    ...plan,
+    id: Number(plan.id),
+    amount: Number(plan.amount),
+    targetGoldGrams: Number(plan.targetGoldGrams),
+    goldOwned: Number(plan.goldOwned),
+    spent: Number(plan.spent),
+    progress: Number(plan.progress),
+    status: `${plan.status[0].toUpperCase()}${plan.status.slice(1)}`,
+  }
+}
 
 export function usePlans() {
-  const [, refresh] = useState(0)
-  useEffect(() => {
-    const update = () => refresh((value) => value + 1)
-    window.addEventListener(planEventName, update)
-    window.addEventListener('midas:payments-updated', update)
-    window.addEventListener('storage', update)
-    return () => {
-      window.removeEventListener(planEventName, update)
-      window.removeEventListener('midas:payments-updated', update)
-      window.removeEventListener('storage', update)
-    }
-  }, [])
+  const resource = useApiResource(() => midasApi.plans().then((plans) => plans.map(normalize)), [])
+  return { ...resource, plans: resource.data || [] }
 }

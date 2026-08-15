@@ -1,17 +1,17 @@
-import { formatBDT, installment, shops } from '../../data/appData'
-import { getProducts } from '../../services/productService'
-import { getPaymentRecords } from '../../services/paymentService'
-import { getPlans } from '../../services/planService'
+import { formatBDT, installment } from '../../data/appData'
 import { usePlans } from '../../hooks/usePlans'
+import { useShopProducts } from '../../hooks/useShopProducts'
+import { useApiResource } from '../../hooks/useApiResource'
+import { midasApi } from '../../services/midasApi'
 
 export default function Dashboard() {
-  usePlans()
-  const paymentRecords = getPaymentRecords()
+  const { plans } = usePlans()
+  const { products: shopProducts } = useShopProducts()
+  const { data } = useApiResource(midasApi.payments, [])
+  const paymentRecords = (data || []).map((row) => ({ ...row, amount: Number(row.amount) }))
   const paymentTotal = paymentRecords.reduce((sum, row) => sum + row.amount, 0)
-  const plans = getPlans()
   const pendingRequests = plans.filter((row) => row.status === 'Pending')
   const installmentRequests = plans.filter((row) => row.status === 'Active')
-  const shopProducts = getProducts().filter((product) => product.shop === shops[0].name)
   const outOfStock = shopProducts.filter((product) => !product.inStock).length
 
   return (

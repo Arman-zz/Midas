@@ -1,7 +1,7 @@
 import { Icon } from '../../utils/icons'
-import { getSession } from '../../services/authService'
+import { useAuth } from '../../hooks/useAuth'
 export default function Header() {
-  const session = getSession()
+  const { user, loading } = useAuth()
   return (
     <header className="pub-header">
       <a className="u-flex u-gap-10 brand-home-link" href="#/public/landing">
@@ -16,11 +16,11 @@ export default function Header() {
         <a href="#/public/about">About Us</a>
       </nav>
       <div className="pub-actions">
-        {session ? (
-          <a className="btn btn-gold" href={`#/${session.role}/dashboard`}>
+        {!loading && user ? (
+          <a className="btn btn-gold" href={`#/${user.role}/dashboard`}>
             My dashboard
           </a>
-        ) : (
+        ) : !loading ? (
           <>
             <a className="btn btn-ghost" href="#/login">
               Log in
@@ -29,7 +29,7 @@ export default function Header() {
               Create account
             </a>
           </>
-        )}
+        ) : null}
       </div>
     </header>
   )

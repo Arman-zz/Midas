@@ -21,9 +21,11 @@ export default function InstallmentTable({ rows = [] }) {
             <td className="installment-date">{row.due}</td>
             <td className="mono">{formatCurrency(row.amount)}</td>
             <td className="mono">
-              {row.goldRate ? `${(row.amount / row.goldRate).toFixed(3)} g` : '—'}
+              {row.goldRate ? `${(row.amount / row.goldRate).toFixed(3)} g` : 'Not available'}
             </td>
-            <td className="mono">{row.goldRate ? `${formatCurrency(row.goldRate)}/g` : '—'}</td>
+            <td className="mono">
+              {row.goldRate ? `${formatCurrency(row.goldRate)}/g` : 'Not available'}
+            </td>
             <td>
               <span
                 className={`badge ${row.status === 'Confirmed' ? 'badge-green' : 'badge-muted'}`}

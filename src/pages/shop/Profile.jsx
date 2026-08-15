@@ -1,63 +1,76 @@
-import { useState } from 'react'
-import { shops } from '../../data/appData'
+import { useEffect, useState } from 'react'
 import { useToast } from '../../context/ToastContext'
 import { useAuth } from '../../hooks/useAuth'
-
-function storedProfile() {
-  try {
-    return JSON.parse(localStorage.getItem('midas-shop-profile') || 'null')
-  } catch {
-    return null
-  }
-}
+import { midasApi } from '../../services/midasApi'
 
 export default function Profile() {
   const { user } = useAuth()
-  const saved = storedProfile()
-  const verified = user?.verified === true || user?.email?.toLowerCase() === 'shop@midas.bd'
+  const verifiedBySession = user?.verified === true
   const [data, setData] = useState(() => ({
-    name: shops[0].name,
-    ownerName: 'Shop Owner',
-    area: shops[0].area,
-    phone: '+880 1700-000000',
-    email: user?.email || 'shop@midas.bd',
+    name: '',
+    ownerName: user?.name || '',
+    area: '',
+    phone: user?.mobile || '',
+    email: user?.email || '',
     tradeLicense: '',
     taxId: '',
-    hours: '10:00 AM – 8:00 PM',
+    hours: '10:00 AM to 8:00 PM',
     description: 'Trusted gold and jewelry retailer serving customers in Dhaka.',
-    ...saved,
   }))
-  const [documents, setDocuments] = useState(() => saved?.documents || {})
-  const [status, setStatus] = useState(() =>
-    verified ? 'verified' : saved?.verificationStatus || 'not-submitted',
-  )
+  const [documents, setDocuments] = useState({})
+  const [status, setStatus] = useState(verifiedBySession ? 'verified' : 'not_submitted')
+  const verified = status === 'verified'
   const notify = useToast()
+
+  useEffect(() => {
+    midasApi
+      .shopProfile()
+      .then((profile) => {
+        if (!profile) return
+        setData((current) => ({
+          ...current,
+          name: profile.name,
+          ownerName: profile.owner_name,
+          phone: profile.phone,
+          area: profile.address,
+          tradeLicense: profile.trade_license || '',
+          taxId: profile.tax_id || '',
+          hours: profile.opening_hours || '',
+          description: profile.description || '',
+        }))
+        setStatus(profile.verification_status)
+      })
+      .catch((error) => notify(error.message))
+  }, [notify])
 
   const update = (field) => (event) =>
     setData((current) => ({ ...current, [field]: event.target.value }))
-  const saveProfile = (event) => {
+  const saveProfile = async (event) => {
     event.preventDefault()
-    localStorage.setItem(
-      'midas-shop-profile',
-      JSON.stringify({ ...data, documents, verificationStatus: status }),
-    )
-    notify('Shop profile saved')
+    try {
+      await midasApi.saveShopProfile({ ...data, address: data.area, openingHours: data.hours })
+      notify('Shop profile saved')
+    } catch (error) {
+      notify(error.message)
+    }
   }
-  const selectDocument = (field) => (event) => {
-    const file = event.target.files[0]
-    setDocuments((current) => ({ ...current, [field]: file?.name || '' }))
-  }
-  const submitVerification = (event) => {
+  const submitVerification = async (event) => {
     event.preventDefault()
     const complete =
       data.tradeLicense.trim() && data.taxId.trim() && Object.keys(documents).length === 3
     if (!complete) return notify('Complete all business fields and upload all three documents')
-    setStatus('pending')
-    localStorage.setItem(
-      'midas-shop-profile',
-      JSON.stringify({ ...data, documents, verificationStatus: 'pending' }),
-    )
-    notify('Verification application submitted for MIDAS review')
+    try {
+      await midasApi.saveShopProfile({ ...data, address: data.area, openingHours: data.hours })
+      await midasApi.submitVerification({
+        trade_license: documents.tradeLicenseFile,
+        tax_certificate: documents.taxFile,
+        owner_identity: documents.identityFile,
+      })
+      setStatus('pending')
+      notify('Verification application submitted for MIDAS review')
+    } catch (error) {
+      notify(error.message)
+    }
   }
 
   return (
@@ -117,6 +130,13 @@ export default function Profile() {
             </div>
           </div>
           <div className="card-pad">
+            {verified && (
+              <div className="notice" role="status">
+                Verified identity details are locked. Contact MIDAS support if your registered
+                business name, owner, phone, license, tax ID, email, or address legally changes. You
+                can still update customer facing hours and description below.
+              </div>
+            )}
             <div className="field-grid">
               <div className="field-row">
                 <label className="field-label" htmlFor="shop-name">
@@ -127,6 +147,7 @@ export default function Profile() {
                   id="shop-name"
                   value={data.name}
                   onChange={update('name')}
+                  disabled={verified}
                   required
                 />
               </div>
@@ -139,6 +160,7 @@ export default function Profile() {
                   id="owner-name"
                   value={data.ownerName}
                   onChange={update('ownerName')}
+                  disabled={verified}
                   required
                 />
               </div>
@@ -151,6 +173,7 @@ export default function Profile() {
                   id="shop-phone"
                   value={data.phone}
                   onChange={update('phone')}
+                  disabled={verified}
                   required
                 />
               </div>
@@ -164,6 +187,7 @@ export default function Profile() {
                   type="email"
                   value={data.email}
                   onChange={update('email')}
+                  disabled={verified}
                   required
                 />
               </div>
@@ -176,6 +200,7 @@ export default function Profile() {
                   id="trade-license"
                   value={data.tradeLicense}
                   onChange={update('tradeLicense')}
+                  disabled={verified}
                   placeholder="Enter license number"
                   required
                 />
@@ -189,6 +214,7 @@ export default function Profile() {
                   id="tax-id"
                   value={data.taxId}
                   onChange={update('taxId')}
+                  disabled={verified}
                   placeholder="Enter BIN or TIN"
                   required
                 />
@@ -204,6 +230,7 @@ export default function Profile() {
                 rows="3"
                 value={data.area}
                 onChange={update('area')}
+                disabled={verified}
                 required
               />
             </div>
@@ -258,9 +285,12 @@ export default function Profile() {
                     <small>{documents[field] || 'PDF, JPG or PNG'}</small>
                   </span>
                   <input
-                    type="file"
-                    accept=".pdf,image/png,image/jpeg"
-                    onChange={selectDocument(field)}
+                    type="url"
+                    placeholder="https://secure-storage.example/document"
+                    value={documents[field] || ''}
+                    onChange={(event) =>
+                      setDocuments((current) => ({ ...current, [field]: event.target.value }))
+                    }
                     disabled={verified}
                   />
                   <span

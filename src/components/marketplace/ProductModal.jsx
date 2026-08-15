@@ -2,16 +2,14 @@ import Modal from '../common/Modal'
 import { formatCurrency } from '../../utils/format'
 import { useToast } from '../../context/ToastContext'
 import { useAuth } from '../../hooks/useAuth'
-import {
-  getActiveCustomerPlan,
-  getPendingCustomerPlan,
-  requestInstallmentPlan,
-} from '../../services/planService'
+import { midasApi } from '../../services/midasApi'
+import { usePlans } from '../../hooks/usePlans'
 export default function ProductModal({ product, onClose }) {
   const notify = useToast()
   const { user } = useAuth()
-  const activePlan = getActiveCustomerPlan(user?.email)
-  const pendingPlan = getPendingCustomerPlan(user?.email)
+  const { plans, reload } = usePlans()
+  const activePlan = plans.find((plan) => plan.status === 'Active')
+  const pendingPlan = plans.find((plan) => plan.status === 'Pending')
   return (
     <Modal open={!!product} onClose={onClose}>
       {product && (
@@ -37,9 +35,16 @@ export default function ProductModal({ product, onClose }) {
             <button
               className="btn btn-gold btn-block"
               disabled={Boolean(activePlan || pendingPlan)}
-              onClick={() => {
+              onClick={async () => {
                 try {
-                  requestInstallmentPlan(product, user)
+                  if (!user) {
+                    location.hash = '#/login'
+                    return
+                  }
+                  if (user.role !== 'customer')
+                    throw new Error('Only customer accounts can request plans')
+                  await midasApi.requestPlan(product.id)
+                  await reload()
                   notify('Installment request sent to the shop for approval')
                   onClose()
                 } catch (error) {

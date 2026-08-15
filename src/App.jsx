@@ -158,10 +158,204 @@ const translations = {
     'MIDAS গ্রাহকের অর্থ সংরক্ষণ করে না। পেমেন্ট সরাসরি গ্রাহক ও অংশীদার দোকানের মধ্যে সম্পন্ন হয়।',
   Progress: 'অগ্রগতি',
   'paid progress': 'পরিশোধের অগ্রগতি',
+  'My dashboard': 'আমার ড্যাশবোর্ড',
+  'Welcome back': 'আবার স্বাগতম',
+  'Secure account access': 'নিরাপদ অ্যাকাউন্ট প্রবেশ',
+  'Mobile number or email': 'মোবাইল নম্বর অথবা ইমেইল',
+  Password: 'পাসওয়ার্ড',
+  Show: 'দেখুন',
+  Hide: 'লুকান',
+  'Remember me': 'আমাকে মনে রাখুন',
+  'Forgot password?': 'পাসওয়ার্ড ভুলে গেছেন?',
+  'New to MIDAS?': 'MIDAS-এ নতুন?',
+  'Create your account': 'আপনার অ্যাকাউন্ট তৈরি করুন',
+  'Already registered?': 'ইতিমধ্যে নিবন্ধিত?',
+  'Full name': 'পূর্ণ নাম',
+  Email: 'ইমেইল',
+  'Mobile number': 'মোবাইল নম্বর',
+  'Account Settings': 'অ্যাকাউন্ট সেটিংস',
+  'Save changes': 'পরিবর্তন সংরক্ষণ করুন',
+  'National ID (NID)': 'জাতীয় পরিচয়পত্র (NID)',
+  'Recent Activity': 'সাম্প্রতিক কার্যক্রম',
+  'Transaction History': 'লেনদেনের ইতিহাস',
+  'No recent activity': 'কোনো সাম্প্রতিক কার্যক্রম নেই',
+  'No transactions yet': 'এখনও কোনো লেনদেন নেই',
+  'Recommended Jewelry': 'প্রস্তাবিত গহনা',
+  'Partner Shops Near You': 'আপনার কাছাকাছি অংশীদার দোকান',
+  'Active Installment': 'সক্রিয় কিস্তি',
+  'No active plan': 'কোনো সক্রিয় পরিকল্পনা নেই',
+  'Waiting for shop approval': 'দোকানের অনুমোদনের অপেক্ষায়',
+  'Upcoming Due': 'আসন্ন কিস্তি',
+  'Target jewelry gold': 'লক্ষ্য গহনার স্বর্ণ',
+  'Gold you own': 'আপনার মালিকানাধীন স্বর্ণ',
+  'Gold target': 'স্বর্ণের লক্ষ্য',
+  'Confirmed gold': 'নিশ্চিত স্বর্ণ',
+  'Total paid': 'মোট পরিশোধিত',
+  'Active Agreement': 'সক্রিয় চুক্তি',
+  'Installment schedule': 'কিস্তির সময়সূচি',
+  'Payment record applications': 'পেমেন্ট রেকর্ডের আবেদন',
+  'Apply for payment record': 'পেমেন্ট রেকর্ডের জন্য আবেদন করুন',
+  'Apply for a payment record': 'পেমেন্ট রেকর্ডের জন্য আবেদন করুন',
+  'Apply to add the payment to your record': 'আপনার রেকর্ডে পেমেন্ট যোগ করার আবেদন করুন',
+  'Paid directly at the shop?': 'দোকানে সরাসরি পরিশোধ করেছেন?',
+  'Invoice ID': 'ইনভয়েস আইডি',
+  'Shop response': 'দোকানের উত্তর',
+  'Awaiting shop review': 'দোকানের পর্যালোচনার অপেক্ষায়',
+  'Payment added to your record': 'পেমেন্ট আপনার রেকর্ডে যোগ হয়েছে',
+  'Send to shop for approval': 'অনুমোদনের জন্য দোকানে পাঠান',
+  'Loading plans…': 'পরিকল্পনা লোড হচ্ছে…',
+  'Loading products…': 'পণ্য লোড হচ্ছে…',
+  'Loading listings…': 'তালিকা লোড হচ্ছে…',
+  'Loading payment records…': 'পেমেন্ট রেকর্ড লোড হচ্ছে…',
+  'No payment record applications yet.': 'এখনও কোনো পেমেন্ট রেকর্ডের আবেদন নেই।',
+  'No payments yet. Your plan starts at 0%.':
+    'এখনও কোনো পেমেন্ট নেই। আপনার পরিকল্পনা ০% থেকে শুরু হবে।',
+  'Jewelry Marketplace': 'গহনার মার্কেটপ্লেস',
+  'Marketplace Products': 'মার্কেটপ্লেস পণ্য',
+  'Products uploaded by partner shops.': 'অংশীদার দোকানগুলোর আপলোড করা পণ্য।',
+  'No products match your search.': 'আপনার অনুসন্ধানের সঙ্গে কোনো পণ্য মেলেনি।',
+  'No jewelry matches your search.': 'আপনার অনুসন্ধানের সঙ্গে কোনো গহনা মেলেনি।',
+  'Search results': 'অনুসন্ধানের ফলাফল',
+  Category: 'বিভাগ',
+  'In Stock': 'স্টকে আছে',
+  'Out of Stock': 'স্টকে নেই',
+  'C2C Listings': 'C2C তালিকা',
+  'Create listing': 'তালিকা তৈরি করুন',
+  'Create a C2C listing': 'একটি C2C তালিকা তৈরি করুন',
+  'Asking price (BDT)': 'চাওয়া মূল্য (BDT)',
+  'Publish listing': 'তালিকা প্রকাশ করুন',
+  Area: 'এলাকা',
+  'Business profile': 'ব্যবসায়িক প্রোফাইল',
+  'Partner eligibility': 'অংশীদার হওয়ার যোগ্যতা',
+  'Partner access': 'অংশীদার প্রবেশাধিকার',
+  'Verification documents': 'যাচাইকরণ নথি',
+  'Verification required': 'যাচাইকরণ প্রয়োজন',
+  'Verification under review': 'যাচাইকরণ পর্যালোচনাধীন',
+  'Verified MIDAS Partner': 'যাচাইকৃত MIDAS অংশীদার',
+  'Registered shop name': 'নিবন্ধিত দোকানের নাম',
+  'Owner or authorized person': 'মালিক বা অনুমোদিত ব্যক্তি',
+  'Business phone': 'ব্যবসায়িক ফোন',
+  'Business email': 'ব্যবসায়িক ইমেইল',
+  'Trade license number': 'ট্রেড লাইসেন্স নম্বর',
+  'Full business address': 'ব্যবসার পূর্ণ ঠিকানা',
+  'Opening hours': 'খোলার সময়',
+  'Customer-facing description': 'গ্রাহকের জন্য বিবরণ',
+  'Save business profile': 'ব্যবসায়িক প্রোফাইল সংরক্ষণ করুন',
+  'Get verified': 'যাচাইকরণ সম্পন্ন করুন',
+  Verified: 'যাচাইকৃত',
+  'Pending review': 'পর্যালোচনাধীন',
+  'Not verified': 'যাচাই করা হয়নি',
+  'Marketplace Products': 'মার্কেটপ্লেস পণ্য',
+  'Add marketplace product': 'মার্কেটপ্লেসে পণ্য যোগ করুন',
+  'Product photo *': 'পণ্যের ছবি *',
+  'Product name': 'পণ্যের নাম',
+  'Stock status': 'স্টকের অবস্থা',
+  'Upload to marketplace': 'মার্কেটপ্লেসে আপলোড করুন',
+  'Installment requests': 'কিস্তির আবেদন',
+  'Customer installments': 'গ্রাহকের কিস্তি',
+  'Payment records awaiting approval': 'অনুমোদনের অপেক্ষায় থাকা পেমেন্ট রেকর্ড',
+  'Review & approve': 'পর্যালোচনা ও অনুমোদন',
+  'Record customer payment': 'গ্রাহকের পেমেন্ট রেকর্ড করুন',
+  'Amount paid': 'পরিশোধিত অর্থ',
+  'Payment date': 'পেমেন্টের তারিখ',
+  'Applied gold rate (BDT per gram)': 'প্রয়োগকৃত স্বর্ণের দর (প্রতি গ্রাম BDT)',
+  'Approve payment & convert to gold': 'পেমেন্ট অনুমোদন ও স্বর্ণে রূপান্তর করুন',
+  'Customer Payment Records': 'গ্রাহকের পেমেন্ট রেকর্ড',
+  'Run your shop from one place': 'এক জায়গা থেকে আপনার দোকান পরিচালনা করুন',
+  'Requests to review': 'পর্যালোচনার আবেদন',
+  'Payments recorded': 'রেকর্ডকৃত পেমেন্ট',
+  'Marketplace products': 'মার্কেটপ্লেস পণ্য',
+  'Commission due': 'প্রদেয় কমিশন',
+  'Needs your attention': 'আপনার মনোযোগ প্রয়োজন',
+  'Quick management': 'দ্রুত ব্যবস্থাপনা',
+  'Active installment plans': 'সক্রিয় কিস্তি পরিকল্পনা',
+  'Recent payment records': 'সাম্প্রতিক পেমেন্ট রেকর্ড',
+  'Operational Insights': 'পরিচালনাগত অন্তর্দৃষ্টি',
+  'Refresh insights': 'অন্তর্দৃষ্টি হালনাগাদ করুন',
+  Payments: 'পেমেন্টসমূহ',
+  Inventory: 'মজুত',
+  Plans: 'পরিকল্পনাসমূহ',
+  'Administration overview': 'প্রশাসনিক সারসংক্ষেপ',
+  'Platform operations': 'প্ল্যাটফর্ম পরিচালনা',
+  'Verification queue': 'যাচাইকরণ সারি',
+  'Verified partners': 'যাচাইকৃত অংশীদার',
+  'Recorded payment value': 'রেকর্ডকৃত পেমেন্ট মূল্য',
+  'Commission exposure': 'কমিশনের পরিমাণ',
+  'Open plan requests': 'খোলা পরিকল্পনার আবেদন',
+  'Active C2C listings': 'সক্রিয় C2C তালিকা',
+  'Products in stock': 'স্টকে থাকা পণ্য',
+  'Platform Reports': 'প্ল্যাটফর্ম প্রতিবেদন',
+  'Platform intelligence': 'প্ল্যাটফর্ম বিশ্লেষণ',
+  'Gold credited': 'জমাকৃত স্বর্ণ',
+  'Verified partner coverage': 'যাচাইকৃত অংশীদার পরিধি',
+  'Marketplace readiness': 'মার্কেটপ্লেস প্রস্তুতি',
+  'Partner marketplace performance': 'অংশীদার মার্কেটপ্লেস কার্যকারিতা',
+  'Platform Settings': 'প্ল্যাটফর্ম সেটিংস',
+  'Administration controls': 'প্রশাসনিক নিয়ন্ত্রণ',
+  'Fees and installment rules': 'ফি ও কিস্তির নিয়ম',
+  'Partner verification': 'অংশীদার যাচাইকরণ',
+  'Commission rate': 'কমিশনের হার',
+  'Minimum installment': 'সর্বনিম্ন কিস্তি',
+  'Payment edit window': 'পেমেন্ট সম্পাদনার সময়সীমা',
+  'Save platform settings': 'প্ল্যাটফর্ম সেটিংস সংরক্ষণ করুন',
+  Users: 'ব্যবহারকারীরা',
+  Agreements: 'চুক্তিসমূহ',
+  Transactions: 'লেনদেনসমূহ',
+  Rejected: 'প্রত্যাখ্যাত',
+  Completed: 'সম্পন্ন',
+  Approved: 'অনুমোদিত',
+  Pending: 'অপেক্ষমাণ',
+  Decision: 'সিদ্ধান্ত',
+  'Decision recorded': 'সিদ্ধান্ত রেকর্ড হয়েছে',
+  'No notifications.': 'কোনো বিজ্ঞপ্তি নেই।',
+  'Mark all read': 'সব পঠিত হিসেবে চিহ্নিত করুন',
+  'MIDAS Assistant': 'MIDAS সহকারী',
+  'Need more help?': 'আরও সাহায্য প্রয়োজন?',
+  'Contact support': 'সহায়তায় যোগাযোগ করুন',
+  'Gold ownership,': 'স্বর্ণের মালিকানা,',
+  recorded: 'রেকর্ডকৃত',
+  ', not held.': ', সংরক্ষিত নয়।',
+  'The trusted gold marketplace': 'বিশ্বস্ত স্বর্ণের মার্কেটপ্লেস',
+  'Explore the marketplace': 'মার্কেটপ্লেস ঘুরে দেখুন',
+  'Jewelry uploaded by MIDAS partner shops.': 'MIDAS অংশীদার দোকানের আপলোড করা গহনা।',
+  'View all jewelry →': 'সব গহনা দেখুন →',
+  'One platform, two roles, one ledger.': 'একটি প্ল্যাটফর্ম, দুটি ভূমিকা, একটি হিসাব।',
+  'Customers discover and buy. Shop owners accept and confirm. Every action lands in the same non-custodial record.':
+    'গ্রাহকেরা পণ্য খুঁজে কেনেন। দোকান মালিকেরা গ্রহণ ও নিশ্চিত করেন। প্রতিটি কার্যক্রম একই স্বচ্ছ রেকর্ডে সংরক্ষিত হয়।',
+  'Find partner shops near you, compare products and installment terms, and track every payment record.':
+    'কাছাকাছি অংশীদার দোকান খুঁজুন, পণ্য ও কিস্তির শর্ত তুলনা করুন এবং প্রতিটি পেমেন্ট রেকর্ড অনুসরণ করুন।',
+  'Upload your catalog, accept purchase requests, confirm payments, and review commission statements.':
+    'আপনার ক্যাটালগ আপলোড করুন, ক্রয়ের আবেদন গ্রহণ করুন, পেমেন্ট নিশ্চিত করুন এবং কমিশনের বিবরণ পর্যালোচনা করুন।',
+  'Every record, honestly labelled.': 'প্রতিটি রেকর্ড সততার সঙ্গে চিহ্নিত।',
+  "Submitted isn't the same as Confirmed. We never blur that line.":
+    'জমা দেওয়া আর নিশ্চিত হওয়া এক নয়। আমরা কখনো এই পার্থক্য অস্পষ্ট করি না।',
+  'An installment is due. Nothing has happened yet.': 'একটি কিস্তির সময় হয়েছে। এখনও কিছু ঘটেনি।',
+  'The customer recorded a direct payment.': 'গ্রাহক একটি সরাসরি পেমেন্ট রেকর্ড করেছেন।',
+  'The shop verified receipt. Gold progress increases.':
+    'দোকান রসিদ যাচাই করেছে। স্বর্ণের অগ্রগতি বৃদ্ধি পেয়েছে।',
+  'Either party flagged a mismatch for review.':
+    'যেকোনো পক্ষ পর্যালোচনার জন্য একটি অসঙ্গতি চিহ্নিত করেছে।',
+  'For Customers': 'গ্রাহকদের জন্য',
+  'For Shop Owners': 'দোকান মালিকদের জন্য',
+  'Discover, compare, buy': 'খুঁজুন, তুলনা করুন, কিনুন',
+  'Confirm, manage, grow': 'নিশ্চিত করুন, পরিচালনা করুন, এগিয়ে যান',
+  Scheduled: 'নির্ধারিত',
+  Submitted: 'জমা দেওয়া',
+  Confirmed: 'নিশ্চিত',
+  Disputed: 'বিতর্কিত',
+  'Verified Purity': 'যাচাইকৃত বিশুদ্ধতা',
+  'Gold progress': 'স্বর্ণের অগ্রগতি',
+  'Partner shops': 'অংশীদার দোকান',
+  approved: 'অনুমোদিত',
+  secured: 'অর্জিত',
 }
 
 function normalizeText(value) {
-  return value.replaceAll('\u2014', '-').replaceAll('\u2013', '-').replaceAll('\u2010', '-')
+  return value
+    .replaceAll('\u2014', ' ')
+    .replaceAll('\u2013', ' ')
+    .replaceAll('\u2010', ' ')
+    .replace(/(?<=\p{L})-(?=\p{L})/gu, ' ')
 }
 
 function translateText(text, language) {
@@ -175,6 +369,7 @@ function translateText(text, language) {
 }
 
 const originals = new WeakMap()
+const appliedTranslations = new WeakMap()
 
 function translateTree(root, language) {
   if (!root) return
@@ -193,16 +388,27 @@ function translateTree(root, language) {
 
 function translateNode(node, language) {
   if (node.nodeType !== Node.TEXT_NODE) return
-  const original = originals.get(node) ?? node.nodeValue
+  const current = node.nodeValue
+  const lastApplied = appliedTranslations.get(node)
+  if (
+    !originals.has(node) ||
+    (language === 'bn' && (lastApplied === undefined || current !== lastApplied))
+  ) {
+    originals.set(node, current)
+  }
+  const original = originals.get(node)
   originals.set(node, original)
   if (language === 'en') {
-    node.nodeValue = original
+    if (node.nodeValue !== original) node.nodeValue = original
+    appliedTranslations.delete(node)
     return
   }
   const trimmed = original.trim()
   if (!trimmed) return
   const translated = translateText(trimmed, language)
-  node.nodeValue = original.replace(trimmed, translated)
+  const nextValue = original.replace(trimmed, translated)
+  if (node.nodeValue !== nextValue) node.nodeValue = nextValue
+  appliedTranslations.set(node, nextValue)
 }
 
 export default function App() {
@@ -220,15 +426,20 @@ export default function App() {
     localStorage.setItem('midas-language', language)
     document.documentElement.lang = language === 'bn' ? 'bn' : 'en'
     document.body.classList.toggle('bangla', language === 'bn')
-    translateTree(document.getElementById('app'), language)
+    translateTree(document.getElementById('root'), language)
 
     const observer = new MutationObserver((mutations) => {
       if (language !== 'bn') return
-      mutations.forEach((mutation) =>
-        mutation.addedNodes.forEach((node) => translateTree(node, language)),
-      )
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'characterData') translateNode(mutation.target, language)
+        else mutation.addedNodes.forEach((node) => translateTree(node, language))
+      })
     })
-    observer.observe(document.getElementById('root'), { childList: true, subtree: true })
+    observer.observe(document.getElementById('root'), {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    })
     return () => observer.disconnect()
   }, [language])
 

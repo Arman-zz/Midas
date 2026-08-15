@@ -1,7 +1,8 @@
 import ProductGrid from '../../components/marketplace/ProductGrid'
-import { getProducts } from '../../services/productService'
+import { useProducts } from '../../hooks/useProducts'
 export default function Products({ globalSearch = '' }) {
-  const products = getProducts().filter((p) =>
+  const { products: all, loading, error } = useProducts()
+  const products = all.filter((p) =>
     `${p.name} ${p.shop}`.toLowerCase().includes(globalSearch.toLowerCase()),
   )
   return (
@@ -13,6 +14,12 @@ export default function Products({ globalSearch = '' }) {
         </div>
       </div>
       <ProductGrid products={products} />
+      {loading && <div className="shop-filter-empty">Loading products…</div>}
+      {error && (
+        <div className="notice" role="alert">
+          {error}
+        </div>
+      )}
     </>
   )
 }

@@ -2,11 +2,12 @@ import { useMemo, useState } from 'react'
 import PublicPage from '../../components/common/PublicPage'
 import MarketplaceFilters from '../../components/marketplace/MarketplaceFilters'
 import ProductGrid from '../../components/marketplace/ProductGrid'
-import { filterProducts, getProducts } from '../../services/productService'
+import { filterProducts } from '../../services/productService'
+import { useProducts } from '../../hooks/useProducts'
 export default function MarketplacePage() {
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('All')
-  const all = getProducts()
+  const { products: all, loading, error } = useProducts()
   const categories = ['All', ...new Set(all.map((p) => p.category))]
   const products = useMemo(() => filterProducts(all, { query, category }), [all, query, category])
   return (
@@ -29,6 +30,12 @@ export default function MarketplacePage() {
         </div>
       </MarketplaceFilters>
       <ProductGrid products={products} />
+      {loading && <div className="marketplace-empty">Loading products…</div>}
+      {error && (
+        <div className="notice" role="alert">
+          {error}
+        </div>
+      )}
       {!products.length && <div className="marketplace-empty">No jewelry matches your search.</div>}
     </PublicPage>
   )

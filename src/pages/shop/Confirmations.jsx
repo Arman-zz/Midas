@@ -1,10 +1,34 @@
 import { useMemo, useState } from 'react'
 import { formatBDT } from '../../data/appData'
-import { getPaymentGroups } from '../../services/paymentService'
+import { midasApi } from '../../services/midasApi'
+import { useApiResource } from '../../hooks/useApiResource'
+
+function groupPayments(payments) {
+  return payments.reduce((groups, payment) => {
+    let group = groups.find((item) => item.agreement === payment.agreement)
+    if (!group) {
+      group = {
+        agreement: payment.agreement,
+        customer: payment.customer,
+        product: payment.product,
+        payments: [],
+      }
+      groups.push(group)
+    }
+    group.payments.push({
+      ...payment,
+      amount: Number(payment.amount),
+      goldAmount: Number(payment.goldAmount),
+      goldRate: Number(payment.goldRate),
+    })
+    return groups
+  }, [])
+}
 
 export default function Confirmations({ globalSearch = '' }) {
   const [query, setQuery] = useState('')
-  const groups = useMemo(() => getPaymentGroups(), [])
+  const { data, loading, error } = useApiResource(midasApi.payments, [])
+  const groups = useMemo(() => groupPayments(data || []), [data])
   const shown = useMemo(() => {
     const needle = (globalSearch || query).trim().toLowerCase()
     return groups.filter(
@@ -36,6 +60,12 @@ export default function Confirmations({ globalSearch = '' }) {
       />
 
       <div className="payment-group-list">
+        {loading && <div className="shop-filter-empty">Loading payment records…</div>}
+        {error && (
+          <div className="notice" role="alert">
+            {error}
+          </div>
+        )}
         {shown.map((group) => {
           const total = group.payments.reduce((sum, payment) => sum + payment.amount, 0)
           return (

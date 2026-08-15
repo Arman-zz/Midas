@@ -1,42 +1,38 @@
-import { useMemo } from 'react'
-import { c2cListings, formatBDT, requests, shops } from '../../data/appData'
-import { getPaymentGroups, getPaymentRecords } from '../../services/paymentService'
-import { getProducts } from '../../services/productService'
+import { formatBDT } from '../../data/appData'
+import { useApiResource } from '../../hooks/useApiResource'
+import { midasApi } from '../../services/midasApi'
 
 function csvCell(value) {
   return `"${String(value ?? '').replaceAll('"', '""')}"`
 }
 
 export default function Reports() {
-  const records = useMemo(() => getPaymentRecords(), [])
-  const groups = useMemo(() => getPaymentGroups(), [])
-  const products = useMemo(() => getProducts(), [])
-  const paymentValue = records.reduce((sum, record) => sum + Number(record.amount), 0)
-  const goldValue = records.reduce((sum, record) => sum + Number(record.goldAmount), 0)
+  const { data: report, loading, error } = useApiResource(midasApi.report, [])
+  if (loading) return <div className="route-loading">Loading reports…</div>
+  if (error)
+    return (
+      <div className="notice" role="alert">
+        {error}
+      </div>
+    )
+  const records = report.payments || []
+  const groups = new Set(records.map((record) => record.agreement).filter(Boolean))
+  const paymentValue = Number(report.paymentValue)
+  const goldValue = Number(report.goldValue)
   const commissionValue = paymentValue * 0.02
-  const verifiedShops = shops.filter((shop) => shop.verified)
-  const inventoryValue = products.reduce((sum, product) => sum + Number(product.price), 0)
-  const inStockProducts = products.filter((product) => product.inStock).length
+  const inventoryValue = Number(report.inventoryValue)
+  const inStockProducts = Number(report.inStockProducts)
 
   const customerGoldTotals = Object.entries(
-    records.reduce((totals, record) => {
-      totals[record.customer] = (totals[record.customer] || 0) + Number(record.goldAmount)
-      return totals
-    }, {}),
+    Object.fromEntries(
+      (report.customerGold || []).map((row) => [row.customer, Number(row.goldGrams)]),
+    ),
   )
     .map(([customer, goldGrams]) => ({ customer, goldGrams }))
     .sort((a, b) => b.goldGrams - a.goldGrams)
   const highestCustomerGold = customerGoldTotals[0]?.goldGrams || 1
 
-  const partnerRows = verifiedShops.map((shop) => {
-    const shopProducts = products.filter((product) => product.shop === shop.name)
-    return {
-      ...shop,
-      products: shopProducts.length,
-      inStock: shopProducts.filter((product) => product.inStock).length,
-      catalogValue: shopProducts.reduce((sum, product) => sum + Number(product.price), 0),
-    }
-  })
+  const partnerRows = report.partners || []
 
   const exportReport = () => {
     const headers = [
@@ -93,13 +89,13 @@ export default function Reports() {
           <span className="stat-label">Recorded payment value</span>
           <strong>{formatBDT(paymentValue)}</strong>
           <small>
-            {records.length} invoices across {groups.length} agreements
+            {records.length} invoices across {groups.size} agreements
           </small>
         </article>
         <article className="card admin-report-kpi">
           <span className="stat-label">Gold credited</span>
           <strong>{goldValue.toFixed(3)} g</strong>
-          <small>Calculated from shop-recorded conversion rates</small>
+          <small>Calculated from shop recorded conversion rates</small>
         </article>
         <article className="card admin-report-kpi warning">
           <span className="stat-label">Commission exposure</span>
@@ -109,9 +105,9 @@ export default function Reports() {
         <article className="card admin-report-kpi">
           <span className="stat-label">Verified partner coverage</span>
           <strong>
-            {verifiedShops.length}/{shops.length}
+            {report.verifiedShops}/{report.totalShops}
           </strong>
-          <small>{products.length} published marketplace products</small>
+          <small>{report.products} published marketplace products</small>
         </article>
       </section>
 
@@ -120,7 +116,7 @@ export default function Reports() {
           <div className="card-head">
             <div>
               <div className="card-title">Gold credited by customer</div>
-              <div className="card-sub">Confirmed gold weight from shop-recorded payments</div>
+              <div className="card-sub">Confirmed gold weight from shop recorded payments</div>
             </div>
           </div>
           <div className="card-pad admin-customer-value-bars">
@@ -152,21 +148,18 @@ export default function Reports() {
             <div>
               <span>Products in stock</span>
               <strong>
-                {inStockProducts}/{products.length}
+                {inStockProducts}/{report.products}
               </strong>
               <small>{formatBDT(inventoryValue)} catalog value</small>
             </div>
             <div>
               <span>Open purchase requests</span>
-              <strong>{requests.length}</strong>
-              <small>
-                {formatBDT(requests.reduce((sum, request) => sum + request.amount, 0))} requested
-                value
-              </small>
+              <strong>{report.openRequests}</strong>
+              <small>{formatBDT(report.openRequestValue)} requested value</small>
             </div>
             <div>
               <span>Active C2C listings</span>
-              <strong>{c2cListings.length}</strong>
+              <strong>{report.activeC2c}</strong>
               <small>Jewelry resale listings</small>
             </div>
           </div>

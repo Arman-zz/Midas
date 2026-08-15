@@ -1,29 +1,30 @@
+import { useState } from 'react'
 import InstallmentTable from '../../components/installment/InstallmentTable'
+import PaymentSubmissionModal from '../../components/installment/PaymentSubmissionModal'
 import { formatBDT, installment } from '../../data/appData'
 import { useAuth } from '../../hooks/useAuth'
-import { getCustomerPlanSummary } from '../../services/paymentService'
-import {
-  getActiveCustomerPlan,
-  getCompletedPlanCount,
-  getCustomerPlans,
-  getPendingCustomerPlan,
-} from '../../services/planService'
 import { usePlans } from '../../hooks/usePlans'
+import { useApiResource } from '../../hooks/useApiResource'
+import { midasApi } from '../../services/midasApi'
 
 export default function Installments() {
+  const [submissionOpen, setSubmissionOpen] = useState(false)
   const { user } = useAuth()
-  usePlans()
-  const activePlan = getActiveCustomerPlan(user?.email)
-  const pendingPlan = getPendingCustomerPlan(user?.email)
-  const completedCount = getCompletedPlanCount(user?.email)
-  const latestCompleted = getCustomerPlans(user?.email).find((plan) => plan.status === 'Completed')
+  const { plans, loading, error } = usePlans()
+  const submissionResource = useApiResource(midasApi.paymentSubmissions, [])
+  const submissions = submissionResource.data || []
+  const activePlan = plans.find((plan) => plan.status === 'Active')
+  const pendingPlan = plans.find((plan) => plan.status === 'Pending')
+  const completedCount = plans.filter((plan) => plan.status === 'Completed').length
+  const latestCompleted = plans.find((plan) => plan.status === 'Completed')
   const summary = activePlan
-    ? getCustomerPlanSummary(
-        user?.name,
-        activePlan.targetGoldGrams,
-        activePlan.agreement,
-        activePlan,
-      )
+    ? {
+        payments: [],
+        goldOwned: activePlan.goldOwned,
+        spent: activePlan.spent,
+        progress: activePlan.progress,
+        isComplete: activePlan.progress >= 100,
+      }
     : null
   const confirmedCount = summary?.payments.length || 0
   const schedule = activePlan?.legacySchedule
@@ -38,6 +39,13 @@ export default function Installments() {
     ? installment.schedule.find((row) => row.status === 'Scheduled')
     : null
 
+  if (loading) return <div className="route-loading">Loading plans…</div>
+  if (error)
+    return (
+      <div className="notice" role="alert">
+        {error}
+      </div>
+    )
   if (!activePlan)
     return (
       <>
@@ -164,8 +172,67 @@ export default function Installments() {
               <small>Your partner shop records the payment after receiving it directly.</small>
             </div>
           )}
+          <div className="installment-next-due">
+            <div>
+              <span className="stat-label">Paid directly at the shop?</span>
+              <strong>Apply to add the payment to your record</strong>
+            </div>
+            <small>The shop must verify your invoice before your gold progress increases.</small>
+            <button className="btn btn-gold" type="button" onClick={() => setSubmissionOpen(true)}>
+              Apply for payment record
+            </button>
+          </div>
         </div>
       </article>
+
+      <div className="section-h installment-section-head">
+        <div>
+          <h2>Payment record applications</h2>
+          <p className="installment-section-copy">Invoices you submitted for shop verification.</p>
+        </div>
+      </div>
+      <div className="card installment-schedule-card">
+        {submissions.length ? (
+          <table className="dtable">
+            <thead>
+              <tr>
+                <th>Invoice ID</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th>Shop response</th>
+              </tr>
+            </thead>
+            <tbody>
+              {submissions.map((submission) => (
+                <tr key={submission.id}>
+                  <td className="mono">{submission.invoiceId}</td>
+                  <td>{new Date(submission.submittedAt).toLocaleDateString('en-BD')}</td>
+                  <td>
+                    <span
+                      className={`badge ${submission.status === 'approved' ? 'badge-green' : submission.status === 'pending' ? 'badge-warn' : 'badge-muted'}`}
+                    >
+                      {submission.status}
+                    </span>
+                  </td>
+                  <td>
+                    {submission.rejectionReason ||
+                      (submission.status === 'pending'
+                        ? 'Awaiting shop review'
+                        : 'Payment added to your record')}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="shop-filter-empty">No payment record applications yet.</div>
+        )}
+        {submissionResource.error && (
+          <div className="notice" role="alert">
+            {submissionResource.error}
+          </div>
+        )}
+      </div>
 
       <div className="section-h installment-section-head">
         <div>
@@ -183,6 +250,12 @@ export default function Installments() {
           <div className="shop-filter-empty">No payments yet. Your plan starts at 0%.</div>
         )}
       </div>
+      <PaymentSubmissionModal
+        open={submissionOpen}
+        onClose={() => setSubmissionOpen(false)}
+        plan={activePlan}
+        onSubmitted={submissionResource.reload}
+      />
     </>
   )
 }

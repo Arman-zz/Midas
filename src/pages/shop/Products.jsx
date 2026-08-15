@@ -1,48 +1,41 @@
 import { useState } from 'react'
 import Modal from '../../components/common/Modal'
 import ProductGrid from '../../components/marketplace/ProductGrid'
-import { getProducts, saveProducts } from '../../services/productService'
-import { shops } from '../../data/appData'
+import { useShopProducts } from '../../hooks/useShopProducts'
+import { midasApi } from '../../services/midasApi'
 import { useToast } from '../../context/ToastContext'
 export default function Products() {
-  const [products, setProducts] = useState(getProducts)
+  const { products, reload, error } = useShopProducts()
   const [open, setOpen] = useState(false)
-  const [image, setImage] = useState('')
   const notify = useToast()
-  const shop = shops[0].name
-  const own = products.filter((p) => p.shop === shop)
-  const upload = (e) => {
-    const file = e.target.files[0]
-    if (file) setImage(URL.createObjectURL(file))
-  }
-  const submit = (e) => {
+  const own = products
+  const submit = async (e) => {
     e.preventDefault()
-    if (!image) return notify('A product photo is mandatory')
     const data = Object.fromEntries(new FormData(e.currentTarget))
-    const next = [
-      ...products,
-      {
-        id: `shop-${Date.now()}`,
+    try {
+      await midasApi.addProduct({
         name: data.name,
         category: data.category,
-        shop,
         price: Number(data.price),
-        weight: data.weight,
+        weightGrams: Number(data.weightGrams),
         purity: data.purity,
-        image,
+        image: data.image,
         inStock: data.inStock === 'yes',
-        uploadedByShop: true,
-      },
-    ]
-    saveProducts(next)
-    setProducts(next)
-    setOpen(false)
-    notify('Product added to the marketplace')
+      })
+      await reload()
+      setOpen(false)
+      notify('Product added to the marketplace')
+    } catch (submitError) {
+      notify(submitError.message)
+    }
   }
-  const toggle = (id) => {
-    const next = products.map((p) => (p.id === id ? { ...p, inStock: !p.inStock } : p))
-    saveProducts(next)
-    setProducts(next)
+  const toggle = async (product) => {
+    try {
+      await midasApi.setProductStock(product.id, !product.inStock)
+      await reload()
+    } catch (toggleError) {
+      notify(toggleError.message)
+    }
   }
   return (
     <>
@@ -57,15 +50,20 @@ export default function Products() {
           + Add Product
         </button>
       </div>
-      <ProductGrid products={own} onSelect={(p) => toggle(p.id)} />
+      {error && (
+        <div className="notice" role="alert">
+          {error}
+        </div>
+      )}
+      <ProductGrid products={own} onSelect={toggle} />
       <p className="tmeta">Select a product card's stock button to update its availability.</p>
       <Modal open={open} onClose={() => setOpen(false)}>
         <form className="modal-form" onSubmit={submit}>
           <h2>Add marketplace product</h2>
           <div className="field-row">
             <label className="field-label">Product photo *</label>
-            <input className="field" type="file" accept="image/*" onChange={upload} required />
-            {image && <img className="upload-preview" src={image} alt="Product preview" />}
+            <input className="field" name="image" type="url" placeholder="https://…" required />
+            <small>Use a permanent HTTPS image URL from your media storage.</small>
           </div>
           <div className="field-grid">
             <div className="field-row">
@@ -82,7 +80,14 @@ export default function Products() {
             </div>
             <div className="field-row">
               <label className="field-label">Weight</label>
-              <input className="field" name="weight" required />
+              <input
+                className="field"
+                name="weightGrams"
+                type="number"
+                min="0.001"
+                step="0.001"
+                required
+              />
             </div>
             <div className="field-row">
               <label className="field-label">Purity</label>

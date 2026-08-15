@@ -13,7 +13,7 @@ const items = [
 ]
 export default function ShopLayout({ children }) {
   const { user } = useAuth()
-  const verified = user?.verified === true || user?.email?.toLowerCase() === 'shop@midas.bd'
+  const verified = user?.verified === true
   const visibleItems = verified ? items : items.filter((item) => item.id === 'profile')
   const active = verified ? readRoute().view || 'dashboard' : 'profile'
   return (

@@ -1,7 +1,7 @@
 export const shops = [
   {
     id: 'sh-01',
-    name: 'Diamond Plaza — Dhanmondi',
+    name: 'Diamond Plaza, Dhanmondi',
     area: 'Shimanto Shambhar, Level 3, Shop 3102, Jigatola, Dhanmondi, Dhaka',
     rating: 4.8,
     reviews: 86,
@@ -11,7 +11,7 @@ export const shops = [
   },
   {
     id: 'sh-02',
-    name: 'Diamond World — Gulshan',
+    name: 'Diamond World, Gulshan',
     area: 'Tower of Aakash, 54 Gulshan Avenue, Gulshan 1, Dhaka 1212',
     rating: 4.9,
     reviews: 214,
@@ -23,7 +23,7 @@ export const shops = [
   {
     id: 'sh-03',
     name: 'Carat World',
-    area: 'Shops 7–8, Block B, Level 7, Bashundhara City, Panthapath, Dhaka',
+    area: 'Shops 7 to 8, Block B, Level 7, Bashundhara City, Panthapath, Dhaka',
     rating: 4.7,
     reviews: 64,
     lat: 23.7508,
@@ -32,8 +32,8 @@ export const shops = [
   },
   {
     id: 'sh-04',
-    name: 'Al-Amin Jewellers — Uttara',
-    area: 'Shops 26–27, 1st Floor, Amir Complex, Uttara Model Town, Dhaka',
+    name: 'Al Amin Jewellers, Uttara',
+    area: 'Shops 26 to 27, 1st Floor, Amir Complex, Uttara Model Town, Dhaka',
     rating: 4.6,
     reviews: 103,
     lat: 23.8759,
@@ -43,7 +43,7 @@ export const shops = [
   },
   {
     id: 'sh-05',
-    name: 'Diamond Plaza — Mirpur',
+    name: 'Diamond Plaza, Mirpur',
     area: 'Level 3, Shop 22, Mirpur DOHS Shopping Complex, Mirpur 12, Dhaka 1216',
     rating: 4.5,
     reviews: 51,
@@ -53,7 +53,7 @@ export const shops = [
   },
   {
     id: 'sh-06',
-    name: 'Diamond Plaza — Bashundhara',
+    name: 'Diamond Plaza, Bashundhara',
     area: 'Block B, Level 7, Shop 10, Bashundhara City Shopping Complex, Dhaka',
     rating: 4.7,
     reviews: 129,

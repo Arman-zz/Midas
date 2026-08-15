@@ -88,6 +88,17 @@ export default function AppRouter() {
     return () => window.removeEventListener('hashchange', update)
   }, [])
 
+  useEffect(() => {
+    if (
+      user?.role === 'customer' &&
+      !user.profileComplete &&
+      route.role === 'customer' &&
+      route.view !== 'settings'
+    ) {
+      location.hash = '#/customer/settings'
+    }
+  }, [route, user])
+
   let Screen = LandingPage
   let Layout = PublicLayout
   if (route.role === 'login') {
@@ -98,10 +109,10 @@ export default function AppRouter() {
     Screen = Register
   } else if (route.role === 'customer') {
     Layout = CustomerLayout
-    Screen = customerPages[route.view] || CustomerDashboard
+    Screen = !user?.profileComplete ? Settings : customerPages[route.view] || CustomerDashboard
   } else if (route.role === 'shop') {
     Layout = ShopLayout
-    const verified = user?.verified === true || user?.email?.toLowerCase() === 'shop@midas.bd'
+    const verified = user?.verified === true
     Screen =
       !verified && route.view !== 'profile' ? ShopProfile : shopPages[route.view] || ShopDashboard
   } else if (route.role === 'admin') {

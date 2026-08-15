@@ -175,7 +175,7 @@ export default function GoldPriceTrend() {
             </div>
             <p className="gold-chart-note">
               Updated {data.updatedAt.toLocaleString('en-BD')} · {data.source}.{' '}
-              {data.isMarketProxy ? 'PAX Gold-backed market proxy. ' : ''}International spot
+              {data.isMarketProxy ? 'PAX Gold backed market proxy. ' : ''}International spot
               estimate only. Your shop’s selling price may be higher because VAT, making charges,
               stones and shop pricing are not included.
             </p>

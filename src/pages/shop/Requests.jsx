@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'react'
 import { formatBDT } from '../../data/appData'
 import { useToast } from '../../context/ToastContext'
-import { decidePlanRequest, getPlans } from '../../services/planService'
+import { midasApi } from '../../services/midasApi'
 import { usePlans } from '../../hooks/usePlans'
 
 export default function Requests() {
-  usePlans()
+  const { plans, reload, loading, error } = usePlans()
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState('all')
   const notify = useToast()
-  const rows = getPlans().filter((plan) => plan.requestedAt && !plan.legacySchedule)
+  const rows = plans
   const shown = useMemo(() => {
     const needle = query.trim().toLowerCase()
     return rows.filter(
@@ -19,9 +19,10 @@ export default function Requests() {
     )
   }, [rows, query, status])
 
-  const decide = (id, decision) => {
+  const decide = async (id, decision) => {
     try {
-      decidePlanRequest(id, decision)
+      await midasApi.decidePlan(id, decision.toLowerCase())
+      await reload()
       notify(
         decision === 'Approved' ? 'Plan approved; it is now active at 0%' : 'Plan request rejected',
       )
@@ -61,6 +62,12 @@ export default function Requests() {
         </div>
       </div>
       <div className="card shop-filter-table-card">
+        {loading && <div className="shop-filter-empty">Loading requests…</div>}
+        {error && (
+          <div className="notice" role="alert">
+            {error}
+          </div>
+        )}
         <table className="dtable">
           <thead>
             <tr>

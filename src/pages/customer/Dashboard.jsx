@@ -3,35 +3,76 @@ import ProductGrid from '../../components/marketplace/ProductGrid'
 import ProductModal from '../../components/marketplace/ProductModal'
 import ShopCard from '../../components/cards/ShopCard'
 import GoldPriceTrend from '../../components/customer/GoldPriceTrend'
-import { activity, formatBDT, shops } from '../../data/appData'
-import { getCustomerPlanSummary } from '../../services/paymentService'
-import {
-  getActiveCustomerPlan,
-  getCompletedPlanCount,
-  getCustomerPlans,
-  getPendingCustomerPlan,
-} from '../../services/planService'
+import { formatBDT, shops } from '../../data/appData'
 import { usePlans } from '../../hooks/usePlans'
-import { getProducts } from '../../services/productService'
+import { useProducts } from '../../hooks/useProducts'
+import { useApiResource } from '../../hooks/useApiResource'
 import { useAuth } from '../../hooks/useAuth'
+import { midasApi } from '../../services/midasApi'
+
+function relativeTime(value) {
+  const timestamp = new Date(value).getTime()
+  if (!Number.isFinite(timestamp)) return ''
+  const seconds = Math.max(0, Math.floor((Date.now() - timestamp) / 1000))
+  if (seconds < 60) return 'Just now'
+  if (seconds < 3600) return `${Math.floor(seconds / 60)} min ago`
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)} hr ago`
+  if (seconds < 604800)
+    return `${Math.floor(seconds / 86400)} day${seconds < 172800 ? '' : 's'} ago`
+  return new Date(value).toLocaleDateString('en-BD', { day: 'numeric', month: 'short' })
+}
+
 export default function Dashboard({ globalSearch = '' }) {
   const [selected, setSelected] = useState(null)
   const { user } = useAuth()
-  usePlans()
-  const activePlan = getActiveCustomerPlan(user?.email)
-  const pendingPlan = getPendingCustomerPlan(user?.email)
-  const completedCount = getCompletedPlanCount(user?.email)
-  const latestCompleted = getCustomerPlans(user?.email).find((plan) => plan.status === 'Completed')
+  const { plans } = usePlans()
+  const { products: remoteProducts } = useProducts()
+  const { data: paymentData, error: paymentError } = useApiResource(midasApi.payments, [])
+  const payments = (paymentData || []).map((payment) => ({
+    ...payment,
+    amount: Number(payment.amount),
+    goldAmount: Number(payment.goldAmount),
+    goldRate: Number(payment.goldRate),
+  }))
+  const activePlan = plans.find((plan) => plan.status === 'Active')
+  const pendingPlan = plans.find((plan) => plan.status === 'Pending')
+  const completedCount = plans.filter((plan) => plan.status === 'Completed').length
+  const latestCompleted = plans.find((plan) => plan.status === 'Completed')
   const summary = activePlan
-    ? getCustomerPlanSummary(
-        user?.name,
-        activePlan.targetGoldGrams,
-        activePlan.agreement,
-        activePlan,
-      )
+    ? {
+        payments: payments.filter((payment) => payment.agreement === activePlan.agreement),
+        goldOwned: activePlan.goldOwned,
+        spent: activePlan.spent,
+        progress: activePlan.progress,
+        isComplete: activePlan.progress >= 100,
+      }
     : { payments: [], goldOwned: 0, spent: 0, progress: 0, isComplete: false }
   const transactions = summary.payments
-  const products = getProducts().filter((p) =>
+  const recentActivity = [
+    ...payments.map((payment) => ({
+      id: `payment-${payment.id}`,
+      title: 'Payment recorded',
+      meta: `${payment.invoiceId} · ${formatBDT(payment.amount)} converted to ${payment.goldAmount.toFixed(3)} g`,
+      date: payment.date,
+    })),
+    ...plans.map((plan) => ({
+      id: `plan-${plan.id}-${plan.status}`,
+      title:
+        plan.status === 'Completed'
+          ? 'Installment plan completed'
+          : plan.status === 'Active'
+            ? 'Installment plan approved'
+            : plan.status === 'Rejected'
+              ? 'Installment request rejected'
+              : 'Installment plan requested',
+      meta: `${plan.product} · ${plan.shop}`,
+      date: plan.completedAt || plan.decidedAt || plan.requestedAt,
+    })),
+  ]
+    .filter((item) => item.date)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 5)
+  const products = remoteProducts.filter((p) =>
     `${p.name} ${p.shop}`.toLowerCase().includes(globalSearch.toLowerCase()),
   )
   const filteredShops = shops.filter((s) =>
@@ -110,6 +151,9 @@ export default function Dashboard({ globalSearch = '' }) {
                 </div>
               </div>
               <small className="u-muted">Payments are recorded by the partner shop.</small>
+              <a className="btn btn-gold btn-sm" href="#/customer/installments">
+                Apply for payment record
+              </a>
             </div>
           </article>
         ) : pendingPlan ? (
@@ -158,7 +202,7 @@ export default function Dashboard({ globalSearch = '' }) {
               <div className="empty-history">
                 <span className="seal">♢</span>
                 <b>No transactions yet</b>
-                <small>Your shop-recorded payments will appear here.</small>
+                <small>Your shop recorded payments will appear here.</small>
               </div>
             )}
           </div>
@@ -196,15 +240,27 @@ export default function Dashboard({ globalSearch = '' }) {
             <div className="card-title">Recent Activity</div>
           </div>
           <div className="card-pad activity-list">
-            {activity.map((a) => (
-              <div key={a.title}>
+            {recentActivity.map((item) => (
+              <div key={item.id}>
                 <span>
-                  <b>{a.title}</b>
-                  <small>{a.meta}</small>
+                  <b>{item.title}</b>
+                  <small>{item.meta}</small>
                 </span>
-                <small>{a.when}</small>
+                <small>{relativeTime(item.date)}</small>
               </div>
             ))}
+            {!recentActivity.length && !paymentError && (
+              <div className="empty-history">
+                <span className="seal">♢</span>
+                <b>No recent activity</b>
+                <small>Your plan requests and shop recorded payments will appear here.</small>
+              </div>
+            )}
+            {paymentError && (
+              <div className="field-error" role="alert">
+                {paymentError}
+              </div>
+            )}
           </div>
         </article>
       </div>
