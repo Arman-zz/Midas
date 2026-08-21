@@ -6,7 +6,7 @@ export default function Header() {
     <header className="pub-header">
       <a className="u-flex u-gap-10 brand-home-link" href="#/public/landing">
         <Icon name="diamond" />
-        <span className="public-brand-word">MIDAS</span>
+        <span className="public-brand-word">Midas_Gohona</span>
       </a>
       <nav className="pub-nav">
         <a href="#/public/landing">Home</a>

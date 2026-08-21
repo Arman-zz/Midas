@@ -10,7 +10,7 @@ export default function Sidebar({ role, label, items, active, onClose }) {
           <Icon name="diamond" />
         </div>
         <div>
-          <div className="brand-word">MIDAS</div>
+          <div className="brand-word">Midas_Gohona</div>
           <div className="brand-context">{label}</div>
         </div>
       </a>
